@@ -7,7 +7,7 @@ import com.numero.itube.view.IView
 interface SearchContract {
 
     interface View : IView<Presenter> {
-        fun showVideoList(postList: List<Video>)
+        fun showVideoList(videoList: List<Video>)
 
         fun clearVideoList()
 
