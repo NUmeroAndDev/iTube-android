@@ -52,6 +52,9 @@ class SearchFragment : Fragment(), SearchContract.View {
                 override fun onQueryTextChange(newText: String?): Boolean = false
             })
         }
+        videoListAdapter.setOnItemClickListener {
+            // 再生画面へ遷移
+        }
         videoRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)

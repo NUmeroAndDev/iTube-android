@@ -19,6 +19,12 @@ class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoViewHolder>(
             notifyDataSetChanged()
         }
 
+    private var onItemClickListener: ((video: Video) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: ((video: Video) -> Unit)) {
+        onItemClickListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         return VideoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_holder_video, parent, false))
     }
@@ -26,7 +32,11 @@ class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoViewHolder>(
     override fun getItemCount(): Int = videoList.size
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
-        holder.setVideo(videoList[position])
+        val video = videoList[position]
+        holder.setVideo(video)
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.invoke(video)
+        }
     }
 
     class VideoViewHolder(override val containerView: View?) : RecyclerView.ViewHolder(containerView), LayoutContainer {
