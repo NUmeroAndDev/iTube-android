@@ -1,0 +1,18 @@
+package com.numero.itube.api
+
+import com.numero.itube.api.response.SearchResponse
+import io.reactivex.Observable
+import retrofit2.http.GET
+import retrofit2.http.Query
+
+interface YoutubeApi {
+    @GET("search")
+    fun search(
+            @Query("key") key: String,
+            @Query("q") searchWord: String,
+            @Query("pageToken") nextPageToken: String = "",
+            @Query("type") type: String = "video",
+            @Query("part") part: String = "id,snippet",
+            @Query("maxResults") maxResult: Int = 30
+    ): Observable<SearchResponse>
+}
