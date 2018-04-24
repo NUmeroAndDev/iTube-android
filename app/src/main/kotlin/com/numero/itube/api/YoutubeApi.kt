@@ -1,7 +1,7 @@
 package com.numero.itube.api
 
 import com.numero.itube.api.response.SearchResponse
-import io.reactivex.Observable
+import kotlinx.coroutines.experimental.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -14,5 +14,5 @@ interface YoutubeApi {
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
-    ): Observable<SearchResponse>
+    ): Deferred<SearchResponse>
 }

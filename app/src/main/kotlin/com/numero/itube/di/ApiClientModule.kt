@@ -1,5 +1,6 @@
 package com.numero.itube.di
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import com.numero.itube.BuildConfig
 import com.numero.itube.api.ApplicationJsonAdapterFactory
 import com.numero.itube.api.YoutubeApi
@@ -9,7 +10,6 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -39,15 +39,13 @@ class ApiClientModule {
                 .baseUrl("https://www.googleapis.com/youtube/v3/")
                 .client(okHttpClient)
                 .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().add(ApplicationJsonAdapterFactory.INSTANCE).build()))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .build()
     }
 
     @Provides
     @Singleton
-    fun provideYoutubeApi(retrofit: Retrofit): YoutubeApi {
-        return retrofit.create(YoutubeApi::class.java)
-    }
+    fun provideYoutubeApi(retrofit: Retrofit): YoutubeApi = retrofit.create(YoutubeApi::class.java)
 
     companion object {
         private const val TIMEOUT_TIME_SECONDS: Long = 10
