@@ -26,8 +26,9 @@ class PlayerActivity : AppCompatActivity(), YouTubePlayer.OnInitializedListener 
     }
 
     override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, youTubePlayer: YouTubePlayer?, b: Boolean) {
-        if (b.not()) return
-        youTubePlayer?.cueVideo(video.id.videoId)
+        if (b.not()) {
+            youTubePlayer?.cueVideo(video.id.videoId)
+        }
     }
 
     override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
