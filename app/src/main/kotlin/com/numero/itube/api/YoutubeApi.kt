@@ -10,7 +10,16 @@ interface YoutubeApi {
     fun search(
             @Query("key") key: String,
             @Query("q") searchWord: String,
-            @Query("pageToken") nextPageToken: String = "",
+            @Query("pageToken") nextPageToken: String,
+            @Query("type") type: String = "video",
+            @Query("part") part: String = "id,snippet",
+            @Query("maxResults") maxResult: Int = 30
+    ): Deferred<SearchResponse>
+
+    @GET("search")
+    fun search(
+            @Query("key") key: String,
+            @Query("q") searchWord: String,
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
