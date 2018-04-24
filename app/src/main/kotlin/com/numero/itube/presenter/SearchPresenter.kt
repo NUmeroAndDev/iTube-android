@@ -5,6 +5,7 @@ import com.numero.itube.repository.IYoutubeRepository
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.cancelChildren
 
 class SearchPresenter(
         private val view: SearchContract.View,
@@ -20,6 +21,7 @@ class SearchPresenter(
     }
 
     override fun unSubscribe() {
+        job.cancelChildren()
     }
 
     override fun search(key: String, searchWord: String) {
