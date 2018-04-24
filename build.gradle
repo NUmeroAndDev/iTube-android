@@ -12,6 +12,7 @@ buildscript {
         rxjava_version = '2.1.7'
         rx_android_version = '2.0.2'
         rxkotlin_version = '2.2.0'
+        coroutines_version = '0.22.5'
     }
 
     repositories {
