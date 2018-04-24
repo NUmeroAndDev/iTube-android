@@ -12,7 +12,7 @@ import javax.inject.Singleton
 @Component(modules = [
     (AndroidSupportInjectionModule::class),
     (ApiClientModule::class),
-    (ActivityModule::class),
+    (FragmentModule::class),
     (RepositoryModule::class)
 ])
 interface ApplicationComponent : AndroidInjector<iTubeApplication> {

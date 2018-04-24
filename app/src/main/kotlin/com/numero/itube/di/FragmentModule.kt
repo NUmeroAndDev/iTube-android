@@ -1,12 +1,12 @@
 package com.numero.itube.di
 
-import com.numero.itube.MainActivity
+import com.numero.itube.fragment.SearchFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-abstract class ActivityModule {
+abstract class FragmentModule {
 
     @ContributesAndroidInjector
-    abstract fun contributeMainActivity(): MainActivity
+    abstract fun contributeSearchFragment(): SearchFragment
 }
