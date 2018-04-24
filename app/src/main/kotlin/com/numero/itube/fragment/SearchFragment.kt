@@ -1,5 +1,6 @@
 package com.numero.itube.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -24,6 +25,14 @@ class SearchFragment : Fragment(), SearchContract.View {
 
     private lateinit var presenter: SearchContract.Presenter
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
+    private var listener: SearchFragmentListener? = null
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is SearchFragmentListener) {
+            listener = context
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +55,7 @@ class SearchFragment : Fragment(), SearchContract.View {
                         return false
                     }
                     presenter.search(getString(R.string.api_key), query)
-                    return true
+                    return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean = false
@@ -54,6 +63,7 @@ class SearchFragment : Fragment(), SearchContract.View {
         }
         videoListAdapter.setOnItemClickListener {
             // 再生画面へ遷移
+            listener?.showVideo(it)
         }
         videoRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -88,6 +98,10 @@ class SearchFragment : Fragment(), SearchContract.View {
 
     override fun setPresenter(presenter: SearchContract.Presenter) {
         this.presenter = presenter
+    }
+
+    interface SearchFragmentListener {
+        fun showVideo(video: Video)
     }
 
     companion object {

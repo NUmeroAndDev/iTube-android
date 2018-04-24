@@ -6,8 +6,9 @@ import com.numero.itube.R
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
 import com.numero.itube.fragment.SearchFragment
+import com.numero.itube.model.Video
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SearchFragment.SearchFragmentListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,5 +18,9 @@ class MainActivity : AppCompatActivity() {
         if (fragment == null) {
             replace(R.id.container, SearchFragment.newInstance(), false)
         }
+    }
+
+    override fun showVideo(video: Video) {
+        startActivity(PlayerActivity.createIntent(this, video))
     }
 }
