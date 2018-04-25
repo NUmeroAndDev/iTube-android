@@ -4,11 +4,10 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import java.io.Serializable
 
-
 /**
  * 保存用のModel
  */
-@Entity
+@Entity(tableName = "FavoriteVideo")
 data class FavoriteVideo(
         @PrimaryKey
         val id: String,
