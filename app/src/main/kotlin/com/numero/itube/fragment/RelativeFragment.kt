@@ -1,5 +1,6 @@
 package com.numero.itube.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -24,6 +25,14 @@ class RelativeFragment : Fragment(), RelativeContract.View {
 
     private lateinit var presenter: RelativeContract.Presenter
     private val videoListAdapter: RelativeVideoListAdapter = RelativeVideoListAdapter()
+    private var listener: RelativeFragmentListener? = null
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is RelativeFragmentListener) {
+            listener = context
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +50,7 @@ class RelativeFragment : Fragment(), RelativeContract.View {
 
         videoListAdapter.setOnItemClickListener {
             // 再生画面へ遷移
+            listener?.showVideo(it)
         }
         relativeVideoRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -81,6 +91,10 @@ class RelativeFragment : Fragment(), RelativeContract.View {
 
     override fun setPresenter(presenter: RelativeContract.Presenter) {
         this.presenter = presenter
+    }
+
+    interface RelativeFragmentListener {
+        fun showVideo(video: Video)
     }
 
     companion object {

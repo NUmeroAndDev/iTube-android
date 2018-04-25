@@ -15,7 +15,9 @@ import com.numero.itube.fragment.DetailFragment
 import com.numero.itube.fragment.RelativeFragment
 import com.numero.itube.model.Video
 
-class PlayerActivity : AppCompatActivity(), YouTubePlayer.OnInitializedListener {
+class PlayerActivity : AppCompatActivity(),
+        YouTubePlayer.OnInitializedListener,
+        RelativeFragment.RelativeFragmentListener {
 
     private val video: Video by lazy { intent.getSerializableExtra(BUNDLE_VIDEO) as Video }
 
@@ -61,11 +63,17 @@ class PlayerActivity : AppCompatActivity(), YouTubePlayer.OnInitializedListener 
     override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
     }
 
+    override fun showVideo(video: Video) {
+        startActivity(PlayerActivity.createIntent(this, video))
+        overridePendingTransition(0, 0)
+    }
+
     companion object {
         private const val BUNDLE_VIDEO = "BUNDLE_VIDEO"
 
         fun createIntent(context: Context, video: Video): Intent = Intent(context, PlayerActivity::class.java).apply {
             putExtra(BUNDLE_VIDEO, video)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }
 }
