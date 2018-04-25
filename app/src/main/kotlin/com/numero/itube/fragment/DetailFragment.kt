@@ -11,6 +11,7 @@ import com.numero.itube.contract.DetailContract
 import com.numero.itube.model.Video
 import com.numero.itube.model.VideoDetail
 import com.numero.itube.presenter.DetailPresenter
+import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.YoutubeRepository
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.*
@@ -20,13 +21,17 @@ class DetailFragment : Fragment(), DetailContract.View {
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
+    @Inject
+    lateinit var favoriteVideoRepository: FavoriteVideoRepository
     private lateinit var presenter: DetailContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidSupportInjection.inject(this)
 
-        DetailPresenter(this, youtubeRepository)
+        val arguments = arguments ?: return
+        val video = arguments.getSerializable(ARG_VIDEO) as Video
+        DetailPresenter(this, youtubeRepository, favoriteVideoRepository, video)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,9 +41,9 @@ class DetailFragment : Fragment(), DetailContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val arguments = arguments ?: return
-        val video = arguments.getSerializable(ARG_VIDEO) as Video
-        presenter.loadDetail(getString(R.string.api_key), video)
+        initViews()
+
+        presenter.loadDetail(getString(R.string.api_key))
     }
 
     override fun onResume() {
@@ -68,8 +73,22 @@ class DetailFragment : Fragment(), DetailContract.View {
 
     }
 
+    override fun registeredFavorite(isRegistered: Boolean) {
+        favoriteCheckBox.isChecked = isRegistered
+    }
+
     override fun setPresenter(presenter: DetailContract.Presenter) {
         this.presenter = presenter
+    }
+
+    private fun initViews() {
+        favoriteCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                presenter.registerFavorite()
+            } else {
+                presenter.unregisterFavorite()
+            }
+        }
     }
 
     companion object {
