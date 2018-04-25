@@ -13,6 +13,7 @@ buildscript {
         rx_android_version = '2.0.2'
         rxkotlin_version = '2.2.0'
         glide_version = '4.7.1'
+        room_version = '1.0.0'
         coroutines_version = '0.22.5'
     }
 
