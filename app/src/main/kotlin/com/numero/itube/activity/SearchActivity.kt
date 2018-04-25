@@ -8,11 +8,11 @@ import com.numero.itube.extension.replace
 import com.numero.itube.fragment.SearchFragment
 import com.numero.itube.model.Video
 
-class MainActivity : AppCompatActivity(), SearchFragment.SearchFragmentListener {
+class SearchActivity : AppCompatActivity(), SearchFragment.SearchFragmentListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_search)
 
         val fragment = findFragment(R.id.container)
         if (fragment == null) {
