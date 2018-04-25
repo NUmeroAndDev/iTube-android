@@ -2,6 +2,7 @@ package com.numero.itube.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,9 @@ import com.numero.itube.contract.RelativeContract
 import com.numero.itube.model.Video
 import com.numero.itube.presenter.RelativePresenter
 import com.numero.itube.repository.YoutubeRepository
+import com.numero.itube.view.adapter.RelativeVideoListAdapter
 import dagger.android.support.AndroidSupportInjection
+import kotlinx.android.synthetic.main.fragment_relative.*
 import javax.inject.Inject
 
 class RelativeFragment : Fragment(), RelativeContract.View {
@@ -20,6 +23,7 @@ class RelativeFragment : Fragment(), RelativeContract.View {
     lateinit var youtubeRepository: YoutubeRepository
 
     private lateinit var presenter: RelativeContract.Presenter
+    private val videoListAdapter: RelativeVideoListAdapter = RelativeVideoListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +38,15 @@ class RelativeFragment : Fragment(), RelativeContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        videoListAdapter.setOnItemClickListener {
+            // 再生画面へ遷移
+        }
+        relativeVideoRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            adapter = videoListAdapter
+        }
 
         val arguments = arguments ?: return
         val video = arguments.getSerializable(ARG_VIDEO) as Video
@@ -51,7 +64,7 @@ class RelativeFragment : Fragment(), RelativeContract.View {
     }
 
     override fun showVideoList(videoList: List<Video>) {
-
+        videoListAdapter.videoList = videoList
     }
 
     override fun showErrorMessage(e: Throwable?) {

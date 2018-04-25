@@ -3,5 +3,5 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="relative_list_height">96dp</dimen>
+    <dimen name="relative_list_height">128dp</dimen>
 </resources>
