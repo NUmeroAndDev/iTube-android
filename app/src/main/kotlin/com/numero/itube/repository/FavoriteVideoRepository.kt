@@ -21,9 +21,13 @@ class FavoriteVideoRepository(private val favoriteVideoDao: FavoriteVideoDao) : 
         favoriteVideo
     }
 
-    override fun deleteFavoriteVideo(favoriteVideo: FavoriteVideo): Deferred<FavoriteVideo> = async {
-        favoriteVideoDao.delete(favoriteVideo)
-        favoriteVideo
+    override fun deleteFavoriteVideo(id: String): Deferred<String> = async {
+        favoriteVideoDao.deleteVideo(id)
+        id
+    }
+
+    override fun existFavoriteVideo(id: String): Deferred<Boolean> = async {
+        favoriteVideoDao.findVideo(id).isNotEmpty()
     }
 
 }

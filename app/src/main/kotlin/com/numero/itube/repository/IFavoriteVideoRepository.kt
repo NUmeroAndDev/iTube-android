@@ -10,5 +10,7 @@ interface IFavoriteVideoRepository {
 
     fun updateFavoriteVideo(favoriteVideo: FavoriteVideo): Deferred<FavoriteVideo>
 
-    fun deleteFavoriteVideo(favoriteVideo: FavoriteVideo): Deferred<FavoriteVideo>
+    fun deleteFavoriteVideo(id: String): Deferred<String>
+
+    fun existFavoriteVideo(id: String): Deferred<Boolean>
 }

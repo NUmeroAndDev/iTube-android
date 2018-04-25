@@ -11,6 +11,12 @@ interface FavoriteVideoDao {
     @Query("SELECT * FROM FavoriteVideo")
     fun findAll(): List<FavoriteVideo>
 
+    @Query("SELECT * FROM FavoriteVideo WHERE id = :id")
+    fun findVideo(id: String): List<FavoriteVideo>
+
+    @Query("DELETE FROM FavoriteVideo WHERE id = :id")
+    fun deleteVideo(id: String)
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(favoriteVideo: FavoriteVideo)
 
