@@ -12,6 +12,7 @@ import com.numero.itube.R
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
 import com.numero.itube.fragment.DetailFragment
+import com.numero.itube.fragment.RelativeFragment
 import com.numero.itube.model.Video
 
 class PlayerActivity : AppCompatActivity(), YouTubePlayer.OnInitializedListener {
@@ -32,9 +33,12 @@ class PlayerActivity : AppCompatActivity(), YouTubePlayer.OnInitializedListener 
         }
         youTubePlayerFragment.initialize(getString(R.string.api_key), this)
 
-        val fragment = findFragment(R.id.detailContainer)
-        if (fragment == null) {
+        if (findFragment(R.id.detailContainer) == null) {
             replace(R.id.detailContainer, DetailFragment.newInstance(video), false)
+        }
+
+        if (findFragment(R.id.relativeContainer) == null) {
+            replace(R.id.relativeContainer, RelativeFragment.newInstance(video), false)
         }
     }
 
