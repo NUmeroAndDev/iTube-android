@@ -8,7 +8,9 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
 import com.numero.itube.R
+import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
+import com.numero.itube.fragment.DetailFragment
 import com.numero.itube.model.Video
 
 class PlayerActivity : AppCompatActivity(), YouTubePlayer.OnInitializedListener {
@@ -23,6 +25,11 @@ class PlayerActivity : AppCompatActivity(), YouTubePlayer.OnInitializedListener 
             replace(R.id.playerContainer, this, false)
         }
         youTubePlayerFragment.initialize(getString(R.string.api_key), this)
+
+        val fragment = findFragment(R.id.detailContainer)
+        if (fragment == null) {
+            replace(R.id.detailContainer, DetailFragment.newInstance(video), false)
+        }
     }
 
     override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, youTubePlayer: YouTubePlayer?, b: Boolean) {
