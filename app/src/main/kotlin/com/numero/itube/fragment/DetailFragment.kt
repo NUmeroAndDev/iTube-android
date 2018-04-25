@@ -23,6 +23,7 @@ class DetailFragment : Fragment(), DetailContract.View {
     lateinit var youtubeRepository: YoutubeRepository
     @Inject
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
+
     private lateinit var presenter: DetailContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
