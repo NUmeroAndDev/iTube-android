@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
@@ -21,6 +22,11 @@ class PlayerActivity : AppCompatActivity(), YouTubePlayer.OnInitializedListener 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
 
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = video.snippet.title
+        }
+
         val youTubePlayerFragment = YouTubePlayerFragment.newInstance().apply {
             replace(R.id.playerContainer, this, false)
         }
@@ -29,6 +35,16 @@ class PlayerActivity : AppCompatActivity(), YouTubePlayer.OnInitializedListener 
         val fragment = findFragment(R.id.detailContainer)
         if (fragment == null) {
             replace(R.id.detailContainer, DetailFragment.newInstance(video), false)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
