@@ -26,6 +26,15 @@ interface YoutubeApi {
             @Query("maxResults") maxResult: Int = 30
     ): Deferred<SearchResponse>
 
+    @GET("search")
+    fun searchRelative(
+            @Query("key") key: String,
+            @Query("relatedToVideoId") id: String,
+            @Query("type") type: String = "video",
+            @Query("part") part: String = "id,snippet",
+            @Query("maxResults") maxResult: Int = 30
+    ): Deferred<SearchResponse>
+
     @GET("videos")
     fun videoDetail(
             @Query("key") key: String,

@@ -15,6 +15,10 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         }
     }
 
+    override fun loadRelative(key: String, id: String): Deferred<SearchResponse> {
+        return youtubeApi.searchRelative(key, id)
+    }
+
     override fun loadDetail(key: String, id: String): Deferred<VideoDetailResponse> {
         return youtubeApi.videoDetail(key, id)
     }

@@ -1,6 +1,7 @@
 package com.numero.itube.di
 
 import com.numero.itube.fragment.DetailFragment
+import com.numero.itube.fragment.RelativeFragment
 import com.numero.itube.fragment.SearchFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -13,4 +14,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeDetailFragment(): DetailFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeRelativeFragment(): RelativeFragment
 }
