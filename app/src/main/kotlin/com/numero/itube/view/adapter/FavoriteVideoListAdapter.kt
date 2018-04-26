@@ -39,7 +39,7 @@ class FavoriteVideoListAdapter : RecyclerView.Adapter<FavoriteVideoListAdapter.V
         }
     }
 
-    class VideoViewHolder(override val containerView: View?) : RecyclerView.ViewHolder(containerView), LayoutContainer {
+    class VideoViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
         fun setVideo(video: FavoriteVideo) {
             titleTextView.text = video.title

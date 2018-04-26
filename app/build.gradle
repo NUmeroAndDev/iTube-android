@@ -8,7 +8,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
 
-    compileSdkVersion 27
+    compileSdkVersion 'android-P'
     buildToolsVersion '27.0.3'
 
     defaultConfig {
