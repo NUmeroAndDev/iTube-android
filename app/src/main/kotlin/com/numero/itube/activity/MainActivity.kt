@@ -7,6 +7,7 @@ import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
 import com.numero.itube.fragment.FavoriteFragment
 import com.numero.itube.repository.db.FavoriteVideo
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), FavoriteFragment.FavoriteFragmentListener {
 
@@ -17,6 +18,11 @@ class MainActivity : AppCompatActivity(), FavoriteFragment.FavoriteFragmentListe
         val fragment = findFragment(R.id.container)
         if (fragment == null) {
             replace(R.id.container, FavoriteFragment.newInstance(), false)
+        }
+
+        bottomAppBar.replaceMenu(R.menu.navigation)
+        fab.setOnClickListener {
+            startActivity(SearchActivity.createIntent(this))
         }
     }
 
