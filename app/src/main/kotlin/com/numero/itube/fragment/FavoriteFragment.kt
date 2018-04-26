@@ -24,9 +24,13 @@ class FavoriteFragment : Fragment(), FavoriteContract.View {
 
     private lateinit var presenter: FavoriteContract.Presenter
     private val videoListAdapter: FavoriteVideoListAdapter = FavoriteVideoListAdapter()
+    private var listener: FavoriteFragmentListener? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
+        if (context is FavoriteFragmentListener) {
+            listener = context
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +47,7 @@ class FavoriteFragment : Fragment(), FavoriteContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         videoListAdapter.setOnItemClickListener {
-            // 再生画面へ遷移
+            listener?.showVideo(it)
         }
         videoRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -84,6 +88,10 @@ class FavoriteFragment : Fragment(), FavoriteContract.View {
 
     override fun setPresenter(presenter: FavoriteContract.Presenter) {
         this.presenter = presenter
+    }
+
+    interface FavoriteFragmentListener {
+        fun showVideo(video: FavoriteVideo)
     }
 
     companion object {

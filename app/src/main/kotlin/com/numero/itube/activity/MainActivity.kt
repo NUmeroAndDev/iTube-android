@@ -6,8 +6,9 @@ import com.numero.itube.R
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
 import com.numero.itube.fragment.FavoriteFragment
+import com.numero.itube.repository.db.FavoriteVideo
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), FavoriteFragment.FavoriteFragmentListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,5 +18,9 @@ class MainActivity : AppCompatActivity() {
         if (fragment == null) {
             replace(R.id.container, FavoriteFragment.newInstance(), false)
         }
+    }
+
+    override fun showVideo(video: FavoriteVideo) {
+        // TODO 再生画面
     }
 }
