@@ -25,6 +25,8 @@
 
         <activity android:name=".activity.PlayerActivity" />
 
+        <activity android:name=".activity.MainActivity" />
+
     </application>
 
 </manifest>
