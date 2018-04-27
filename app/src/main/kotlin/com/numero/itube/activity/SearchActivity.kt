@@ -21,6 +21,7 @@ class SearchActivity : AppCompatActivity(), SearchFragment.SearchFragmentListene
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
+            setDisplayShowTitleEnabled(false)
         }
 
         val fragment = findFragment(R.id.container)
