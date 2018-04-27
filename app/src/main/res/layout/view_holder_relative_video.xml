@@ -2,11 +2,12 @@
 <android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/relative_list_height"
+    android:layout_width="@dimen/relative_list_width"
     android:layout_height="@dimen/relative_list_height"
     android:layout_margin="8dp"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    app:cardCornerRadius="4dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,8 +18,7 @@
             android:id="@+id/thumbnailImageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/titleTextView"
-            app:layout_constraintDimensionRatio="w,480:360"
+            app:layout_constraintDimensionRatio="h,4:3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -26,10 +26,14 @@
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/titleTextView"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:ellipsize="end"
+            android:gravity="center_vertical"
             android:maxLines="1"
-            android:padding="8dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

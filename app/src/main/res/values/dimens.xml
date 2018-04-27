@@ -1,3 +1,4 @@
 <resources>
+    <dimen name="relative_list_width">128dp</dimen>
     <dimen name="relative_list_height">128dp</dimen>
 </resources>
