@@ -14,6 +14,7 @@ import com.numero.itube.extension.replace
 import com.numero.itube.fragment.DetailFragment
 import com.numero.itube.fragment.RelativeFragment
 import com.numero.itube.model.Video
+import kotlinx.android.synthetic.main.activity_player.*
 
 class PlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
@@ -24,6 +25,7 @@ class PlayerActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
+        setSupportActionBar(toolbar)
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
