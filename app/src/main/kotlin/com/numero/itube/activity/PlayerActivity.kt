@@ -21,6 +21,7 @@ class PlayerActivity : AppCompatActivity(),
         RelativeFragment.RelativeFragmentListener {
 
     private val video: Video by lazy { intent.getSerializableExtra(BUNDLE_VIDEO) as Video }
+    private var player: YouTubePlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,8 +59,8 @@ class PlayerActivity : AppCompatActivity(),
 
     override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, youTubePlayer: YouTubePlayer?, b: Boolean) {
         if (b.not()) {
-            youTubePlayer?.apply {
-                cueVideo(video.id.videoId)
+            player = youTubePlayer?.apply {
+                loadVideo(video.id.videoId)
             }
         }
     }
