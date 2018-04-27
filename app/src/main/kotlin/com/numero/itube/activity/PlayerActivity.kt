@@ -7,30 +7,33 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
-import com.google.android.youtube.player.YouTubePlayerFragment
+import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import com.numero.itube.R
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
 import com.numero.itube.fragment.DetailFragment
 import com.numero.itube.fragment.RelativeFragment
 import com.numero.itube.model.Video
+import kotlinx.android.synthetic.main.activity_player.*
 
 class PlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
         RelativeFragment.RelativeFragmentListener {
 
     private val video: Video by lazy { intent.getSerializableExtra(BUNDLE_VIDEO) as Video }
+    private var player: YouTubePlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
+        setSupportActionBar(toolbar)
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             title = video.snippet.title
         }
 
-        val youTubePlayerFragment = YouTubePlayerFragment.newInstance().apply {
+        val youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance().apply {
             replace(R.id.playerContainer, this, false)
         }
         youTubePlayerFragment.initialize(getString(R.string.api_key), this)
@@ -56,7 +59,9 @@ class PlayerActivity : AppCompatActivity(),
 
     override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, youTubePlayer: YouTubePlayer?, b: Boolean) {
         if (b.not()) {
-            youTubePlayer?.cueVideo(video.id.videoId)
+            player = youTubePlayer?.apply {
+                loadVideo(video.id.videoId)
+            }
         }
     }
 

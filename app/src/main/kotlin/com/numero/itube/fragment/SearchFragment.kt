@@ -4,10 +4,10 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.SearchView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import com.numero.itube.R
 import com.numero.itube.contract.SearchContract
 import com.numero.itube.model.Video
@@ -48,18 +48,13 @@ class SearchFragment : Fragment(), SearchContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchView.apply {
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    if (query == null || query.isEmpty()) {
-                        return false
-                    }
-                    presenter.search(getString(R.string.api_key), query)
-                    return false
-                }
 
-                override fun onQueryTextChange(newText: String?): Boolean = false
-            })
+        searchEditText.setOnEditorActionListener { _, i, _ ->
+            if (i == EditorInfo.IME_ACTION_SEARCH) {
+                val query = searchEditText.text.toString()
+                presenter.search(getString(R.string.api_key), query)
+            }
+            return@setOnEditorActionListener false
         }
         videoListAdapter.setOnItemClickListener {
             // 再生画面へ遷移
