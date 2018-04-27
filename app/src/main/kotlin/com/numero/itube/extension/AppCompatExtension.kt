@@ -13,15 +13,6 @@ fun AppCompatActivity.replace(@IdRes res: Int, fragment: Fragment, isAddBackStac
     }.commit()
 }
 
-fun AppCompatActivity.replace(@IdRes res: Int, fragment: android.app.Fragment, isAddBackStack: Boolean) {
-    fragmentManager.beginTransaction().apply {
-        replace(res, fragment, fragment::class.java.simpleName)
-        if (isAddBackStack) {
-            addToBackStack(null)
-        }
-    }.commit()
-}
-
 fun AppCompatActivity.findFragment(@IdRes byId: Int): Fragment? {
     return supportFragmentManager.findFragmentById(byId)
 }

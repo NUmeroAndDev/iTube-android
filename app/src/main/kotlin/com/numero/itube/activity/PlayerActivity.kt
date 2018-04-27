@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
-import com.google.android.youtube.player.YouTubePlayerFragment
+import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import com.numero.itube.R
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
@@ -32,7 +32,7 @@ class PlayerActivity : AppCompatActivity(),
             title = video.snippet.title
         }
 
-        val youTubePlayerFragment = YouTubePlayerFragment.newInstance().apply {
+        val youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance().apply {
             replace(R.id.playerContainer, this, false)
         }
         youTubePlayerFragment.initialize(getString(R.string.api_key), this)
@@ -58,7 +58,9 @@ class PlayerActivity : AppCompatActivity(),
 
     override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, youTubePlayer: YouTubePlayer?, b: Boolean) {
         if (b.not()) {
-            youTubePlayer?.cueVideo(video.id.videoId)
+            youTubePlayer?.apply {
+                cueVideo(video.id.videoId)
+            }
         }
     }
 
