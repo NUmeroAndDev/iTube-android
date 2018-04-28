@@ -86,11 +86,11 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     override fun showProgress() {
-
+        progressView?.show()
     }
 
     override fun dismissProgress() {
-
+        progressView?.hide()
     }
 
     override fun setPresenter(presenter: SearchContract.Presenter) {
