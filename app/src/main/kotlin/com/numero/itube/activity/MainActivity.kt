@@ -3,7 +3,6 @@ package com.numero.itube.activity
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.app.AppCompatActivity
-import android.view.View
 import android.widget.FrameLayout
 import com.numero.itube.R
 import com.numero.itube.extension.findFragment
