@@ -67,11 +67,11 @@ class DetailFragment : Fragment(), DetailContract.View {
     }
 
     override fun showProgress() {
-
+        progressView?.show()
     }
 
     override fun dismissProgress() {
-
+        progressView?.hide()
     }
 
     override fun registeredFavorite(isRegistered: Boolean) {
