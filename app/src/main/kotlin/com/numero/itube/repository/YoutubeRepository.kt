@@ -11,7 +11,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         return if (nextPageToken == null) {
             youtubeApi.search(key, searchWord)
         } else {
-            youtubeApi.search(key, searchWord, nextPageToken)
+            youtubeApi.search(key, searchWord, nextPageToken = nextPageToken)
         }
     }
 

@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.view_holder_video.*
 
 class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoViewHolder>() {
 
-    var videoList: List<Video> = listOf()
+    var videoList: MutableList<Video> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -23,6 +23,11 @@ class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoViewHolder>(
 
     fun setOnItemClickListener(listener: ((video: Video) -> Unit)) {
         onItemClickListener = listener
+    }
+
+    fun addVideoList(list: List<Video>) {
+        videoList.addAll(list)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {

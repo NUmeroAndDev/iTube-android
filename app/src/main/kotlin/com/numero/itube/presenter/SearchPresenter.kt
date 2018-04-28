@@ -24,15 +24,19 @@ class SearchPresenter(
         job.cancelChildren()
     }
 
-    override fun search(key: String, searchWord: String) {
-        executeSearch(key, searchWord)
+    override fun search(key: String, searchWord: String, nestPageToken: String?) {
+        executeSearch(key, searchWord, nestPageToken)
     }
 
-    private fun executeSearch(key: String, searchWord: String) = async(job + UI) {
+    private fun executeSearch(key: String, searchWord: String, nestPageToken: String?) = async(job + UI) {
         view.showProgress()
         try {
-            val response = youtubeRepository.search(key, searchWord).await()
-            view.showVideoList(response.items)
+            val response = youtubeRepository.search(key, searchWord, nestPageToken).await()
+            if (nestPageToken == null) {
+                view.showVideoList(response.items, response.nextPageToken)
+            } else {
+                view.addVideoList(response.items, response.nextPageToken)
+            }
         } catch (t: Throwable) {
             view.showErrorMessage(t)
         } finally {
