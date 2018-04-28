@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import com.numero.itube.R
 import com.numero.itube.contract.SearchContract
+import com.numero.itube.extension.hideKeyboard
 import com.numero.itube.model.Video
 import com.numero.itube.presenter.SearchPresenter
 import com.numero.itube.repository.YoutubeRepository
@@ -52,6 +53,7 @@ class SearchFragment : Fragment(), SearchContract.View {
         searchEditText.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
                 val query = searchEditText.text.toString()
+                hideKeyboard()
                 presenter.search(getString(R.string.api_key), query)
             }
             return@setOnEditorActionListener false
