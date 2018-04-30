@@ -12,14 +12,13 @@ import com.numero.itube.R
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
 import com.numero.itube.fragment.DetailFragment
-import com.numero.itube.fragment.RelativeFragment
-import com.numero.itube.model.Video
+import com.numero.itube.fragment.RelativeFavoriteFragment
 import com.numero.itube.repository.db.FavoriteVideo
 import kotlinx.android.synthetic.main.activity_favorite_player.*
 
 class FavoritePlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
-        RelativeFragment.RelativeFragmentListener {
+        RelativeFavoriteFragment.RelativeFavoriteFragmentListener {
 
     private val favoriteVideo: FavoriteVideo by lazy { intent.getSerializableExtra(BUNDLE_FAVORITE_VIDEO) as FavoriteVideo }
     private var player: YouTubePlayer? = null
@@ -41,6 +40,9 @@ class FavoritePlayerActivity : AppCompatActivity(),
 
         if (findFragment(R.id.detailContainer) == null) {
             replace(R.id.detailContainer, DetailFragment.newInstance(favoriteVideo.id), false)
+        }
+        if (findFragment(R.id.favoriteListContainer) == null) {
+            replace(R.id.favoriteListContainer, RelativeFavoriteFragment.newInstance(favoriteVideo.id), false)
         }
     }
 
@@ -65,8 +67,8 @@ class FavoritePlayerActivity : AppCompatActivity(),
     override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
     }
 
-    override fun showVideo(video: Video) {
-        startActivity(PlayerActivity.createIntent(this, video))
+    override fun showVideo(video: FavoriteVideo) {
+        startActivity(FavoritePlayerActivity.createIntent(this, video))
         overridePendingTransition(0, 0)
     }
 
