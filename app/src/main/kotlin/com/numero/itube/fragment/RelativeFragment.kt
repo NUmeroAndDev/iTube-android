@@ -59,8 +59,8 @@ class RelativeFragment : Fragment(), RelativeContract.View {
         }
 
         val arguments = arguments ?: return
-        val video = arguments.getSerializable(ARG_VIDEO) as Video
-        presenter.loadRelative(getString(R.string.api_key), video)
+        val videoId = arguments.getString(ARG_VIDEO_ID)
+        presenter.loadRelative(getString(R.string.api_key), videoId)
     }
 
     override fun onResume() {
@@ -98,10 +98,10 @@ class RelativeFragment : Fragment(), RelativeContract.View {
     }
 
     companion object {
-        private const val ARG_VIDEO = "ARG_VIDEO"
+        private const val ARG_VIDEO_ID = "ARG_VIDEO_ID"
 
-        fun newInstance(video: Video): RelativeFragment = RelativeFragment().apply {
-            arguments = bundleOf(ARG_VIDEO to video)
+        fun newInstance(videoId: String): RelativeFragment = RelativeFragment().apply {
+            arguments = bundleOf(ARG_VIDEO_ID to videoId)
         }
     }
 }

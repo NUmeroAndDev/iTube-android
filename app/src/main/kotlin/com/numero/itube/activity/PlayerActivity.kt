@@ -43,7 +43,7 @@ class PlayerActivity : AppCompatActivity(),
         }
 
         if (findFragment(R.id.relativeContainer) == null) {
-            replace(R.id.relativeContainer, RelativeFragment.newInstance(video), false)
+            replace(R.id.relativeContainer, RelativeFragment.newInstance(video.id.videoId), false)
         }
     }
 

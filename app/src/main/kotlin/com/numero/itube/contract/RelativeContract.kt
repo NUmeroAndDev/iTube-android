@@ -17,6 +17,6 @@ interface RelativeContract {
     }
 
     interface Presenter : IPresenter {
-        fun loadRelative(key: String, video: Video)
+        fun loadRelative(key: String, videoId: String)
     }
 }
