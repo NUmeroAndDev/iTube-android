@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="navigation_bar">#FFFFFF</color>
+    <color name="playing_background">#8A000000</color>
 </resources>

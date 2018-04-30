@@ -53,6 +53,6 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun showVideo(video: FavoriteVideo) {
-        // TODO 再生画面
+        startActivity(FavoritePlayerActivity.createIntent(this, video))
     }
 }
