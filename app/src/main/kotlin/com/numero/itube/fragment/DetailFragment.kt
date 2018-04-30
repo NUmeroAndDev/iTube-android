@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import com.numero.itube.R
 import com.numero.itube.contract.DetailContract
-import com.numero.itube.model.Video
 import com.numero.itube.model.VideoDetail
 import com.numero.itube.presenter.DetailPresenter
 import com.numero.itube.repository.FavoriteVideoRepository
@@ -31,8 +30,8 @@ class DetailFragment : Fragment(), DetailContract.View {
         AndroidSupportInjection.inject(this)
 
         val arguments = arguments ?: return
-        val video = arguments.getSerializable(ARG_VIDEO) as Video
-        DetailPresenter(this, youtubeRepository, favoriteVideoRepository, video)
+        val videoId = arguments.getString(ARG_VIDEO_ID)
+        DetailPresenter(this, youtubeRepository, favoriteVideoRepository, videoId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -93,10 +92,10 @@ class DetailFragment : Fragment(), DetailContract.View {
     }
 
     companion object {
-        private const val ARG_VIDEO = "ARG_VIDEO"
+        private const val ARG_VIDEO_ID = "ARG_VIDEO_ID"
 
-        fun newInstance(video: Video): DetailFragment = DetailFragment().apply {
-            arguments = bundleOf(ARG_VIDEO to video)
+        fun newInstance(videoId: String): DetailFragment = DetailFragment().apply {
+            arguments = bundleOf(ARG_VIDEO_ID to videoId)
         }
     }
 }
