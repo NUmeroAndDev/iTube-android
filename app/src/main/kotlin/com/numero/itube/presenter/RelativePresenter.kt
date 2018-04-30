@@ -1,7 +1,6 @@
 package com.numero.itube.presenter
 
 import com.numero.itube.contract.RelativeContract
-import com.numero.itube.model.Video
 import com.numero.itube.repository.IYoutubeRepository
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
@@ -25,8 +24,8 @@ class RelativePresenter(
         job.cancelChildren()
     }
 
-    override fun loadRelative(key: String, video: Video) {
-        executeLoadRelative(key, video.id.videoId)
+    override fun loadRelative(key: String, videoId: String) {
+        executeLoadRelative(key, videoId)
     }
 
     private fun executeLoadRelative(key: String, id: String) = async(job + UI) {

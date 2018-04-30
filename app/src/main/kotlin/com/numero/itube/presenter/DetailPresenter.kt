@@ -1,7 +1,7 @@
 package com.numero.itube.presenter
 
 import com.numero.itube.contract.DetailContract
-import com.numero.itube.model.Video
+import com.numero.itube.model.VideoDetail
 import com.numero.itube.repository.IFavoriteVideoRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
@@ -14,8 +14,9 @@ class DetailPresenter(
         private val view: DetailContract.View,
         private val youtubeRepository: IYoutubeRepository,
         private val favoriteRepository: IFavoriteVideoRepository,
-        private val video: Video) : DetailContract.Presenter {
+        private val videoId: String) : DetailContract.Presenter {
 
+    private var videoDetail: VideoDetail? = null
     private val job = Job()
 
     init {
@@ -23,7 +24,7 @@ class DetailPresenter(
     }
 
     override fun subscribe() {
-        executeCheckFavorite(video)
+        executeCheckFavorite(videoId)
     }
 
     override fun unSubscribe() {
@@ -31,20 +32,22 @@ class DetailPresenter(
     }
 
     override fun loadDetail(key: String) {
-        executeLoadDetail(key, video.id.videoId)
+        executeLoadDetail(key, videoId)
     }
 
     override fun registerFavorite() {
-        executeRegisterFavorite(video)
+        val detail = videoDetail ?: return
+        executeRegisterFavorite(detail)
     }
 
     override fun unregisterFavorite() {
-        executeUnregisterFavorite(video)
+        val detail = videoDetail ?: return
+        executeUnregisterFavorite(detail)
     }
 
-    private fun executeCheckFavorite(video: Video) = async(job + UI) {
+    private fun executeCheckFavorite(videoId: String) = async(job + UI) {
         try {
-            val isFavorite = favoriteRepository.existFavoriteVideo(video.id.videoId).await()
+            val isFavorite = favoriteRepository.existFavoriteVideo(videoId).await()
             view.registeredFavorite(isFavorite)
         } catch (t: Throwable) {
             t.printStackTrace()
@@ -55,6 +58,7 @@ class DetailPresenter(
         view.showProgress()
         try {
             val response = youtubeRepository.loadDetail(key, id).await()
+            videoDetail = response.items[0]
             view.showVideoDetail(response.items[0])
         } catch (t: Throwable) {
             view.showErrorMessage(t)
@@ -63,10 +67,10 @@ class DetailPresenter(
         }
     }
 
-    private fun executeRegisterFavorite(video: Video) = async(job + UI) {
+    private fun executeRegisterFavorite(video: VideoDetail) = async(job + UI) {
         try {
             val favoriteVideo = FavoriteVideo(
-                    video.id.videoId,
+                    video.id,
                     video.snippet.publishedAt,
                     video.snippet.title,
                     video.snippet.channelId,
@@ -79,9 +83,9 @@ class DetailPresenter(
         }
     }
 
-    private fun executeUnregisterFavorite(video: Video) = async(job + UI) {
+    private fun executeUnregisterFavorite(video: VideoDetail) = async(job + UI) {
         try {
-            favoriteRepository.deleteFavoriteVideo(video.id.videoId).await()
+            favoriteRepository.deleteFavoriteVideo(video.id).await()
             view.registeredFavorite(false)
         } catch (t: Throwable) {
             // TODO エラー処理

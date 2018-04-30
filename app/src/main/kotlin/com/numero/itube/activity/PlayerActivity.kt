@@ -39,11 +39,11 @@ class PlayerActivity : AppCompatActivity(),
         youTubePlayerFragment.initialize(getString(R.string.api_key), this)
 
         if (findFragment(R.id.detailContainer) == null) {
-            replace(R.id.detailContainer, DetailFragment.newInstance(video), false)
+            replace(R.id.detailContainer, DetailFragment.newInstance(video.id.videoId), false)
         }
 
         if (findFragment(R.id.relativeContainer) == null) {
-            replace(R.id.relativeContainer, RelativeFragment.newInstance(video), false)
+            replace(R.id.relativeContainer, RelativeFragment.newInstance(video.id.videoId), false)
         }
     }
 
