@@ -40,22 +40,25 @@ class RelativeFavoriteVideoListAdapter : RecyclerView.Adapter<RelativeFavoriteVi
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         val video = videoList[position]
         holder.setVideo(video)
-        holder.setIsCurrentVideo(video.id == currentVideoId)
+        holder.isCurrentVideo = video.id == currentVideoId
         holder.itemView.setOnClickListener {
-            onItemClickListener?.invoke(video)
+            if (holder.isCurrentVideo.not()) {
+                onItemClickListener?.invoke(video)
+            }
         }
     }
 
     class VideoViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
+        var isCurrentVideo: Boolean = false
+            set(value) {
+                field = value
+                playingViewGroup.visibility = if (field) View.VISIBLE else View.GONE
+            }
+
         fun setVideo(video: FavoriteVideo) {
             titleTextView.text = video.title
             GlideApp.with(itemView.context).load(video.thumbnailUrl).diskCacheStrategy(DiskCacheStrategy.NONE).into(thumbnailImageView)
-        }
-
-        fun setIsCurrentVideo(isCurrentVideo: Boolean) {
-            itemView.isFocusable = isCurrentVideo.not()
-            itemView.isClickable = isCurrentVideo.not()
         }
     }
 }
