@@ -41,8 +41,7 @@ class DetailPresenter(
     }
 
     override fun unregisterFavorite() {
-        val detail = videoDetail ?: return
-        executeUnregisterFavorite(detail)
+        executeUnregisterFavorite(videoId)
     }
 
     private fun executeCheckFavorite(videoId: String) = async(job + UI) {
@@ -83,11 +82,12 @@ class DetailPresenter(
         }
     }
 
-    private fun executeUnregisterFavorite(video: VideoDetail) = async(job + UI) {
+    private fun executeUnregisterFavorite(videoId: String) = async(job + UI) {
         try {
-            favoriteRepository.deleteFavoriteVideo(video.id).await()
+            favoriteRepository.deleteFavoriteVideo(videoId).await()
             view.registeredFavorite(false)
         } catch (t: Throwable) {
+            t.printStackTrace()
             // TODO エラー処理
         }
     }
