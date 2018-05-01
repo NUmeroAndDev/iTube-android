@@ -59,6 +59,7 @@ class DetailFragment : Fragment(), DetailContract.View {
     override fun showVideoDetail(videoDetail: VideoDetail) {
         titleTextView.text = videoDetail.snippet.title
         descriptionTextView.text = videoDetail.snippet.description
+        channelNameTextView.text = videoDetail.snippet.channelTitle
     }
 
     override fun showErrorMessage(e: Throwable?) {
