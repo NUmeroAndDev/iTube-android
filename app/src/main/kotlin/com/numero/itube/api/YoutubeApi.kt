@@ -1,5 +1,6 @@
 package com.numero.itube.api
 
+import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoDetailResponse
 import kotlinx.coroutines.experimental.Deferred
@@ -41,4 +42,11 @@ interface YoutubeApi {
             @Query("id") id: String,
             @Query("part") part: String = "id,snippet"
     ): Deferred<VideoDetailResponse>
+
+    @GET("channels")
+    fun channel(
+            @Query("key") key: String,
+            @Query("id") id: String,
+            @Query("part") part: String = "id,snippet"
+    ): Deferred<ChannelResponse>
 }

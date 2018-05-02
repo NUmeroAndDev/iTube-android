@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import com.bumptech.glide.request.RequestOptions
+import com.numero.itube.GlideApp
 import com.numero.itube.R
 import com.numero.itube.contract.DetailContract
+import com.numero.itube.model.Channel
 import com.numero.itube.model.VideoDetail
 import com.numero.itube.presenter.DetailPresenter
 import com.numero.itube.repository.FavoriteVideoRepository
@@ -31,7 +34,8 @@ class DetailFragment : Fragment(), DetailContract.View {
 
         val arguments = arguments ?: return
         val videoId = arguments.getString(ARG_VIDEO_ID)
-        DetailPresenter(this, youtubeRepository, favoriteVideoRepository, videoId)
+        val channelId = arguments.getString(ARG_CHANNEL_ID)
+        DetailPresenter(this, youtubeRepository, favoriteVideoRepository, videoId, channelId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,10 +60,12 @@ class DetailFragment : Fragment(), DetailContract.View {
         presenter.unSubscribe()
     }
 
-    override fun showVideoDetail(videoDetail: VideoDetail) {
+    override fun showVideoDetail(videoDetail: VideoDetail, channel: Channel) {
         titleTextView.text = videoDetail.snippet.title
         descriptionTextView.text = videoDetail.snippet.description
-        channelNameTextView.text = videoDetail.snippet.channelTitle
+        channelNameTextView.text = channel.snippet.title
+        val context = context ?: return
+        GlideApp.with(context).load(channel.snippet.thumbnails.medium.url).apply(RequestOptions().circleCrop()).into(channelImageView)
     }
 
     override fun showErrorMessage(e: Throwable?) {
@@ -94,9 +100,12 @@ class DetailFragment : Fragment(), DetailContract.View {
 
     companion object {
         private const val ARG_VIDEO_ID = "ARG_VIDEO_ID"
+        private const val ARG_CHANNEL_ID = "ARG_CHANNEL_ID"
 
-        fun newInstance(videoId: String): DetailFragment = DetailFragment().apply {
-            arguments = bundleOf(ARG_VIDEO_ID to videoId)
+        fun newInstance(videoId: String, channelId: String): DetailFragment = DetailFragment().apply {
+            arguments = bundleOf(
+                    ARG_VIDEO_ID to videoId,
+                    ARG_CHANNEL_ID to channelId)
         }
     }
 }

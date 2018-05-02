@@ -1,5 +1,6 @@
 package com.numero.itube.contract
 
+import com.numero.itube.model.Channel
 import com.numero.itube.model.VideoDetail
 import com.numero.itube.presenter.IPresenter
 import com.numero.itube.view.IView
@@ -7,7 +8,7 @@ import com.numero.itube.view.IView
 interface DetailContract {
 
     interface View : IView<Presenter> {
-        fun showVideoDetail(videoDetail: VideoDetail)
+        fun showVideoDetail(videoDetail: VideoDetail, channel: Channel)
 
         fun showErrorMessage(e: Throwable?)
 

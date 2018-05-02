@@ -39,7 +39,7 @@ class FavoritePlayerActivity : AppCompatActivity(),
         youTubePlayerFragment.initialize(getString(R.string.api_key), this)
 
         if (findFragment(R.id.detailContainer) == null) {
-            replace(R.id.detailContainer, DetailFragment.newInstance(favoriteVideo.id), false)
+            replace(R.id.detailContainer, DetailFragment.newInstance(favoriteVideo.id, favoriteVideo.channelId), false)
         }
         if (findFragment(R.id.favoriteListContainer) == null) {
             replace(R.id.favoriteListContainer, RelativeFavoriteFragment.newInstance(favoriteVideo.id), false)
