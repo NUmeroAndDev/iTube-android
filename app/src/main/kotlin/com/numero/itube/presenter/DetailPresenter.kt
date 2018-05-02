@@ -14,7 +14,8 @@ class DetailPresenter(
         private val view: DetailContract.View,
         private val youtubeRepository: IYoutubeRepository,
         private val favoriteRepository: IFavoriteVideoRepository,
-        private val videoId: String) : DetailContract.Presenter {
+        private val videoId: String,
+        private val channelId: String) : DetailContract.Presenter {
 
     private var videoDetail: VideoDetail? = null
     private val job = Job()
@@ -32,7 +33,7 @@ class DetailPresenter(
     }
 
     override fun loadDetail(key: String) {
-        executeLoadDetail(key, videoId)
+        executeLoadDetail(key, videoId, channelId)
     }
 
     override fun registerFavorite() {
@@ -53,12 +54,15 @@ class DetailPresenter(
         }
     }
 
-    private fun executeLoadDetail(key: String, id: String) = async(job + UI) {
+    private fun executeLoadDetail(key: String, id: String, channelId: String) = async(job + UI) {
         view.showProgress()
         try {
-            val response = youtubeRepository.loadDetail(key, id).await()
-            videoDetail = response.items[0]
-            view.showVideoDetail(response.items[0])
+            val videoDetailResponse = youtubeRepository.loadDetail(key, id).await()
+            videoDetail = videoDetailResponse.items[0]
+
+            val channelResponse = youtubeRepository.loadChannel(key, channelId).await()
+
+            view.showVideoDetail(videoDetailResponse.items[0], channelResponse.items[0])
         } catch (t: Throwable) {
             view.showErrorMessage(t)
         } finally {

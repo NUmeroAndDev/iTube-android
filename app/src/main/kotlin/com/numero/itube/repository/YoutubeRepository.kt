@@ -1,6 +1,7 @@
 package com.numero.itube.repository
 
 import com.numero.itube.api.YoutubeApi
+import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoDetailResponse
 import kotlinx.coroutines.experimental.Deferred
@@ -21,5 +22,9 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
 
     override fun loadDetail(key: String, id: String): Deferred<VideoDetailResponse> {
         return youtubeApi.videoDetail(key, id)
+    }
+
+    override fun loadChannel(key: String, id: String): Deferred<ChannelResponse> {
+        return youtubeApi.channel(key, id)
     }
 }
