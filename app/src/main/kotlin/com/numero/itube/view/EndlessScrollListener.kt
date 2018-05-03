@@ -1,7 +1,7 @@
 package com.numero.itube.view
 
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 
 class EndlessScrollListener(
         private val mLinearLayoutManager: LinearLayoutManager,
@@ -17,6 +17,11 @@ class EndlessScrollListener(
         val visibleItemCount = recyclerView.childCount
         val totalItemCount = mLinearLayoutManager.itemCount
         val firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition()
+
+        if (totalItemCount < previousTotal) {
+            // リストの要素がクリアされた場合、ここで初期化させる
+            previousTotal = 0
+        }
 
         if (loading.not() and (totalItemCount - visibleItemCount <= firstVisibleItem + VISIBLE_THRES_HOLD)) {
             onLoadMoreListener.invoke()
