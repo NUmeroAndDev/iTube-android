@@ -28,6 +28,7 @@ class SearchFragment : Fragment(), SearchContract.View {
     private lateinit var presenter: SearchContract.Presenter
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
     private var listener: SearchFragmentListener? = null
+    private var searchWord: String? = null
     private var nextPageToken: String? = null
 
     override fun onAttach(context: Context?) {
@@ -54,9 +55,10 @@ class SearchFragment : Fragment(), SearchContract.View {
 
         searchEditText.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
-                val query = searchEditText.text.toString()
+                searchWord = searchEditText.text.toString()
+                val word = searchWord ?: return@setOnEditorActionListener false
                 hideKeyboard()
-                presenter.search(getString(R.string.api_key), query)
+                presenter.search(getString(R.string.api_key), word)
             }
             return@setOnEditorActionListener false
         }
@@ -72,8 +74,8 @@ class SearchFragment : Fragment(), SearchContract.View {
                     // トークンがない場合、追加読み込みしない
                     return@EndlessScrollListener
                 }
-                val query = searchEditText.text.toString()
-                presenter.search(getString(R.string.api_key), query, nextPageToken)
+                val word = searchWord ?: return@EndlessScrollListener
+                presenter.search(getString(R.string.api_key), word, nextPageToken)
             })
             setHasFixedSize(true)
             adapter = videoListAdapter
@@ -112,6 +114,12 @@ class SearchFragment : Fragment(), SearchContract.View {
 
     override fun setPresenter(presenter: SearchContract.Presenter) {
         this.presenter = presenter
+    }
+
+    fun clearSearching() {
+        searchWord = null
+        searchEditText.setText("")
+        videoListAdapter.videoList = mutableListOf()
     }
 
     interface SearchFragmentListener {

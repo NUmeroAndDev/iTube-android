@@ -3,6 +3,7 @@ package com.numero.itube.activity
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import android.widget.FrameLayout
 import com.numero.itube.R
 import com.numero.itube.extension.findFragment
@@ -25,6 +26,19 @@ class MainActivity : AppCompatActivity(),
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
+            setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
+
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                        val fragment = findFragment(R.id.searchContainer)
+                        if (fragment is SearchFragment) {
+                            fragment.clearSearching()
+                        }
+                    }
+                }
+            })
         }
 
         if (findFragment(R.id.container) == null) {
