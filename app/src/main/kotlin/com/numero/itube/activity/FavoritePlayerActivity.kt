@@ -18,7 +18,8 @@ import kotlinx.android.synthetic.main.activity_favorite_player.*
 
 class FavoritePlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
-        RelativeFavoriteFragment.RelativeFavoriteFragmentListener, YouTubePlayer.PlayerStateChangeListener {
+        RelativeFavoriteFragment.RelativeFavoriteFragmentListener,
+        YouTubePlayer.PlayerStateChangeListener {
 
     private val favoriteVideo: FavoriteVideo by lazy { intent.getSerializableExtra(BUNDLE_FAVORITE_VIDEO) as FavoriteVideo }
     private var player: YouTubePlayer? = null

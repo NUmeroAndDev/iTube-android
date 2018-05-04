@@ -18,7 +18,8 @@ import kotlinx.android.synthetic.main.activity_player.*
 
 class PlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
-        RelativeFragment.RelativeFragmentListener, YouTubePlayer.PlayerStateChangeListener {
+        RelativeFragment.RelativeFragmentListener,
+        YouTubePlayer.PlayerStateChangeListener {
 
     private val video: Video by lazy { intent.getSerializableExtra(BUNDLE_VIDEO) as Video }
     private var player: YouTubePlayer? = null
