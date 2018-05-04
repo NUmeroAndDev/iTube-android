@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_player.*
 
 class PlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
-        RelativeFragment.RelativeFragmentListener {
+        RelativeFragment.RelativeFragmentListener, YouTubePlayer.PlayerStateChangeListener {
 
     private val video: Video by lazy { intent.getSerializableExtra(BUNDLE_VIDEO) as Video }
     private var player: YouTubePlayer? = null
@@ -58,14 +58,34 @@ class PlayerActivity : AppCompatActivity(),
     }
 
     override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, youTubePlayer: YouTubePlayer?, b: Boolean) {
+        player = youTubePlayer?.apply {
+            setPlayerStateChangeListener(this@PlayerActivity)
+        }
         if (b.not()) {
-            player = youTubePlayer?.apply {
-                loadVideo(video.id.videoId)
-            }
+            player?.loadVideo(video.id.videoId)
         }
     }
 
     override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
+    }
+
+    override fun onAdStarted() {
+    }
+
+    override fun onLoading() {
+    }
+
+    override fun onVideoStarted() {
+    }
+
+    override fun onLoaded(p0: String?) {
+    }
+
+    override fun onVideoEnded() {
+        player?.play()
+    }
+
+    override fun onError(p0: YouTubePlayer.ErrorReason?) {
     }
 
     override fun showVideo(video: Video) {

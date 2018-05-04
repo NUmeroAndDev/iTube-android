@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_favorite_player.*
 
 class FavoritePlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
-        RelativeFavoriteFragment.RelativeFavoriteFragmentListener {
+        RelativeFavoriteFragment.RelativeFavoriteFragmentListener, YouTubePlayer.PlayerStateChangeListener {
 
     private val favoriteVideo: FavoriteVideo by lazy { intent.getSerializableExtra(BUNDLE_FAVORITE_VIDEO) as FavoriteVideo }
     private var player: YouTubePlayer? = null
@@ -57,14 +57,34 @@ class FavoritePlayerActivity : AppCompatActivity(),
     }
 
     override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, youTubePlayer: YouTubePlayer?, b: Boolean) {
+        player = youTubePlayer?.apply {
+            setPlayerStateChangeListener(this@FavoritePlayerActivity)
+        }
         if (b.not()) {
-            player = youTubePlayer?.apply {
-                loadVideo(favoriteVideo.id)
-            }
+            player?.loadVideo(favoriteVideo.id)
         }
     }
 
     override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
+    }
+
+    override fun onAdStarted() {
+    }
+
+    override fun onLoading() {
+    }
+
+    override fun onVideoStarted() {
+    }
+
+    override fun onLoaded(p0: String?) {
+    }
+
+    override fun onVideoEnded() {
+        player?.play()
+    }
+
+    override fun onError(p0: YouTubePlayer.ErrorReason?) {
     }
 
     override fun showVideo(video: FavoriteVideo) {
