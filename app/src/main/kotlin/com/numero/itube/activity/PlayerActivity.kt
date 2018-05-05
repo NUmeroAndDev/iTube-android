@@ -18,10 +18,12 @@ import kotlinx.android.synthetic.main.activity_player.*
 
 class PlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
-        RelativeFragment.RelativeFragmentListener {
+        RelativeFragment.RelativeFragmentListener,
+        DetailFragment.DetailFragmentListener {
 
     private val video: Video by lazy { intent.getSerializableExtra(BUNDLE_VIDEO) as Video }
     private var player: YouTubePlayer? = null
+    private var isRegistered: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +46,15 @@ class PlayerActivity : AppCompatActivity(),
 
         if (findFragment(R.id.relativeContainer) == null) {
             replace(R.id.relativeContainer, RelativeFragment.newInstance(video.id.videoId), false)
+        }
+
+        bottomAppBar.replaceMenu(R.menu.navigation)
+        fab.setOnClickListener {
+            isRegistered = isRegistered.not()
+            val fragment = findFragment(R.id.detailContainer)
+            if (fragment is DetailFragment) {
+                fragment.setIsRegistered(isRegistered)
+            }
         }
     }
 
@@ -71,6 +82,11 @@ class PlayerActivity : AppCompatActivity(),
     override fun showVideo(video: Video) {
         startActivity(PlayerActivity.createIntent(this, video))
         overridePendingTransition(0, 0)
+    }
+
+    override fun onIsRegisteredFavorite(isRegisteredFavorite: Boolean) {
+        isRegistered = isRegisteredFavorite
+        fab.setImageResource(if (isRegisteredFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
     }
 
     companion object {
