@@ -14,18 +14,20 @@ import com.numero.itube.extension.replace
 import com.numero.itube.fragment.DetailFragment
 import com.numero.itube.fragment.RelativeFavoriteFragment
 import com.numero.itube.repository.db.FavoriteVideo
-import kotlinx.android.synthetic.main.activity_favorite_player.*
+import kotlinx.android.synthetic.main.activity_player.*
 
 class FavoritePlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
-        RelativeFavoriteFragment.RelativeFavoriteFragmentListener {
+        RelativeFavoriteFragment.RelativeFavoriteFragmentListener,
+        DetailFragment.DetailFragmentListener {
 
     private val favoriteVideo: FavoriteVideo by lazy { intent.getSerializableExtra(BUNDLE_FAVORITE_VIDEO) as FavoriteVideo }
     private var player: YouTubePlayer? = null
+    private var isRegistered: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_favorite_player)
+        setContentView(R.layout.activity_player)
         setSupportActionBar(toolbar)
 
         supportActionBar?.apply {
@@ -41,8 +43,17 @@ class FavoritePlayerActivity : AppCompatActivity(),
         if (findFragment(R.id.detailContainer) == null) {
             replace(R.id.detailContainer, DetailFragment.newInstance(favoriteVideo.id, favoriteVideo.channelId), false)
         }
-        if (findFragment(R.id.favoriteListContainer) == null) {
-            replace(R.id.favoriteListContainer, RelativeFavoriteFragment.newInstance(favoriteVideo.id), false)
+        if (findFragment(R.id.relativeContainer) == null) {
+            replace(R.id.relativeContainer, RelativeFavoriteFragment.newInstance(favoriteVideo.id), false)
+        }
+
+        bottomAppBar.replaceMenu(R.menu.navigation)
+        fab.setOnClickListener {
+            isRegistered = isRegistered.not()
+            val fragment = findFragment(R.id.detailContainer)
+            if (fragment is DetailFragment) {
+                fragment.setIsRegistered(isRegistered)
+            }
         }
     }
 
@@ -70,6 +81,11 @@ class FavoritePlayerActivity : AppCompatActivity(),
     override fun showVideo(video: FavoriteVideo) {
         startActivity(FavoritePlayerActivity.createIntent(this, video))
         overridePendingTransition(0, 0)
+    }
+
+    override fun onIsRegisteredFavorite(isRegisteredFavorite: Boolean) {
+        isRegistered = isRegisteredFavorite
+        fab.setImageResource(if (isRegisteredFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
     }
 
     companion object {

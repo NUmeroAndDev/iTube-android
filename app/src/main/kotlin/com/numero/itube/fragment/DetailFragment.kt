@@ -1,5 +1,6 @@
 package com.numero.itube.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -27,6 +28,14 @@ class DetailFragment : Fragment(), DetailContract.View {
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
 
     private lateinit var presenter: DetailContract.Presenter
+    private var listener: DetailFragmentListener? = null
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is DetailFragmentListener) {
+            listener = context
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +54,6 @@ class DetailFragment : Fragment(), DetailContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initViews()
-
         presenter.loadDetail(getString(R.string.api_key))
     }
 
@@ -61,7 +68,6 @@ class DetailFragment : Fragment(), DetailContract.View {
     }
 
     override fun showVideoDetail(videoDetail: VideoDetail, channel: Channel) {
-        titleTextView.text = videoDetail.snippet.title
         descriptionTextView.text = videoDetail.snippet.description
         channelNameTextView.text = channel.snippet.title
         val context = context ?: return
@@ -81,21 +87,23 @@ class DetailFragment : Fragment(), DetailContract.View {
     }
 
     override fun registeredFavorite(isRegistered: Boolean) {
-        favoriteCheckBox.isChecked = isRegistered
+        listener?.onIsRegisteredFavorite(isRegistered)
     }
 
     override fun setPresenter(presenter: DetailContract.Presenter) {
         this.presenter = presenter
     }
 
-    private fun initViews() {
-        favoriteCheckBox.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                presenter.registerFavorite()
-            } else {
-                presenter.unregisterFavorite()
-            }
+    fun setIsRegistered(isRegistered: Boolean) {
+        if (isRegistered) {
+            presenter.registerFavorite()
+        } else {
+            presenter.unregisterFavorite()
         }
+    }
+
+    interface DetailFragmentListener {
+        fun onIsRegisteredFavorite(isRegisteredFavorite: Boolean)
     }
 
     companion object {
