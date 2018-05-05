@@ -31,10 +31,15 @@ class MainActivity : AppCompatActivity(),
                 }
 
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                        val fragment = findFragment(R.id.searchContainer)
-                        if (fragment is SearchFragment) {
-                            fragment.clearSearching()
+                    when(newState) {
+                        BottomSheetBehavior.STATE_COLLAPSED -> {
+                            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                        }
+                        BottomSheetBehavior.STATE_HIDDEN -> {
+                            val fragment = findFragment(R.id.searchContainer)
+                            if (fragment is SearchFragment) {
+                                fragment.clearSearching()
+                            }
                         }
                     }
                 }
