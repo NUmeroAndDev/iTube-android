@@ -17,7 +17,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
         SearchFragment.SearchFragmentListener,
-        FavoriteFragment.FavoriteFragmentListener {
+        FavoriteFragment.FavoriteFragmentListener,
+        MainSettingsFragment.MainSettingsFragmentListener {
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
 
@@ -74,5 +75,9 @@ class MainActivity : AppCompatActivity(),
 
     override fun showVideo(video: FavoriteVideo) {
         startActivity(FavoritePlayerActivity.createIntent(this, video))
+    }
+
+    override fun showLicenses() {
+        startActivity(LicensesActivity.createIntent(this))
     }
 }

@@ -124,7 +124,7 @@
 
 # kotshi
 - artifact: se.ansman.kotshi:api:+
-  name: Kotshi API
+  name: Kotshi
   copyrightHolder: Nicklas Ansman Giertz.
   license: The Apache Software License, Version 2.0
   licenseUrl: https://github.com/ansman/kotshi/blob/master/LICENSE.txt

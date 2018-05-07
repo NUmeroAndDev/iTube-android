@@ -1,5 +1,6 @@
 package com.numero.itube.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,15 @@ import kotlinx.android.synthetic.main.fragment_main_settings.*
 
 class MainSettingsFragment : Fragment() {
 
+    private var listener: MainSettingsFragmentListener? = null
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is MainSettingsFragmentListener) {
+            listener = context
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main_settings, container, false)
     }
@@ -18,8 +28,12 @@ class MainSettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         licenseItemView.setOnClickListener {
-            // TODO ライセンス画面へ遷移
+            listener?.showLicenses()
         }
+    }
+
+    interface MainSettingsFragmentListener {
+        fun showLicenses()
     }
 
     companion object {
