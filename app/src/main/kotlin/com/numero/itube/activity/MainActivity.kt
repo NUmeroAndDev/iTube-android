@@ -9,6 +9,7 @@ import com.numero.itube.R
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
 import com.numero.itube.fragment.FavoriteFragment
+import com.numero.itube.fragment.MainSettingsFragment
 import com.numero.itube.fragment.SearchFragment
 import com.numero.itube.model.Video
 import com.numero.itube.repository.db.FavoriteVideo
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity(),
                 }
 
                 override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    when(newState) {
+                    when (newState) {
                         BottomSheetBehavior.STATE_COLLAPSED -> {
                             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                         }
