@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun showVideo(video: FavoriteVideo) {
-        startActivity(FavoritePlayerActivity.createIntent(this, video))
+        startActivity(PlayerActivity.createIntent(this, video))
     }
 
     override fun showLicenses() {
