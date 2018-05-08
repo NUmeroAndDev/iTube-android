@@ -17,6 +17,12 @@ class SettingsSwitchItemView @JvmOverloads constructor(context: Context, attrs: 
             switchView.isChecked = value
         }
 
+    var title: String
+        get() = titleTextView.text.toString()
+        set(value) {
+            titleTextView.text = value
+        }
+
     private var onCheckedChangeListener: ((Boolean) -> Unit)? = null
 
     init {
@@ -24,6 +30,7 @@ class SettingsSwitchItemView @JvmOverloads constructor(context: Context, attrs: 
 
         context.withStyledAttributes(attrs, R.styleable.SettingsSwitchItemView) {
             titleTextView.text = getString(R.styleable.SettingsSwitchItemView_title)
+            dividerView.visibility = if (getBoolean(R.styleable.SettingsItemView_showDivider, true)) View.VISIBLE else View.GONE
         }
 
         switchView.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
