@@ -1,6 +1,8 @@
 package com.numero.itube.di
 
+import android.content.Context
 import com.numero.itube.api.YoutubeApi
+import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideoDao
@@ -21,5 +23,11 @@ class RepositoryModule {
     @Singleton
     fun provideFavoriteVideoRepository(favoriteVideoDao: FavoriteVideoDao): FavoriteVideoRepository {
         return FavoriteVideoRepository(favoriteVideoDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideConfigRepository(context: Context): ConfigRepository {
+        return ConfigRepository(context)
     }
 }
