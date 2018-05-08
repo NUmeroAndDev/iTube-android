@@ -27,6 +27,8 @@
 
         <activity android:name=".activity.FavoritePlayerActivity" />
 
+        <activity android:name=".activity.LicensesActivity" />
+
     </application>
 
 </manifest>

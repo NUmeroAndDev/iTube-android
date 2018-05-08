@@ -5,6 +5,7 @@
     <color name="colorAccent">#ED3323</color>
 
     <color name="fab_background">#FFFFFF</color>
+    <color name="divider">#1F000000</color>
 
     <color name="navigation_bar">#FFFFFF</color>
     <color name="playing_background">#8A000000</color>
