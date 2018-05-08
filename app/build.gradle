@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'com.cookpad.android.licensetools'
+
 android {
 
     compileSdkVersion 'android-P'
@@ -59,15 +61,10 @@ dependencies {
 
     implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
 
-    implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
-    implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
-
     implementation "se.ansman.kotshi:api:$kotshi_version"
     kapt "se.ansman.kotshi:compiler:$kotshi_version"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
     implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:1.0.0"
 

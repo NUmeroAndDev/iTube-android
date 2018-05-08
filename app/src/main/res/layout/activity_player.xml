@@ -24,6 +24,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingBottom="48dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <FrameLayout
@@ -36,23 +37,71 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
-            android:id="@+id/detailContainer"
+            android:id="@+id/relativeContainer"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/relativeContainer"
+            android:layout_height="144dp"
+            app:layout_constraintBottom_toTopOf="@+id/detailContainer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/playerContainer" />
 
         <FrameLayout
-            android:id="@+id/relativeContainer"
+            android:id="@+id/detailContainer"
             android:layout_width="0dp"
-            android:layout_height="142dp"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detailContainer" />
+            app:layout_constraintTop_toBottomOf="@+id/relativeContainer" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <!--FIXME 200dpは仮-->
+    <FrameLayout
+        android:id="@+id/bottomSheetLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:elevation="8dp"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <android.support.design.card.MaterialCardView
+            android:id="@+id/bottomSheetCardView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="-16dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp">
+
+            <FrameLayout
+                android:id="@+id/bottomSheetContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="16dp" />
+
+        </android.support.design.card.MaterialCardView>
+
+    </FrameLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:backgroundTint="@color/fab_background"
+        app:layout_anchor="@+id/bottomAppBar"
+        app:srcCompat="@drawable/ic_favorite_border" />
+
+    <android.support.design.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:fabAlignmentMode="end"
+        app:fabAttached="true" />
 
 </android.support.design.widget.CoordinatorLayout>

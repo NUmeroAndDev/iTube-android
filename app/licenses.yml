@@ -1,0 +1,165 @@
+# SupportLibrary
+- artifact: com.android.support:+:+
+  name: Android Support Libraries
+  copyrightHolder: The Android Open Source Project
+  license: apache2
+
+#Kotlin
+- artifact: org.jetbrains.kotlin:kotlin-stdlib:+
+  name: org.jetbrains.kotlin:kotlin-stdlib
+  copyrightHolder: JetBrains s.r.o.
+  license: The Apache License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://kotlinlang.org/
+- artifact: org.jetbrains.kotlin:kotlin-stdlib-jre7:+
+  name: org.jetbrains.kotlin:kotlin-stdlib-jre7
+  skip: true
+- artifact: org.jetbrains.kotlin:kotlin-android-extensions-runtime:+
+  name: org.jetbrains.kotlin:kotlin-android-extensions-runtime
+  skip: true
+- artifact: org.jetbrains:annotations:+
+  name: IntelliJ IDEA Annotations
+  skip: true
+
+
+- artifact: org.jetbrains.kotlinx:kotlinx-coroutines-core:+
+  name: kotlinx-coroutines-core
+  copyrightHolder: JetBrains s.r.o.
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/Kotlin/kotlinx.coroutines
+- artifact: org.jetbrains.kotlinx:kotlinx-coroutines-android:+
+  name: kotlinx-coroutines-android
+  skip: true
+
+# ktx
+- artifact: androidx.core:core-ktx:+
+  name: Android KTX Core
+  copyrightHolder: The Android Open Source Project
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/android/android-ktx
+
+# constraint layout
+- artifact: com.android.support.constraint:constraint-layout:+
+  name: Android ConstraintLayout
+  copyrightHolder: The Android Open Source Project
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: http://tools.android.com
+- artifact: com.android.support.constraint:constraint-layout-solver:+
+  name: Android ConstraintLayout Solver
+  skip: true
+
+# arch
+- artifact: android.arch.core:runtime:+
+  name: Android Arch-Runtime
+  skip: true
+- artifact: android.arch.lifecycle:runtime:+
+  name: Android Lifecycle Runtime
+  skip: true
+- artifact: android.arch.lifecycle:viewmodel:+
+  name: Android Lifecycle ViewModel
+  skip: true
+- artifact: android.arch.lifecycle:livedata-core:+
+  name: Android Lifecycle LiveData Core
+  skip: true
+- artifact: android.arch.core:common:+
+  name: Android Arch-Common
+  skip: true
+- artifact: android.arch.lifecycle:common:+
+  name: Android Lifecycle-Common
+  skip: true
+- artifact: android.arch.persistence.room:common:+
+  name: Android Room-Common
+  copyrightHolder: The Android Open Source Project
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://developer.android.com/topic/libraries/architecture/index.html
+- artifact: android.arch.persistence:db:+
+  name: Android DB
+  skip: true
+- artifact: android.arch.persistence:db-framework:+
+  name: Android Support SQLite - Framework Implementation
+  skip: true
+- artifact: android.arch.persistence.room:runtime:+
+  name: Android Room-Runtime
+  skip: true
+
+# retrofit
+- artifact: com.squareup.retrofit2:retrofit:+
+  name: Retrofit
+  copyrightHolder: Square, Inc.
+  license: The Apache Software License, Version 2.0
+- artifact: com.squareup.retrofit2:converter-moshi:+
+  name: "Converter: Moshi"
+  skip: true
+
+# okhttp
+- artifact: com.squareup.okhttp3:okhttp:+
+  name: OkHttp
+  copyrightHolder: Square, Inc.
+  license: The Apache Software License, Version 2.0
+- artifact: com.squareup.okhttp3:logging-interceptor:+
+  name: OkHttp Logging Interceptor
+  skip: true
+- artifact: com.squareup.okio:okio:+
+  name: Okio
+  copyrightHolder: Square, Inc.
+  license: The Apache Software License, Version 2.0
+
+# coroutines adapter
+- artifact: com.jakewharton.retrofit:retrofit2-kotlin-coroutines-experimental-adapter:+
+  name: Retrofit 2 Kotlin Coroutine Adapter
+  copyrightHolder: Jake Wharton
+  license: The Apache Software License, Version 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/JakeWharton/retrofit2-kotlin-coroutines-adapter/
+
+# moshi
+- artifact: com.squareup.moshi:moshi:+
+  name: Moshi
+  copyrightHolder: Square, Inc.
+  license: The Apache Software License, Version 2.0
+
+# kotshi
+- artifact: se.ansman.kotshi:api:+
+  name: Kotshi
+  copyrightHolder: Nicklas Ansman Giertz.
+  license: The Apache Software License, Version 2.0
+  licenseUrl: https://github.com/ansman/kotshi/blob/master/LICENSE.txt
+  url: https://github.com/ansman/kotshi
+
+# glide
+- artifact: com.github.bumptech.glide:glide:+
+  name: Glide
+  copyrightHolder: Sam Judd
+  license: Simplified BSD License
+  licenseUrl: http://www.opensource.org/licenses/bsd-license
+  url: https://github.com/bumptech/glide
+- artifact: com.github.bumptech.glide:disklrucache:+
+  name: Glide Disk LRU Cache Library
+  skip: true
+- artifact: com.github.bumptech.glide:gifdecoder:+
+  name: Glide GIF Decoder Library
+  skip: true
+- artifact: com.github.bumptech.glide:annotations:+
+  name: Glide Annotations
+  skip: true
+
+# Dagger
+- artifact: com.google.dagger:dagger:+
+  name: Dagger
+  copyrightHolder: The Dagger Authors
+  license: Apache 2.0
+  licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.txt
+  url: https://github.com/google/dagger
+- artifact: com.google.dagger:dagger-android:+
+  name: Dagger Android
+  skip: true
+- artifact: com.google.dagger:dagger-android-support:+
+  name: Dagger Android Support
+  skip: true
+- artifact: javax.inject:javax.inject:+
+  name: javax.inject
+  skip: true
