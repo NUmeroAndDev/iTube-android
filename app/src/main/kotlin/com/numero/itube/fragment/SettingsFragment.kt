@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.numero.itube.R
-import kotlinx.android.synthetic.main.fragment_main_settings.*
+import kotlinx.android.synthetic.main.fragment_settings.*
 
-class MainSettingsFragment : Fragment() {
+class SettingsFragment : Fragment() {
 
     private var listener: MainSettingsFragmentListener? = null
 
@@ -21,7 +21,7 @@ class MainSettingsFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_main_settings, container, false)
+        return inflater.inflate(R.layout.fragment_settings, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,6 +37,6 @@ class MainSettingsFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): MainSettingsFragment = MainSettingsFragment()
+        fun newInstance(): SettingsFragment = SettingsFragment()
     }
 }

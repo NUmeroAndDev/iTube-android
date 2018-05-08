@@ -56,11 +56,10 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <!--FIXME 200dpは仮-->
     <FrameLayout
         android:id="@+id/bottomSheetLayout"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:elevation="8dp"
         app:behavior_hideable="true"
         app:behavior_peekHeight="0dp"
