@@ -3,6 +3,7 @@ package com.numero.itube.view.settings
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.FrameLayout
 import androidx.core.content.withStyledAttributes
 import com.numero.itube.R
@@ -16,6 +17,8 @@ class SettingsSwitchItemView @JvmOverloads constructor(context: Context, attrs: 
             switchView.isChecked = value
         }
 
+    private var onCheckedChangeListener: ((Boolean) -> Unit)? = null
+
     init {
         View.inflate(context, R.layout.view_settings_switch_item, this)
 
@@ -23,8 +26,16 @@ class SettingsSwitchItemView @JvmOverloads constructor(context: Context, attrs: 
             titleTextView.text = getString(R.styleable.SettingsSwitchItemView_title)
         }
 
+        switchView.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
+            onCheckedChangeListener?.invoke(isChecked)
+        }
+
         setOnClickListener {
             switchView.isChecked = switchView.isChecked.not()
         }
+    }
+
+    fun setOnCheckedChangeListener(listener: ((Boolean) -> Unit)) {
+        onCheckedChangeListener = listener
     }
 }

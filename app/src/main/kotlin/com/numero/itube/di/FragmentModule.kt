@@ -21,4 +21,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeRelativeFavoriteFragment(): RelativeFavoriteFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributePlayerSettingsFragment(): PlayerSettingsFragment
 }
