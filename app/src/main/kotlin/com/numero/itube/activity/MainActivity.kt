@@ -3,6 +3,8 @@ package com.numero.itube.activity
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
+import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import com.numero.itube.R
@@ -18,7 +20,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(),
         SearchFragment.SearchFragmentListener,
         FavoriteFragment.FavoriteFragmentListener,
-        MainSettingsFragment.MainSettingsFragmentListener {
+        MainSettingsFragment.MainSettingsFragmentListener,
+        Toolbar.OnMenuItemClickListener {
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
 
@@ -55,10 +58,21 @@ class MainActivity : AppCompatActivity(),
             replace(R.id.searchContainer, SearchFragment.newInstance(), false)
         }
 
-        bottomAppBar.replaceMenu(R.menu.navigation)
-        fab.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomAppBar.apply {
+            replaceMenu(R.menu.menu_main)
+            setOnMenuItemClickListener(this@MainActivity)
         }
+        fab.setOnClickListener {
+            showSearchBottomSheet()
+        }
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        item ?: return false
+        when (item.itemId) {
+            R.id.action_settings -> showSettingsBottomSheet()
+        }
+        return true
     }
 
     override fun onBackPressed() {
@@ -79,5 +93,21 @@ class MainActivity : AppCompatActivity(),
 
     override fun showLicenses() {
         startActivity(LicensesActivity.createIntent(this))
+    }
+
+    private fun showSearchBottomSheet() {
+        val fragment = findFragment(R.id.searchContainer)
+        if (fragment !is SearchFragment) {
+            replace(R.id.searchContainer, SearchFragment.newInstance(), false)
+        }
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    private fun showSettingsBottomSheet() {
+        val fragment = findFragment(R.id.searchContainer)
+        if (fragment !is MainSettingsFragment) {
+            replace(R.id.searchContainer, MainSettingsFragment.newInstance(), false)
+        }
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 }
