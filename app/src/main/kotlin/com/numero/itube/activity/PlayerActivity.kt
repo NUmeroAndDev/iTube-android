@@ -21,15 +21,19 @@ import com.numero.itube.fragment.PlayerSettingsFragment
 import com.numero.itube.fragment.RelativeFavoriteFragment
 import com.numero.itube.fragment.RelativeFragment
 import com.numero.itube.model.Video
+import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.db.FavoriteVideo
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_player.*
+import javax.inject.Inject
 
 class PlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
         RelativeFragment.RelativeFragmentListener,
         RelativeFavoriteFragment.RelativeFavoriteFragmentListener,
         DetailFragment.DetailFragmentListener,
-        Toolbar.OnMenuItemClickListener {
+        Toolbar.OnMenuItemClickListener,
+        YouTubePlayer.PlayerStateChangeListener {
 
     private val title: String by lazy { intent.getStringExtra(BUNDLE_TITLE) }
     private val videoId: String by lazy { intent.getStringExtra(BUNDLE_VIDEO_ID) }
@@ -38,10 +42,13 @@ class PlayerActivity : AppCompatActivity(),
     private var player: YouTubePlayer? = null
     private var isRegistered: Boolean = false
 
+    @Inject
+    lateinit var configRepository: ConfigRepository
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidInjection.inject(this)
         setContentView(R.layout.activity_player)
         setSupportActionBar(toolbar)
 
@@ -131,14 +138,36 @@ class PlayerActivity : AppCompatActivity(),
     }
 
     override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, youTubePlayer: YouTubePlayer?, b: Boolean) {
+        player = youTubePlayer?.apply {
+            setPlayerStateChangeListener(this@PlayerActivity)
+        }
         if (b.not()) {
-            player = youTubePlayer?.apply {
-                loadVideo(videoId)
-            }
+            player?.loadVideo(videoId)
         }
     }
 
     override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
+    }
+
+    override fun onAdStarted() {
+    }
+
+    override fun onLoading() {
+    }
+
+    override fun onVideoStarted() {
+    }
+
+    override fun onLoaded(p0: String?) {
+    }
+
+    override fun onVideoEnded() {
+        if (configRepository.isLoop) {
+            player?.play()
+        }
+    }
+
+    override fun onError(p0: YouTubePlayer.ErrorReason?) {
     }
 
     override fun showVideo(video: Video) {

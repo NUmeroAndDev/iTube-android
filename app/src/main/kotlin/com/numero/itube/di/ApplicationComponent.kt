@@ -15,6 +15,7 @@ import javax.inject.Singleton
     (ApiClientModule::class),
     (DBModule::class),
     (FragmentModule::class),
+    (ActivityModule::class),
     (RepositoryModule::class)
 ])
 interface ApplicationComponent : AndroidInjector<iTubeApplication> {
