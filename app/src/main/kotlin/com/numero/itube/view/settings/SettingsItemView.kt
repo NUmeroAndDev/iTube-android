@@ -1,4 +1,4 @@
-package com.numero.itube.view
+package com.numero.itube.view.settings
 
 import android.content.Context
 import android.util.AttributeSet

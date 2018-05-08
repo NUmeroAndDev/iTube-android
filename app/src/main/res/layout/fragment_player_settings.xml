@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     android:paddingTop="16dp">
 
-    <com.numero.itube.view.settings.SettingsItemView
-        android:id="@+id/licenseItemView"
+    <com.numero.itube.view.settings.SettingsSwitchItemView
+        android:id="@+id/loopItemView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="License" />
+        app:title="ループ再生" />
 
 </android.support.constraint.ConstraintLayout>
