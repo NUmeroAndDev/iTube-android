@@ -3,13 +3,10 @@ package com.numero.itube.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-import android.view.View
-import android.widget.FrameLayout
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerSupportFragment
@@ -17,7 +14,7 @@ import com.numero.itube.R
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
 import com.numero.itube.fragment.DetailFragment
-import com.numero.itube.fragment.PlayerSettingsFragment
+import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
 import com.numero.itube.fragment.RelativeFavoriteFragment
 import com.numero.itube.fragment.RelativeFragment
 import com.numero.itube.model.Video
@@ -44,7 +41,6 @@ class PlayerActivity : AppCompatActivity(),
 
     @Inject
     lateinit var configRepository: ConfigRepository
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,26 +51,6 @@ class PlayerActivity : AppCompatActivity(),
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             title = this@PlayerActivity.title
-        }
-
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout).apply {
-            state = BottomSheetBehavior.STATE_HIDDEN
-            setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                }
-
-                override fun onStateChanged(bottomSheet: View, newState: Int) {
-                    when (newState) {
-                        BottomSheetBehavior.STATE_COLLAPSED -> {
-                            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-                        }
-                    }
-                }
-            })
-        }
-
-        if (findFragment(R.id.bottomSheetContainer) == null) {
-            replace(R.id.bottomSheetContainer, PlayerSettingsFragment.newInstance(), false)
         }
 
         val youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance().apply {
@@ -109,19 +85,11 @@ class PlayerActivity : AppCompatActivity(),
         }
     }
 
-    override fun onBackPressed() {
-        if (bottomSheetBehavior.state != BottomSheetBehavior.STATE_HIDDEN) {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            return
-        }
-        super.onBackPressed()
-    }
-
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         item ?: return false
         when (item.itemId) {
             R.id.action_settings -> {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                PlayerSettingsBottomSheetFragment.newInstance().show(supportFragmentManager, PlayerSettingsBottomSheetFragment.TAG)
             }
         }
         return true
