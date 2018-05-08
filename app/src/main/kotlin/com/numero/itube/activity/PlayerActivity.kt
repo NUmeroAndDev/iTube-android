@@ -21,8 +21,11 @@ import com.numero.itube.fragment.PlayerSettingsFragment
 import com.numero.itube.fragment.RelativeFavoriteFragment
 import com.numero.itube.fragment.RelativeFragment
 import com.numero.itube.model.Video
+import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.db.FavoriteVideo
+import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_player.*
+import javax.inject.Inject
 
 class PlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
@@ -39,10 +42,13 @@ class PlayerActivity : AppCompatActivity(),
     private var player: YouTubePlayer? = null
     private var isRegistered: Boolean = false
 
+    @Inject
+    lateinit var configRepository: ConfigRepository
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidInjection.inject(this)
         setContentView(R.layout.activity_player)
         setSupportActionBar(toolbar)
 
@@ -156,7 +162,9 @@ class PlayerActivity : AppCompatActivity(),
     }
 
     override fun onVideoEnded() {
-        player?.play()
+        if (configRepository.isLoop) {
+            player?.play()
+        }
     }
 
     override fun onError(p0: YouTubePlayer.ErrorReason?) {
