@@ -1,12 +1,12 @@
 package com.numero.itube.activity
 
 import android.os.Bundle
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.numero.itube.R
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
