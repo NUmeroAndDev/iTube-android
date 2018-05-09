@@ -54,7 +54,7 @@ class PlayerActivity : AppCompatActivity(),
         }
 
         val youTubePlayerFragment = YouTubePlayerFragment.newInstance().apply {
-            fragmentManager.beginTransaction().replace(R.id.playerContainer, this).commit()
+            this@PlayerActivity.fragmentManager.beginTransaction().replace(R.id.playerContainer, this).commit()
 //            replace(R.id.playerContainer, this, false)
         }
         youTubePlayerFragment.initialize(getString(R.string.api_key), this)
