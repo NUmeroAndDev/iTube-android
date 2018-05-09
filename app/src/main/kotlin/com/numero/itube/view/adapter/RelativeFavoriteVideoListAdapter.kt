@@ -1,11 +1,10 @@
 package com.numero.itube.view.adapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.numero.itube.GlideApp
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.numero.itube.R
 import com.numero.itube.repository.db.FavoriteVideo
 import kotlinx.android.extensions.LayoutContainer
@@ -58,7 +57,8 @@ class RelativeFavoriteVideoListAdapter : RecyclerView.Adapter<RelativeFavoriteVi
 
         fun setVideo(video: FavoriteVideo) {
             titleTextView.text = video.title
-            GlideApp.with(itemView.context).load(video.thumbnailUrl).diskCacheStrategy(DiskCacheStrategy.NONE).into(thumbnailImageView)
+            Glide.with(itemView.context).load(video.thumbnailUrl).into(thumbnailImageView)
+            //.diskCacheStrategy(DiskCacheStrategy.NONE)
         }
     }
 }

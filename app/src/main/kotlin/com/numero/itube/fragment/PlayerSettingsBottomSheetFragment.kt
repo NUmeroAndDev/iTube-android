@@ -2,7 +2,7 @@ package com.numero.itube.fragment
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.design.widget.BottomSheetDialogFragment
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import android.view.View
 import com.numero.itube.R
 import com.numero.itube.repository.ConfigRepository
@@ -18,7 +18,7 @@ class PlayerSettingsBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndroidSupportInjection.inject(this)
+//        AndroidSupportInjection.inject(this)
     }
 
     override fun setupDialog(dialog: Dialog?, style: Int) {
