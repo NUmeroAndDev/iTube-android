@@ -3,11 +3,6 @@
     <attr name="title" format="string" />
     <attr name="showDivider" format="boolean" />
 
-    <declare-styleable name="SettingsItemView">
-        <attr name="title" />
-        <attr name="showDivider" />
-    </declare-styleable>
-
     <declare-styleable name="SettingsSwitchItemView">
         <attr name="title" />
         <attr name="showDivider" />
