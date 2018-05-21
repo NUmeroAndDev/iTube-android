@@ -97,6 +97,10 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
         this.presenter = presenter
     }
 
+    fun playNextVideo() {
+        videoListAdapter.playNextVideo()
+    }
+
     interface RelativeFavoriteFragmentListener {
         fun showVideo(video: FavoriteVideo)
     }

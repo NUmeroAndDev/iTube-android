@@ -133,6 +133,11 @@ class PlayerActivity : AppCompatActivity(),
     override fun onVideoEnded() {
         if (configRepository.isLoop) {
             player?.play()
+            return
+        }
+        val fragment = findFragment(R.id.relativeContainer)
+        if (fragment is RelativeFavoriteFragment) {
+            fragment.playNextVideo()
         }
     }
 
