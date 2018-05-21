@@ -30,7 +30,7 @@ class SettingsSwitchItemView @JvmOverloads constructor(context: Context, attrs: 
 
         context.withStyledAttributes(attrs, R.styleable.SettingsSwitchItemView) {
             titleTextView.text = getString(R.styleable.SettingsSwitchItemView_title)
-            dividerView.visibility = if (getBoolean(R.styleable.SettingsItemView_showDivider, true)) View.VISIBLE else View.GONE
+            dividerView.visibility = if (getBoolean(R.styleable.SettingsSwitchItemView_showDivider, true)) View.VISIBLE else View.GONE
         }
 
         switchView.setOnCheckedChangeListener { _: CompoundButton, isChecked: Boolean ->
