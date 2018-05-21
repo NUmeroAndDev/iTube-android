@@ -1,11 +1,10 @@
 package com.numero.itube.view.adapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.numero.itube.GlideApp
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.numero.itube.R
 import com.numero.itube.model.Video
 import kotlinx.android.extensions.LayoutContainer
@@ -43,7 +42,8 @@ class RelativeVideoListAdapter : RecyclerView.Adapter<RelativeVideoListAdapter.V
 
         fun setVideo(video: Video) {
             titleTextView.text = video.snippet.title
-            GlideApp.with(itemView.context).load(video.snippet.thumbnails.high.url).diskCacheStrategy(DiskCacheStrategy.NONE).into(thumbnailImageView)
+            Glide.with(itemView.context).load(video.snippet.thumbnails.high.url).into(thumbnailImageView)
+            //.diskCacheStrategy(DiskCacheStrategy.NONE)
         }
     }
 }

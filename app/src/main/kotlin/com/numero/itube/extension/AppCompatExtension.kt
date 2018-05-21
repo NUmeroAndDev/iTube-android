@@ -1,8 +1,10 @@
 package com.numero.itube.extension
 
-import android.support.annotation.IdRes
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.IdRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.numero.itube.di.ApplicationComponent
+import com.numero.itube.iTubeApplication
 
 fun AppCompatActivity.replace(@IdRes res: Int, fragment: Fragment, isAddBackStack: Boolean) {
     supportFragmentManager.beginTransaction().apply {
@@ -16,3 +18,8 @@ fun AppCompatActivity.replace(@IdRes res: Int, fragment: Fragment, isAddBackStac
 fun AppCompatActivity.findFragment(@IdRes byId: Int): Fragment? {
     return supportFragmentManager.findFragmentById(byId)
 }
+
+val AppCompatActivity.component: ApplicationComponent?
+    get() {
+        return (application as? iTubeApplication)?.applicationComponent
+    }

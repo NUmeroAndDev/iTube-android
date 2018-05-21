@@ -3,14 +3,15 @@ package com.numero.itube.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
-import com.google.android.youtube.player.YouTubePlayerSupportFragment
+import com.google.android.youtube.player.YouTubePlayerFragment
 import com.numero.itube.R
+import com.numero.itube.extension.component
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
 import com.numero.itube.fragment.DetailFragment
@@ -20,7 +21,6 @@ import com.numero.itube.fragment.RelativeFragment
 import com.numero.itube.model.Video
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.db.FavoriteVideo
-import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_player.*
 import javax.inject.Inject
 
@@ -44,7 +44,7 @@ class PlayerActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndroidInjection.inject(this)
+        component?.inject(this)
         setContentView(R.layout.activity_player)
         setSupportActionBar(toolbar)
 
@@ -53,8 +53,9 @@ class PlayerActivity : AppCompatActivity(),
             title = this@PlayerActivity.title
         }
 
-        val youTubePlayerFragment = YouTubePlayerSupportFragment.newInstance().apply {
-            replace(R.id.playerContainer, this, false)
+        val youTubePlayerFragment = YouTubePlayerFragment.newInstance().apply {
+            this@PlayerActivity.fragmentManager.beginTransaction().replace(R.id.playerContainer, this).commit()
+//            replace(R.id.playerContainer, this, false)
         }
         youTubePlayerFragment.initialize(getString(R.string.api_key), this)
 

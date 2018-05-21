@@ -2,19 +2,19 @@ package com.numero.itube.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.contract.RelativeContract
+import com.numero.itube.extension.component
 import com.numero.itube.model.Video
 import com.numero.itube.presenter.RelativePresenter
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.adapter.RelativeVideoListAdapter
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_relative.*
 import javax.inject.Inject
 
@@ -36,7 +36,7 @@ class RelativeFragment : Fragment(), RelativeContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndroidSupportInjection.inject(this)
+        component?.inject(this)
 
         RelativePresenter(this, youtubeRepository)
     }

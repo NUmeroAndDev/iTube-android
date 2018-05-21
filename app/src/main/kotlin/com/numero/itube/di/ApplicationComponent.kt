@@ -1,33 +1,24 @@
 package com.numero.itube.di
 
-import android.app.Application
-import com.numero.itube.iTubeApplication
-import dagger.BindsInstance
+import com.numero.itube.activity.PlayerActivity
+import com.numero.itube.fragment.*
 import dagger.Component
-import dagger.android.AndroidInjector
-import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [
-    (AndroidSupportInjectionModule::class),
     (ApplicationModule::class),
     (ApiClientModule::class),
     (DBModule::class),
-    (FragmentModule::class),
-    (ActivityModule::class),
     (RepositoryModule::class)
 ])
-interface ApplicationComponent : AndroidInjector<iTubeApplication> {
+interface ApplicationComponent {
+    fun inject(detailFragment: DetailFragment)
+    fun inject(favoriteFragment: FavoriteFragment)
+    fun inject(playerSettingsBottomSheetFragment: PlayerSettingsBottomSheetFragment)
+    fun inject(relativeFavoriteFragment: RelativeFavoriteFragment)
+    fun inject(relativeFragment: RelativeFragment)
+    fun inject(searchFragment: SearchFragment)
 
-    @Component.Builder
-    interface Builder {
-
-        @BindsInstance
-        fun application(application: Application): Builder
-
-        fun build(): ApplicationComponent
-    }
-
-    fun inject(application: Application)
+    fun inject(playerActivity: PlayerActivity)
 }

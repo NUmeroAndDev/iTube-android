@@ -2,21 +2,21 @@ package com.numero.itube.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.numero.itube.GlideApp
 import com.numero.itube.R
 import com.numero.itube.contract.DetailContract
+import com.numero.itube.extension.component
 import com.numero.itube.model.Channel
 import com.numero.itube.model.VideoDetail
 import com.numero.itube.presenter.DetailPresenter
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.YoutubeRepository
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.*
 import javax.inject.Inject
 
@@ -39,7 +39,7 @@ class DetailFragment : Fragment(), DetailContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndroidSupportInjection.inject(this)
+        component?.inject(this)
 
         val arguments = arguments ?: return
         val videoId = arguments.getString(ARG_VIDEO_ID)
@@ -71,7 +71,7 @@ class DetailFragment : Fragment(), DetailContract.View {
         descriptionTextView.text = videoDetail.snippet.description
         channelNameTextView.text = channel.snippet.title
         val context = context ?: return
-        GlideApp.with(context).load(channel.snippet.thumbnails.medium.url).apply(RequestOptions().circleCrop()).into(channelImageView)
+        Glide.with(context).load(channel.snippet.thumbnails.medium.url).apply(RequestOptions().circleCrop()).into(channelImageView)
     }
 
     override fun showErrorMessage(e: Throwable?) {

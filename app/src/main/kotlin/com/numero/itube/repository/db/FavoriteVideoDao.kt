@@ -1,6 +1,6 @@
 package com.numero.itube.repository.db
 
-import android.arch.persistence.room.*
+import androidx.room.*
 
 @Dao
 interface FavoriteVideoDao {
