@@ -1,5 +1,6 @@
 package com.numero.itube.api
 
+import com.numero.itube.api.response.ChannelDetailResponse
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoDetailResponse
@@ -49,4 +50,11 @@ interface YoutubeApi {
             @Query("id") id: String,
             @Query("part") part: String = "id,snippet"
     ): Deferred<ChannelResponse>
+
+    @GET("channels")
+    fun channelDetail(
+            @Query("key") key: String,
+            @Query("id") id: String,
+            @Query("part") part: String = "id,snippet,brandingSettings"
+    ): Deferred<ChannelDetailResponse>
 }
