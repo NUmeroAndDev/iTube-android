@@ -159,6 +159,10 @@ class PlayerActivity : AppCompatActivity(),
         fab.setImageResource(if (isRegisteredFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
     }
 
+    override fun onClickChannel(channelId: String) {
+        startActivity(ChannelActivity.createIntent(this, channelId))
+    }
+
     companion object {
 
         private const val BUNDLE_TITLE = "BUNDLE_TITLE"

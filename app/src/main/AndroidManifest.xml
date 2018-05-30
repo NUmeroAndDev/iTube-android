@@ -25,6 +25,8 @@
 
         <activity android:name=".activity.PlayerActivity" />
 
+        <activity android:name=".activity.ChannelActivity" />
+
         <activity android:name=".activity.SettingsActivity" />
 
         <activity android:name=".activity.LicensesActivity" />

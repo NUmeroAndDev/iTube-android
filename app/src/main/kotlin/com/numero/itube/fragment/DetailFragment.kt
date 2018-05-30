@@ -28,6 +28,7 @@ class DetailFragment : Fragment(), DetailContract.View {
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
 
     private lateinit var presenter: DetailContract.Presenter
+    private lateinit var channelId: String
     private var listener: DetailFragmentListener? = null
 
     override fun onAttach(context: Context?) {
@@ -43,7 +44,7 @@ class DetailFragment : Fragment(), DetailContract.View {
 
         val arguments = arguments ?: return
         val videoId = arguments.getString(ARG_VIDEO_ID)
-        val channelId = arguments.getString(ARG_CHANNEL_ID)
+        channelId = arguments.getString(ARG_CHANNEL_ID)
         DetailPresenter(this, youtubeRepository, favoriteVideoRepository, videoId, channelId)
     }
 
@@ -53,6 +54,10 @@ class DetailFragment : Fragment(), DetailContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        channelLayout.setOnClickListener {
+            listener?.onClickChannel(channelId)
+        }
 
         presenter.loadDetail(getString(R.string.api_key))
     }
@@ -104,6 +109,8 @@ class DetailFragment : Fragment(), DetailContract.View {
 
     interface DetailFragmentListener {
         fun onIsRegisteredFavorite(isRegisteredFavorite: Boolean)
+
+        fun onClickChannel(channelId: String)
     }
 
     companion object {
