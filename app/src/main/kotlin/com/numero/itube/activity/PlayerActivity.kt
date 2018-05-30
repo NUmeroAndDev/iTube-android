@@ -159,8 +159,8 @@ class PlayerActivity : AppCompatActivity(),
         fab.setImageResource(if (isRegisteredFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
     }
 
-    override fun onClickChannel(channelId: String) {
-        startActivity(ChannelActivity.createIntent(this, channelId))
+    override fun onClickChannel(channelName: String, channelId: String) {
+        startActivity(ChannelActivity.createIntent(this, channelName, channelId))
     }
 
     companion object {

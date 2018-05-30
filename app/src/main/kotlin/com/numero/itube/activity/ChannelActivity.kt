@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_player.*
 
 class ChannelActivity : AppCompatActivity() {
 
+    private val channelName: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_NAME) }
     private val channelId: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_ID) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +20,7 @@ class ChannelActivity : AppCompatActivity() {
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
+            title = channelName
         }
     }
 
@@ -35,8 +37,10 @@ class ChannelActivity : AppCompatActivity() {
     companion object {
 
         private const val BUNDLE_CHANNEL_ID = "BUNDLE_CHANNEL_ID"
+        private const val BUNDLE_CHANNEL_NAME = "BUNDLE_CHANNEL_NAME"
 
-        fun createIntent(context: Context, channelId: String): Intent = Intent(context, ChannelActivity::class.java).apply {
+        fun createIntent(context: Context, channelName:String, channelId: String): Intent = Intent(context, ChannelActivity::class.java).apply {
+            putExtra(BUNDLE_CHANNEL_NAME, channelName)
             putExtra(BUNDLE_CHANNEL_ID, channelId)
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }

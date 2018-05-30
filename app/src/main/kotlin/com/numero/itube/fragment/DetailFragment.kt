@@ -56,7 +56,8 @@ class DetailFragment : Fragment(), DetailContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         channelLayout.setOnClickListener {
-            listener?.onClickChannel(channelId)
+            val channelName = channelNameTextView.text.toString()
+            listener?.onClickChannel(channelName, channelId)
         }
 
         presenter.loadDetail(getString(R.string.api_key))
@@ -110,7 +111,7 @@ class DetailFragment : Fragment(), DetailContract.View {
     interface DetailFragmentListener {
         fun onIsRegisteredFavorite(isRegisteredFavorite: Boolean)
 
-        fun onClickChannel(channelId: String)
+        fun onClickChannel(channelName: String, channelId: String)
     }
 
     companion object {
