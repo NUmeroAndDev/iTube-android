@@ -1,5 +1,6 @@
 package com.numero.itube.di
 
+import com.numero.itube.activity.ChannelActivity
 import com.numero.itube.activity.PlayerActivity
 import com.numero.itube.fragment.*
 import dagger.Component
@@ -21,4 +22,5 @@ interface ApplicationComponent {
     fun inject(searchFragment: SearchFragment)
 
     fun inject(playerActivity: PlayerActivity)
+    fun inject(channelActivity: ChannelActivity)
 }
