@@ -10,6 +10,7 @@ data class ChannelDetail(
         val etag: String,
         val id: String,
         val snippet: Snippet,
+        @Json(name = "brandingSettings")
         val branding: Branding
 ) : Serializable {
 
@@ -57,7 +58,8 @@ data class ChannelDetail(
                 val bannerMobileLowImageUrl: String,
                 val bannerMobileMediumHdImageUrl: String,
                 val bannerMobileHdImageUrl: String,
-                val bannerMobileExtraHdImageUrl: String
+                val bannerMobileExtraHdImageUrl: String,
+                val bannerTvMediumImageUrl: String
         ) : Serializable
     }
 

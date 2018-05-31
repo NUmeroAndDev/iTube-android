@@ -36,7 +36,7 @@ class ChannelDetailPresenter(
 
             val detail = channelDetailResponse.items[0]
 
-            view.showBannerImage(detail.branding.image.bannerMobileImageUrl)
+            view.showBannerImage(detail.branding.image.bannerTvMediumImageUrl)
         } catch (t: Throwable) {
             t.printStackTrace()
             view.showErrorMessage(t)
