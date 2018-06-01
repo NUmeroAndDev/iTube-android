@@ -160,7 +160,7 @@ class PlayerActivity : AppCompatActivity(),
     }
 
     override fun onClickChannel(channelName: String, channelId: String) {
-        startActivity(ChannelActivity.createIntent(this, channelName, channelId))
+        startActivity(ChannelDetailActivity.createIntent(this, channelName, channelId))
     }
 
     companion object {

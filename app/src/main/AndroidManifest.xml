@@ -25,7 +25,7 @@
 
         <activity android:name=".activity.PlayerActivity" />
 
-        <activity android:name=".activity.ChannelActivity" />
+        <activity android:name=".activity.ChannelDetailActivity" />
 
         <activity android:name=".activity.SettingsActivity" />
 

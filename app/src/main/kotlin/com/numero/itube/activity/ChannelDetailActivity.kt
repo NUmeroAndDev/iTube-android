@@ -8,22 +8,20 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
-import com.numero.itube.extension.component
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
 import com.numero.itube.fragment.ChannelVideoFragment
 import com.numero.itube.model.Video
-import kotlinx.android.synthetic.main.activity_channel.*
+import kotlinx.android.synthetic.main.activity_channel_detail.*
 
-class ChannelActivity : AppCompatActivity(), ChannelVideoFragment.ChannelVideoFragmentListener {
+class ChannelDetailActivity : AppCompatActivity(), ChannelVideoFragment.ChannelVideoFragmentListener {
 
     private val channelName: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_NAME) }
     private val channelId: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_ID) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        component?.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_channel)
+        setContentView(R.layout.activity_channel_detail)
         setSupportActionBar(toolbar)
 
         supportActionBar?.apply {
@@ -61,7 +59,7 @@ class ChannelActivity : AppCompatActivity(), ChannelVideoFragment.ChannelVideoFr
         private const val BUNDLE_CHANNEL_ID = "BUNDLE_CHANNEL_ID"
         private const val BUNDLE_CHANNEL_NAME = "BUNDLE_CHANNEL_NAME"
 
-        fun createIntent(context: Context, channelName: String, channelId: String): Intent = Intent(context, ChannelActivity::class.java).apply {
+        fun createIntent(context: Context, channelName: String, channelId: String): Intent = Intent(context, ChannelDetailActivity::class.java).apply {
             putExtra(BUNDLE_CHANNEL_NAME, channelName)
             putExtra(BUNDLE_CHANNEL_ID, channelId)
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
