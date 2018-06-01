@@ -8,8 +8,6 @@ import com.numero.itube.view.IView
 interface ChannelDetailContract {
 
     interface View : IView<Presenter> {
-        fun showBannerImage(imageUrl: String)
-
         fun showChannelThumbnail(thumbnail: ChannelDetail.Thumbnails.Thumbnail)
 
         fun showVideoList(videoList: List<Video>, nextPageToken: String? = null)

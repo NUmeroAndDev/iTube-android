@@ -41,7 +41,6 @@ class ChannelDetailPresenter(
 
             val detail = channelDetailResponse.items[0]
 
-            view.showBannerImage(detail.branding.image.bannerTvMediumImageUrl)
             view.showChannelThumbnail(detail.snippet.thumbnails.high)
             view.showVideoList(videoResponse.items, videoResponse.nextPageToken)
         } catch (t: Throwable) {
@@ -57,7 +56,7 @@ class ChannelDetailPresenter(
         try {
             val videoResponse = youtubeRepository.loadChannelVideo(key, channelId, nextPageToken).await()
 
-            view.showVideoList(videoResponse.items, videoResponse.nextPageToken)
+            view.showAddedVideoList(videoResponse.items, videoResponse.nextPageToken)
         } catch (t: Throwable) {
             t.printStackTrace()
             view.showErrorMessage(t)

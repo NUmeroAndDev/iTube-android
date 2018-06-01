@@ -68,10 +68,6 @@ class ChannelActivity : AppCompatActivity(), ChannelDetailContract.View {
         }
     }
 
-    override fun showBannerImage(imageUrl: String) {
-        Glide.with(this).load(imageUrl).into(bannerImageView)
-    }
-
     override fun showChannelThumbnail(thumbnail: ChannelDetail.Thumbnails.Thumbnail) {
         Glide.with(this).load(thumbnail.url).apply(RequestOptions().circleCrop()).into(channelImageView)
     }
