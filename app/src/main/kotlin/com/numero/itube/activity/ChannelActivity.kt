@@ -5,14 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
 import com.numero.itube.contract.ChannelDetailContract
 import com.numero.itube.extension.component
 import com.numero.itube.model.ChannelDetail
+import com.numero.itube.model.Video
 import com.numero.itube.presenter.ChannelDetailPresenter
 import com.numero.itube.repository.YoutubeRepository
+import com.numero.itube.view.adapter.VideoListAdapter
 import kotlinx.android.synthetic.main.activity_channel.*
 import javax.inject.Inject
 
@@ -22,7 +25,7 @@ class ChannelActivity : AppCompatActivity(), ChannelDetailContract.View {
     lateinit var youtubeApiRepository: YoutubeRepository
 
     private lateinit var presenter: ChannelDetailContract.Presenter
-
+    private val videoListAdapter: VideoListAdapter = VideoListAdapter()
     private val channelName: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_NAME) }
     private val channelId: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_ID) }
 
@@ -40,6 +43,11 @@ class ChannelActivity : AppCompatActivity(), ChannelDetailContract.View {
         ChannelDetailPresenter(this, youtubeApiRepository, channelId)
 
         channelNameTextView.text = channelName
+        videoRecyclerView.apply {
+            val manager = LinearLayoutManager(context)
+            layoutManager = manager
+            adapter = videoListAdapter
+        }
 
         presenter.loadChannelDetail(getString(R.string.api_key))
     }
@@ -60,6 +68,10 @@ class ChannelActivity : AppCompatActivity(), ChannelDetailContract.View {
 
     override fun showChannelThumbnail(thumbnail: ChannelDetail.Thumbnails.Thumbnail) {
         Glide.with(this).load(thumbnail.url).apply(RequestOptions().circleCrop()).into(channelImageView)
+    }
+
+    override fun showVideoList(videoList: List<Video>, nextPageToken: String?) {
+        videoListAdapter.videoList = videoList.toMutableList()
     }
 
     override fun showErrorMessage(e: Throwable?) {
