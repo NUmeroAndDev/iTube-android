@@ -1,9 +1,12 @@
 package com.numero.itube.activity
 
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Pair
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -157,6 +160,11 @@ class PlayerActivity : AppCompatActivity(),
     override fun onIsRegisteredFavorite(isRegisteredFavorite: Boolean) {
         isRegistered = isRegisteredFavorite
         fab.setImageResource(if (isRegisteredFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
+    }
+
+    override fun onClickChannel(channelName: String, channelId: String, thumbnailUrl: String, vararg transitionViews: Pair<View, String>) {
+        val bundle = ActivityOptions.makeSceneTransitionAnimation(this, *transitionViews).toBundle()
+        startActivity(ChannelDetailActivity.createIntent(this, channelName, channelId, thumbnailUrl), bundle)
     }
 
     companion object {

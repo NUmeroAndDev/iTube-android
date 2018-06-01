@@ -2,10 +2,12 @@ package com.numero.itube.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -28,6 +30,7 @@ class DetailFragment : Fragment(), DetailContract.View {
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
 
     private lateinit var presenter: DetailContract.Presenter
+    private lateinit var channelId: String
     private var listener: DetailFragmentListener? = null
 
     override fun onAttach(context: Context?) {
@@ -43,7 +46,7 @@ class DetailFragment : Fragment(), DetailContract.View {
 
         val arguments = arguments ?: return
         val videoId = arguments.getString(ARG_VIDEO_ID)
-        val channelId = arguments.getString(ARG_CHANNEL_ID)
+        channelId = arguments.getString(ARG_CHANNEL_ID)
         DetailPresenter(this, youtubeRepository, favoriteVideoRepository, videoId, channelId)
     }
 
@@ -68,10 +71,22 @@ class DetailFragment : Fragment(), DetailContract.View {
     }
 
     override fun showVideoDetail(videoDetail: VideoDetail, channel: Channel) {
+        val context = context ?: return
+
         descriptionTextView.text = videoDetail.snippet.description
         channelNameTextView.text = channel.snippet.title
-        val context = context ?: return
-        Glide.with(context).load(channel.snippet.thumbnails.medium.url).apply(RequestOptions().circleCrop()).into(channelImageView)
+
+        val url = channel.snippet.thumbnails.medium.url
+        Glide.with(context).load(url).apply(RequestOptions().circleCrop()).into(channelImageView)
+        channelLayout.setOnClickListener {
+            val channelName = channelNameTextView.text.toString()
+            listener?.onClickChannel(
+                    channelName,
+                    channelId,
+                    url,
+                    Pair(channelImageView, ViewCompat.getTransitionName(channelImageView)!!),
+                    Pair(channelNameTextView, ViewCompat.getTransitionName(channelNameTextView)!!))
+        }
     }
 
     override fun showErrorMessage(e: Throwable?) {
@@ -104,6 +119,8 @@ class DetailFragment : Fragment(), DetailContract.View {
 
     interface DetailFragmentListener {
         fun onIsRegisteredFavorite(isRegisteredFavorite: Boolean)
+
+        fun onClickChannel(channelName: String, channelId: String, thumbnailUrl: String, vararg transitionViews: Pair<View, String>)
     }
 
     companion object {

@@ -24,6 +24,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/channelImageView"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:transitionName="channelImage"
+                app:layout_constraintBottom_toTopOf="@+id/channelNameBottomDivider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@mipmap/ic_launcher" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/channelNameTextView"
                 android:layout_width="0dp"
@@ -32,32 +45,21 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
-                android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:textColor="?android:attr/textColorSecondary"
+                android:paddingBottom="8dp"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textStyle="bold"
+                android:transitionName="channelName"
                 app:layout_constraintBottom_toBottomOf="@+id/channelImageView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/channelImageView"
                 app:layout_constraintTop_toTopOf="@+id/channelImageView"
                 tools:text="ChannelName" />
 
-            <ImageView
-                android:id="@+id/channelImageView"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/channelNameBottomDivider"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@mipmap/ic_launcher" />
-
             <View
                 android:id="@+id/channelNameBottomDivider"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
                 android:background="#1F000000"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -71,8 +73,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:paddingEnd="16dp"
             android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
