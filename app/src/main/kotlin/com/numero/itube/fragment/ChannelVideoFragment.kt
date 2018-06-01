@@ -87,9 +87,11 @@ class ChannelVideoFragment : Fragment(), ChannelDetailContract.View {
     }
 
     override fun showProgress() {
+        progressView.show()
     }
 
     override fun dismissProgress() {
+        progressView.hide()
     }
 
     override fun setPresenter(presenter: ChannelDetailContract.Presenter) {
