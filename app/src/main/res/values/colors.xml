@@ -14,10 +14,10 @@
     <color name="onError">#FFFFFF</color>
 
     <color name="navigation_bar">#FFFFFF</color>
-    <color name="navigation_bar_divider">#1E000000</color>
+    <color name="navigation_bar_divider">#1C000000</color>
 
     <color name="fab_background">#FFFFFF</color>
-    <color name="divider">#1E000000</color>
+    <color name="divider">#1C000000</color>
 
     <color name="playing_background">#8A000000</color>
 </resources>

@@ -36,23 +36,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <FrameLayout
-            android:id="@+id/relativeContainer"
-            android:layout_width="0dp"
-            android:layout_height="144dp"
-            app:layout_constraintBottom_toTopOf="@+id/detailContainer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/playerContainer" />
-
-        <FrameLayout
-            android:id="@+id/detailContainer"
+        <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:overScrollMode="never"
+            android:scrollbars="none"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeContainer" />
+            app:layout_constraintTop_toBottomOf="@+id/playerContainer">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/relativeContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="124dp" />
+
+                <FrameLayout
+                    android:id="@+id/detailContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
