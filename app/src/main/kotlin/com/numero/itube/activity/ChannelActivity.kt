@@ -44,6 +44,11 @@ class ChannelActivity : AppCompatActivity(), ChannelDetailContract.View {
 
         ChannelDetailPresenter(this, youtubeApiRepository, channelId)
 
+        videoListAdapter.setOnItemClickListener {
+            // 再生画面へ遷移
+            startActivity(PlayerActivity.createIntent(this, it))
+        }
+
         channelNameTextView.text = channelName
         videoRecyclerView.apply {
             val manager = LinearLayoutManager(context)
