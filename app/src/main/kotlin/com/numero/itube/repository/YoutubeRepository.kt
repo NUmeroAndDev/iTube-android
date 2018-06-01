@@ -32,4 +32,8 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
     override fun loadChannelDetail(key: String, id: String): Deferred<ChannelDetailResponse> {
         return youtubeApi.channelDetail(key, id)
     }
+
+    override fun loadChannelVideo(key: String, id: String, nextPageToken: String?): Deferred<SearchResponse> {
+        return youtubeApi.searchChannelVideo(key, id)
+    }
 }

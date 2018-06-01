@@ -33,6 +33,7 @@ class ChannelDetailPresenter(
         view.showProgress()
         try {
             val channelDetailResponse = youtubeRepository.loadChannelDetail(key, channelId).await()
+            val video = youtubeRepository.loadChannelVideo(key, channelId).await()
 
             val detail = channelDetailResponse.items[0]
 
