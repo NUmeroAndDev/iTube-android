@@ -38,6 +38,16 @@ interface YoutubeApi {
     ): Deferred<SearchResponse>
 
     @GET("search")
+    fun searchChannelVideo(
+            @Query("key") key: String,
+            @Query("channelId") channelId: String,
+            @Query("pageToken") nextPageToken: String,
+            @Query("type") type: String = "video",
+            @Query("part") part: String = "id,snippet",
+            @Query("maxResults") maxResult: Int = 30
+    ): Deferred<SearchResponse>
+
+    @GET("search")
     fun searchRelative(
             @Query("key") key: String,
             @Query("relatedToVideoId") id: String,

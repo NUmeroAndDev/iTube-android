@@ -34,6 +34,10 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
     }
 
     override fun loadChannelVideo(key: String, id: String, nextPageToken: String?): Deferred<SearchResponse> {
-        return youtubeApi.searchChannelVideo(key, id)
+        return if (nextPageToken == null) {
+            youtubeApi.searchChannelVideo(key, id)
+        } else {
+            youtubeApi.searchChannelVideo(key, id, nextPageToken = nextPageToken)
+        }
     }
 }

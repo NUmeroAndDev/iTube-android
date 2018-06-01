@@ -14,6 +14,8 @@ interface ChannelDetailContract {
 
         fun showVideoList(videoList: List<Video>, nextPageToken: String? = null)
 
+        fun showAddedVideoList(videoList: List<Video>, nextPageToken: String? = null)
+
         fun showErrorMessage(e: Throwable?)
 
         fun showProgress()
@@ -23,5 +25,7 @@ interface ChannelDetailContract {
 
     interface Presenter : IPresenter {
         fun loadChannelDetail(key: String)
+
+        fun loadNextVideo(key: String, nextPageToken: String)
     }
 }

@@ -29,6 +29,10 @@ class ChannelDetailPresenter(
         executeLoadChannelDetail(key, channelId)
     }
 
+    override fun loadNextVideo(key: String, nextPageToken: String) {
+        executeLoadChannelVideo(key, channelId, nextPageToken)
+    }
+
     private fun executeLoadChannelDetail(key: String, channelId: String) = async(job + UI) {
         view.showProgress()
         try {
@@ -39,6 +43,20 @@ class ChannelDetailPresenter(
 
             view.showBannerImage(detail.branding.image.bannerTvMediumImageUrl)
             view.showChannelThumbnail(detail.snippet.thumbnails.high)
+            view.showVideoList(videoResponse.items, videoResponse.nextPageToken)
+        } catch (t: Throwable) {
+            t.printStackTrace()
+            view.showErrorMessage(t)
+        } finally {
+            view.dismissProgress()
+        }
+    }
+
+    private fun executeLoadChannelVideo(key: String, channelId: String, nextPageToken: String) = async(job + UI) {
+        view.showProgress()
+        try {
+            val videoResponse = youtubeRepository.loadChannelVideo(key, channelId, nextPageToken).await()
+
             view.showVideoList(videoResponse.items, videoResponse.nextPageToken)
         } catch (t: Throwable) {
             t.printStackTrace()

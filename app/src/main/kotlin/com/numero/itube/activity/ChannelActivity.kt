@@ -15,6 +15,7 @@ import com.numero.itube.model.ChannelDetail
 import com.numero.itube.model.Video
 import com.numero.itube.presenter.ChannelDetailPresenter
 import com.numero.itube.repository.YoutubeRepository
+import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.adapter.VideoListAdapter
 import kotlinx.android.synthetic.main.activity_channel.*
 import javax.inject.Inject
@@ -28,6 +29,7 @@ class ChannelActivity : AppCompatActivity(), ChannelDetailContract.View {
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
     private val channelName: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_NAME) }
     private val channelId: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_ID) }
+    private var nextPageToken: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         component?.inject(this)
@@ -46,6 +48,10 @@ class ChannelActivity : AppCompatActivity(), ChannelDetailContract.View {
         videoRecyclerView.apply {
             val manager = LinearLayoutManager(context)
             layoutManager = manager
+            addOnScrollListener(EndlessScrollListener(manager) {
+                val nextPageToken = nextPageToken ?: return@EndlessScrollListener
+                presenter.loadNextVideo(getString(R.string.api_key), nextPageToken)
+            })
             adapter = videoListAdapter
         }
 
@@ -71,7 +77,13 @@ class ChannelActivity : AppCompatActivity(), ChannelDetailContract.View {
     }
 
     override fun showVideoList(videoList: List<Video>, nextPageToken: String?) {
+        this.nextPageToken = nextPageToken
         videoListAdapter.videoList = videoList.toMutableList()
+    }
+
+    override fun showAddedVideoList(videoList: List<Video>, nextPageToken: String?) {
+        this.nextPageToken = nextPageToken
+        videoListAdapter.addVideoList(videoList)
     }
 
     override fun showErrorMessage(e: Throwable?) {
