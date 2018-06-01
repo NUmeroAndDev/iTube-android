@@ -30,7 +30,8 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/channelImageView"
                 android:layout_width="36dp"
-                android:layout_height="36dp" />
+                android:layout_height="36dp"
+                android:transitionName="channelImage" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/channelNameTextView"
@@ -44,6 +45,7 @@
                 android:paddingBottom="8dp"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textStyle="bold"
+                android:transitionName="channelName"
                 tools:text="ChannelName" />
 
         </LinearLayout>

@@ -38,10 +38,6 @@ class ChannelDetailPresenter(
         try {
             val channelDetailResponse = youtubeRepository.loadChannelDetail(key, channelId).await()
             val videoResponse = youtubeRepository.loadChannelVideo(key, channelId).await()
-
-            val detail = channelDetailResponse.items[0]
-
-            view.showChannelThumbnail(detail.snippet.thumbnails.high)
             view.showVideoList(videoResponse.items, videoResponse.nextPageToken)
         } catch (t: Throwable) {
             t.printStackTrace()

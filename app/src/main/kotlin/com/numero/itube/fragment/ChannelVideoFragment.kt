@@ -71,7 +71,6 @@ class ChannelVideoFragment : Fragment(), ChannelDetailContract.View {
     }
 
     override fun showChannelThumbnail(thumbnail: ChannelDetail.Thumbnails.Thumbnail) {
-        listener?.showChannelThumbnail(thumbnail.url)
     }
 
     override fun showVideoList(videoList: List<Video>, nextPageToken: String?) {

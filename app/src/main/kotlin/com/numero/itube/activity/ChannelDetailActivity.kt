@@ -18,6 +18,7 @@ class ChannelDetailActivity : AppCompatActivity(), ChannelVideoFragment.ChannelV
 
     private val channelName: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_NAME) }
     private val channelId: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_ID) }
+    private val thumbnailUrl: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_THUMBNAIL_URL) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,7 @@ class ChannelDetailActivity : AppCompatActivity(), ChannelVideoFragment.ChannelV
         }
 
         channelNameTextView.text = channelName
+        Glide.with(this).load(thumbnailUrl).apply(RequestOptions().circleCrop()).into(channelImageView)
 
         if (findFragment(R.id.container) == null) {
             replace(R.id.container, ChannelVideoFragment.newInstance(channelId), false)
@@ -47,7 +49,7 @@ class ChannelDetailActivity : AppCompatActivity(), ChannelVideoFragment.ChannelV
     }
 
     override fun showChannelThumbnail(urlString: String) {
-        Glide.with(this).load(urlString).apply(RequestOptions().circleCrop()).into(channelImageView)
+
     }
 
     override fun showVideo(video: Video) {
@@ -58,10 +60,12 @@ class ChannelDetailActivity : AppCompatActivity(), ChannelVideoFragment.ChannelV
 
         private const val BUNDLE_CHANNEL_ID = "BUNDLE_CHANNEL_ID"
         private const val BUNDLE_CHANNEL_NAME = "BUNDLE_CHANNEL_NAME"
+        private const val BUNDLE_CHANNEL_THUMBNAIL_URL = "BUNDLE_CHANNEL_THUMBNAIL_URL"
 
-        fun createIntent(context: Context, channelName: String, channelId: String): Intent = Intent(context, ChannelDetailActivity::class.java).apply {
+        fun createIntent(context: Context, channelName: String, channelId: String, thumbnailUrl: String): Intent = Intent(context, ChannelDetailActivity::class.java).apply {
             putExtra(BUNDLE_CHANNEL_NAME, channelName)
             putExtra(BUNDLE_CHANNEL_ID, channelId)
+            putExtra(BUNDLE_CHANNEL_THUMBNAIL_URL, thumbnailUrl)
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }
