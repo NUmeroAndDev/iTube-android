@@ -26,6 +26,8 @@ class RelativeFragment : Fragment(), RelativeContract.View {
     private lateinit var presenter: RelativeContract.Presenter
     private val videoListAdapter: RelativeVideoListAdapter = RelativeVideoListAdapter()
     private var listener: RelativeFragmentListener? = null
+    private lateinit var videoId: String
+    private lateinit var channelId: String
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -38,6 +40,10 @@ class RelativeFragment : Fragment(), RelativeContract.View {
         super.onCreate(savedInstanceState)
         component?.inject(this)
 
+        val arguments = arguments ?: return
+        videoId = arguments.getString(ARG_VIDEO_ID)
+        channelId = arguments.getString(ARG_CHANNEL_ID)
+
         RelativePresenter(this, youtubeRepository)
     }
 
@@ -47,6 +53,11 @@ class RelativeFragment : Fragment(), RelativeContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //FIXME 再生成時の処理
+        fragmentManager?.apply {
+            beginTransaction().replace(R.id.detailContainer, DetailFragment.newInstance(videoId, channelId)).commit()
+        }
 
         videoListAdapter.setOnItemClickListener {
             // 再生画面へ遷移
@@ -58,8 +69,6 @@ class RelativeFragment : Fragment(), RelativeContract.View {
             adapter = videoListAdapter
         }
 
-        val arguments = arguments ?: return
-        val videoId = arguments.getString(ARG_VIDEO_ID)
         presenter.loadRelative(getString(R.string.api_key), videoId)
     }
 
@@ -99,9 +108,12 @@ class RelativeFragment : Fragment(), RelativeContract.View {
 
     companion object {
         private const val ARG_VIDEO_ID = "ARG_VIDEO_ID"
+        private const val ARG_CHANNEL_ID = "ARG_CHANNEL_ID"
 
-        fun newInstance(videoId: String): RelativeFragment = RelativeFragment().apply {
-            arguments = bundleOf(ARG_VIDEO_ID to videoId)
+        fun newInstance(videoId: String, channelId: String): RelativeFragment = RelativeFragment().apply {
+            arguments = bundleOf(
+                    ARG_VIDEO_ID to videoId,
+                    ARG_CHANNEL_ID to channelId)
         }
     }
 }
