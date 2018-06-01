@@ -20,6 +20,7 @@ interface ApplicationComponent {
     fun inject(relativeFavoriteFragment: RelativeFavoriteFragment)
     fun inject(relativeFragment: RelativeFragment)
     fun inject(searchFragment: SearchFragment)
+    fun inject(channelVideoFragment: ChannelVideoFragment)
 
     fun inject(playerActivity: PlayerActivity)
     fun inject(channelActivity: ChannelActivity)

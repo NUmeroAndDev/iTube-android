@@ -5,31 +5,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
-import com.numero.itube.contract.ChannelDetailContract
 import com.numero.itube.extension.component
-import com.numero.itube.model.ChannelDetail
+import com.numero.itube.extension.findFragment
+import com.numero.itube.extension.replace
+import com.numero.itube.fragment.ChannelVideoFragment
 import com.numero.itube.model.Video
-import com.numero.itube.presenter.ChannelDetailPresenter
-import com.numero.itube.repository.YoutubeRepository
-import com.numero.itube.view.EndlessScrollListener
-import com.numero.itube.view.adapter.VideoListAdapter
 import kotlinx.android.synthetic.main.activity_channel.*
-import javax.inject.Inject
 
-class ChannelActivity : AppCompatActivity(), ChannelDetailContract.View {
+class ChannelActivity : AppCompatActivity(), ChannelVideoFragment.ChannelVideoFragmentListener {
 
-    @Inject
-    lateinit var youtubeApiRepository: YoutubeRepository
-
-    private lateinit var presenter: ChannelDetailContract.Presenter
-    private val videoListAdapter: VideoListAdapter = VideoListAdapter()
     private val channelName: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_NAME) }
     private val channelId: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_ID) }
-    private var nextPageToken: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         component?.inject(this)
@@ -42,25 +31,11 @@ class ChannelActivity : AppCompatActivity(), ChannelDetailContract.View {
             setDisplayShowTitleEnabled(false)
         }
 
-        ChannelDetailPresenter(this, youtubeApiRepository, channelId)
-
-        videoListAdapter.setOnItemClickListener {
-            // 再生画面へ遷移
-            startActivity(PlayerActivity.createIntent(this, it))
-        }
-
         channelNameTextView.text = channelName
-        videoRecyclerView.apply {
-            val manager = LinearLayoutManager(context)
-            layoutManager = manager
-            addOnScrollListener(EndlessScrollListener(manager) {
-                val nextPageToken = nextPageToken ?: return@EndlessScrollListener
-                presenter.loadNextVideo(getString(R.string.api_key), nextPageToken)
-            })
-            adapter = videoListAdapter
-        }
 
-        presenter.loadChannelDetail(getString(R.string.api_key))
+        if (findFragment(R.id.container) == null) {
+            replace(R.id.container, ChannelVideoFragment.newInstance(channelId), false)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -73,31 +48,12 @@ class ChannelActivity : AppCompatActivity(), ChannelDetailContract.View {
         }
     }
 
-    override fun showChannelThumbnail(thumbnail: ChannelDetail.Thumbnails.Thumbnail) {
-        Glide.with(this).load(thumbnail.url).apply(RequestOptions().circleCrop()).into(channelImageView)
+    override fun showChannelThumbnail(urlString: String) {
+        Glide.with(this).load(urlString).apply(RequestOptions().circleCrop()).into(channelImageView)
     }
 
-    override fun showVideoList(videoList: List<Video>, nextPageToken: String?) {
-        this.nextPageToken = nextPageToken
-        videoListAdapter.videoList = videoList.toMutableList()
-    }
-
-    override fun showAddedVideoList(videoList: List<Video>, nextPageToken: String?) {
-        this.nextPageToken = nextPageToken
-        videoListAdapter.addVideoList(videoList)
-    }
-
-    override fun showErrorMessage(e: Throwable?) {
-    }
-
-    override fun showProgress() {
-    }
-
-    override fun dismissProgress() {
-    }
-
-    override fun setPresenter(presenter: ChannelDetailContract.Presenter) {
-        this.presenter = presenter
+    override fun showVideo(video: Video) {
+        startActivity(PlayerActivity.createIntent(this, video))
     }
 
     companion object {
