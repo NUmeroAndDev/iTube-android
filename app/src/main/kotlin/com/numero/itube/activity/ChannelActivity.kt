@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
 import com.numero.itube.contract.ChannelDetailContract
 import com.numero.itube.extension.component
+import com.numero.itube.model.ChannelDetail
 import com.numero.itube.presenter.ChannelDetailPresenter
 import com.numero.itube.repository.YoutubeRepository
 import kotlinx.android.synthetic.main.activity_channel.*
@@ -32,10 +34,12 @@ class ChannelActivity : AppCompatActivity(), ChannelDetailContract.View {
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            title = channelName
+            setDisplayShowTitleEnabled(false)
         }
 
         ChannelDetailPresenter(this, youtubeApiRepository, channelId)
+
+        channelNameTextView.text = channelName
 
         presenter.loadChannelDetail(getString(R.string.api_key))
     }
@@ -52,6 +56,10 @@ class ChannelActivity : AppCompatActivity(), ChannelDetailContract.View {
 
     override fun showBannerImage(imageUrl: String) {
         Glide.with(this).load(imageUrl).into(bannerImageView)
+    }
+
+    override fun showChannelThumbnail(thumbnail: ChannelDetail.Thumbnails.Thumbnail) {
+        Glide.with(this).load(thumbnail.url).apply(RequestOptions().circleCrop()).into(channelImageView)
     }
 
     override fun showErrorMessage(e: Throwable?) {

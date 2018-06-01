@@ -34,7 +34,7 @@
                 android:maxLines="1"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/channelImageView"
                 app:layout_constraintEnd_toEndOf="parent"
