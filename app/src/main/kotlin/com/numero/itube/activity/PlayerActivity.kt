@@ -68,7 +68,7 @@ class PlayerActivity : AppCompatActivity(),
             } else {
                 RelativeFragment.newInstance(videoId, channelId)
             }
-            replace(R.id.relativeContainer, fragment, false)
+            replace(R.id.relativeContainer, fragment)
         }
 
         bottomAppBar.apply {

@@ -1,6 +1,8 @@
 package com.numero.itube.extension
 
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.IdRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.systemService
 import androidx.fragment.app.Fragment
 import com.numero.itube.di.ApplicationComponent
@@ -16,3 +18,17 @@ val Fragment.component: ApplicationComponent?
     get() {
         return (activity?.application as? iTubeApplication)?.applicationComponent
     }
+
+fun Fragment.replace(@IdRes res: Int, fragment: Fragment, isAddBackStack: Boolean = false) {
+    val fragmentManager = fragmentManager ?: return
+    fragmentManager.beginTransaction().apply {
+        replace(res, fragment, fragment::class.java.simpleName)
+        if (isAddBackStack) {
+            addToBackStack(null)
+        }
+    }.commit()
+}
+
+fun Fragment.findFragment(@IdRes byId: Int): Fragment? {
+    return fragmentManager?.findFragmentById(byId)
+}

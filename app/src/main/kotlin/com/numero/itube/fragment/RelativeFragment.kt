@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.contract.RelativeContract
 import com.numero.itube.extension.component
+import com.numero.itube.extension.findFragment
+import com.numero.itube.extension.replace
 import com.numero.itube.model.Video
 import com.numero.itube.presenter.RelativePresenter
 import com.numero.itube.repository.YoutubeRepository
@@ -54,9 +56,8 @@ class RelativeFragment : Fragment(), RelativeContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //FIXME 再生成時の処理
-        fragmentManager?.apply {
-            beginTransaction().replace(R.id.detailContainer, DetailFragment.newInstance(videoId, channelId)).commit()
+        if (findFragment(R.id.detailContainer) == null) {
+            replace(R.id.detailContainer, DetailFragment.newInstance(videoId, channelId))
         }
 
         videoListAdapter.setOnItemClickListener {
