@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">#FFFFFF</color>
-    <color name="colorAccent">#ED3323</color>
+    <color name="primary">#FFFFFF</color>
+    <color name="primaryVariant">#FFFFFF</color>
+    <color name="secondary">#ED3323</color>
+    <color name="background">#FFFFFF</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="error">#B00020</color>
 
-    <color name="fab_background">#FFFFFF</color>
-    <color name="divider">#1F000000</color>
+    <color name="onPrimary">#DE000000</color>
+    <color name="onSecondary">#99000000</color>
+    <color name="onBackground">#DE000000</color>
+    <color name="onSurface">#DE000000</color>
+    <color name="onError">#FFFFFF</color>
 
     <color name="navigation_bar">#FFFFFF</color>
+    <color name="navigation_bar_divider">#1C000000</color>
+
+    <color name="fab_background">#FFFFFF</color>
+    <color name="divider">#1C000000</color>
+
     <color name="playing_background">#8A000000</color>
 </resources>

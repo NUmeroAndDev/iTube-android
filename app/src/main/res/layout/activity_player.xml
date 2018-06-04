@@ -39,20 +39,11 @@
         <FrameLayout
             android:id="@+id/relativeContainer"
             android:layout_width="0dp"
-            android:layout_height="144dp"
-            app:layout_constraintBottom_toTopOf="@+id/detailContainer"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/playerContainer" />
-
-        <FrameLayout
-            android:id="@+id/detailContainer"
-            android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeContainer" />
+            app:layout_constraintTop_toBottomOf="@+id/playerContainer"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

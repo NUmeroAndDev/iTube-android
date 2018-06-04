@@ -62,17 +62,13 @@ class PlayerActivity : AppCompatActivity(),
         }
         youTubePlayerFragment.initialize(getString(R.string.api_key), this)
 
-        if (findFragment(R.id.detailContainer) == null) {
-            replace(R.id.detailContainer, DetailFragment.newInstance(videoId, channelId), false)
-        }
-
         if (findFragment(R.id.relativeContainer) == null) {
             val fragment: Fragment = if (isFavoriteVideo) {
-                RelativeFavoriteFragment.newInstance(videoId)
+                RelativeFavoriteFragment.newInstance(videoId, channelId)
             } else {
-                RelativeFragment.newInstance(videoId)
+                RelativeFragment.newInstance(videoId, channelId)
             }
-            replace(R.id.relativeContainer, fragment, false)
+            replace(R.id.relativeContainer, fragment)
         }
 
         bottomAppBar.apply {

@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import com.numero.itube.di.ApplicationComponent
 import com.numero.itube.iTubeApplication
 
-fun AppCompatActivity.replace(@IdRes res: Int, fragment: Fragment, isAddBackStack: Boolean) {
+fun AppCompatActivity.replace(@IdRes res: Int, fragment: Fragment, isAddBackStack: Boolean = false) {
     supportFragmentManager.beginTransaction().apply {
         replace(res, fragment, fragment::class.java.simpleName)
         if (isAddBackStack) {

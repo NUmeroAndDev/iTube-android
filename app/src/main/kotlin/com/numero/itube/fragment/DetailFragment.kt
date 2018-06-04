@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -84,8 +83,8 @@ class DetailFragment : Fragment(), DetailContract.View {
                     channelName,
                     channelId,
                     url,
-                    Pair(channelImageView, ViewCompat.getTransitionName(channelImageView)!!),
-                    Pair(channelNameTextView, ViewCompat.getTransitionName(channelNameTextView)!!))
+                    Pair(channelImageView, channelImageView.transitionName),
+                    Pair(channelNameTextView, channelNameTextView.transitionName))
         }
     }
 

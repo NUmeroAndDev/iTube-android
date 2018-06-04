@@ -7,14 +7,15 @@
     android:layout_margin="16dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/thumbnailImageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -31,6 +32,8 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:padding="16dp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
