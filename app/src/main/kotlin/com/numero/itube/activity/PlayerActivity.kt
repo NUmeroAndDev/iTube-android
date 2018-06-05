@@ -14,6 +14,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
 import com.numero.itube.R
+import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.extension.component
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
@@ -21,7 +22,6 @@ import com.numero.itube.fragment.DetailFragment
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
 import com.numero.itube.fragment.RelativeFavoriteFragment
 import com.numero.itube.fragment.RelativeFragment
-import com.numero.itube.model.Video
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.db.FavoriteVideo
 import kotlinx.android.synthetic.main.activity_player.*
@@ -143,7 +143,7 @@ class PlayerActivity : AppCompatActivity(),
     override fun onError(p0: YouTubePlayer.ErrorReason?) {
     }
 
-    override fun showVideo(video: Video) {
+    override fun showVideo(video: SearchResponse.Video) {
         startActivity(PlayerActivity.createIntent(this, video))
         overridePendingTransition(0, 0)
     }
@@ -170,7 +170,7 @@ class PlayerActivity : AppCompatActivity(),
         private const val BUNDLE_CHANNEL_ID = "BUNDLE_CHANNEL_ID"
         private const val BUNDLE_IS_FAVORITE_VIDEO = "BUNDLE_IS_FAVORITE_VIDEO"
 
-        fun createIntent(context: Context, video: Video): Intent = Intent(context, PlayerActivity::class.java).apply {
+        fun createIntent(context: Context, video: SearchResponse.Video): Intent = Intent(context, PlayerActivity::class.java).apply {
             putExtra(BUNDLE_TITLE, video.snippet.title)
             putExtra(BUNDLE_VIDEO_ID, video.id.videoId)
             putExtra(BUNDLE_CHANNEL_ID, video.snippet.channelId)

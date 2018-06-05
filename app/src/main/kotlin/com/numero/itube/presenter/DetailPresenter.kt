@@ -1,7 +1,7 @@
 package com.numero.itube.presenter
 
+import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.contract.DetailContract
-import com.numero.itube.model.VideoDetail
 import com.numero.itube.repository.IFavoriteVideoRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
@@ -17,7 +17,7 @@ class DetailPresenter(
         private val videoId: String,
         private val channelId: String) : DetailContract.Presenter {
 
-    private var videoDetail: VideoDetail? = null
+    private var videoDetail: VideoDetailResponse.VideoDetail? = null
     private val job = Job()
 
     init {
@@ -70,7 +70,7 @@ class DetailPresenter(
         }
     }
 
-    private fun executeRegisterFavorite(video: VideoDetail) = async(job + UI) {
+    private fun executeRegisterFavorite(video: VideoDetailResponse.VideoDetail) = async(job + UI) {
         try {
             val favoriteVideo = FavoriteVideo(
                     video.id,

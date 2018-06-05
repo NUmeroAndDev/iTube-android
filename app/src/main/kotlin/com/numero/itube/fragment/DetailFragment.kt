@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
+import com.numero.itube.api.response.ChannelResponse
+import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.contract.DetailContract
 import com.numero.itube.extension.component
-import com.numero.itube.model.Channel
-import com.numero.itube.model.VideoDetail
 import com.numero.itube.presenter.DetailPresenter
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.YoutubeRepository
@@ -69,7 +69,7 @@ class DetailFragment : Fragment(), DetailContract.View {
         presenter.unSubscribe()
     }
 
-    override fun showVideoDetail(videoDetail: VideoDetail, channel: Channel) {
+    override fun showVideoDetail(videoDetail: VideoDetailResponse.VideoDetail, channel: ChannelResponse.Channel) {
         val context = context ?: return
 
         descriptionTextView.text = videoDetail.snippet.description

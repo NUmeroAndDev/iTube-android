@@ -8,11 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.numero.itube.R
+import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
 import com.numero.itube.fragment.FavoriteFragment
 import com.numero.itube.fragment.SearchFragment
-import com.numero.itube.model.Video
 import com.numero.itube.repository.db.FavoriteVideo
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity(),
         super.onBackPressed()
     }
 
-    override fun showVideo(video: Video) {
+    override fun showVideo(video: SearchResponse.Video) {
         startActivity(PlayerActivity.createIntent(this, video))
     }
 

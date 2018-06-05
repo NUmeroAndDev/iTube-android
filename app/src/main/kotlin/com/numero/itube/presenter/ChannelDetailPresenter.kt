@@ -36,7 +36,6 @@ class ChannelDetailPresenter(
     private fun executeLoadChannelDetail(key: String, channelId: String) = async(job + UI) {
         view.showProgress()
         try {
-            val channelDetailResponse = youtubeRepository.loadChannelDetail(key, channelId).await()
             val videoResponse = youtubeRepository.loadChannelVideo(key, channelId).await()
             view.showVideoList(videoResponse.items, videoResponse.nextPageToken)
         } catch (t: Throwable) {
