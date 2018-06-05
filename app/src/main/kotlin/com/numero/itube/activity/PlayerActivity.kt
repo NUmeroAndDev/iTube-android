@@ -53,6 +53,7 @@ class PlayerActivity : AppCompatActivity(),
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
             title = this@PlayerActivity.title
         }
 

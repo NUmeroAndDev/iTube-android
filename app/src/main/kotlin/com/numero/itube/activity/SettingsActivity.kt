@@ -20,6 +20,7 @@ class SettingsActivity : AppCompatActivity(),
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         }
 
         replace(R.id.container, SettingsFragment.newInstance(), false)

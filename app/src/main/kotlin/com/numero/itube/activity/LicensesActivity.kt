@@ -14,7 +14,10 @@ class LicensesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_licenses)
         setSupportActionBar(toolbar)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+        }
 
         webView.apply {
             settings.loadWithOverviewMode = true

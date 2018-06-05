@@ -27,6 +27,7 @@ class ChannelDetailActivity : AppCompatActivity(), ChannelVideoFragment.ChannelV
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
             setDisplayShowTitleEnabled(false)
         }
 
