@@ -9,10 +9,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
+import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.contract.ChannelDetailContract
 import com.numero.itube.extension.component
-import com.numero.itube.model.ChannelDetail
-import com.numero.itube.model.Video
+import com.numero.itube.model.Thumbnail
 import com.numero.itube.presenter.ChannelDetailPresenter
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
@@ -70,15 +70,15 @@ class ChannelVideoFragment : Fragment(), ChannelDetailContract.View {
         presenter.loadChannelDetail(getString(R.string.api_key))
     }
 
-    override fun showChannelThumbnail(thumbnail: ChannelDetail.Thumbnails.Thumbnail) {
+    override fun showChannelThumbnail(thumbnail: Thumbnail) {
     }
 
-    override fun showVideoList(videoList: List<Video>, nextPageToken: String?) {
+    override fun showVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String?) {
         this.nextPageToken = nextPageToken
         videoListAdapter.videoList = videoList.toMutableList()
     }
 
-    override fun showAddedVideoList(videoList: List<Video>, nextPageToken: String?) {
+    override fun showAddedVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String?) {
         this.nextPageToken = nextPageToken
         videoListAdapter.addVideoList(videoList)
     }
@@ -101,7 +101,7 @@ class ChannelVideoFragment : Fragment(), ChannelDetailContract.View {
     interface ChannelVideoFragmentListener {
         fun showChannelThumbnail(urlString: String)
 
-        fun showVideo(video: Video)
+        fun showVideo(video: SearchResponse.Video)
     }
 
     companion object {

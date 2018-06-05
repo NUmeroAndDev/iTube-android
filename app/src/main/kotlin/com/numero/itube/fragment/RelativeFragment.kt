@@ -9,11 +9,11 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
+import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.contract.RelativeContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
-import com.numero.itube.model.Video
 import com.numero.itube.presenter.RelativePresenter
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.adapter.RelativeVideoListAdapter
@@ -83,7 +83,7 @@ class RelativeFragment : Fragment(), RelativeContract.View {
         presenter.unSubscribe()
     }
 
-    override fun showVideoList(videoList: List<Video>) {
+    override fun showVideoList(videoList: List<SearchResponse.Video>) {
         videoListAdapter.videoList = videoList
     }
 
@@ -104,7 +104,7 @@ class RelativeFragment : Fragment(), RelativeContract.View {
     }
 
     interface RelativeFragmentListener {
-        fun showVideo(video: Video)
+        fun showVideo(video: SearchResponse.Video)
     }
 
     companion object {

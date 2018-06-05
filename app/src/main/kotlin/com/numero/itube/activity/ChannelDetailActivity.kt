@@ -8,10 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
+import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
 import com.numero.itube.fragment.ChannelVideoFragment
-import com.numero.itube.model.Video
 import kotlinx.android.synthetic.main.activity_channel_detail.*
 
 class ChannelDetailActivity : AppCompatActivity(), ChannelVideoFragment.ChannelVideoFragmentListener {
@@ -52,7 +52,7 @@ class ChannelDetailActivity : AppCompatActivity(), ChannelVideoFragment.ChannelV
 
     }
 
-    override fun showVideo(video: Video) {
+    override fun showVideo(video: SearchResponse.Video) {
         startActivity(PlayerActivity.createIntent(this, video))
     }
 

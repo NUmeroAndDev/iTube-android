@@ -1,18 +1,18 @@
 package com.numero.itube.contract
 
-import com.numero.itube.model.ChannelDetail
-import com.numero.itube.model.Video
+import com.numero.itube.api.response.SearchResponse
+import com.numero.itube.model.Thumbnail
 import com.numero.itube.presenter.IPresenter
 import com.numero.itube.view.IView
 
 interface ChannelDetailContract {
 
     interface View : IView<Presenter> {
-        fun showChannelThumbnail(thumbnail: ChannelDetail.Thumbnails.Thumbnail)
+        fun showChannelThumbnail(thumbnail: Thumbnail)
 
-        fun showVideoList(videoList: List<Video>, nextPageToken: String? = null)
+        fun showVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String? = null)
 
-        fun showAddedVideoList(videoList: List<Video>, nextPageToken: String? = null)
+        fun showAddedVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String? = null)
 
         fun showErrorMessage(e: Throwable?)
 

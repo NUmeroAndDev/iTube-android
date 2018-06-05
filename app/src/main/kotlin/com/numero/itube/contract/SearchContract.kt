@@ -1,15 +1,15 @@
 package com.numero.itube.contract
 
-import com.numero.itube.model.Video
+import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.presenter.IPresenter
 import com.numero.itube.view.IView
 
 interface SearchContract {
 
     interface View : IView<Presenter> {
-        fun showVideoList(videoList: List<Video>, nextPageToken: String? = null)
+        fun showVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String? = null)
 
-        fun addVideoList(videoList: List<Video>, nextPageToken: String? = null)
+        fun addVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String? = null)
 
         fun clearVideoList()
 

@@ -9,10 +9,10 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
+import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.contract.SearchContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.hideKeyboard
-import com.numero.itube.model.Video
 import com.numero.itube.presenter.SearchPresenter
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
@@ -82,12 +82,12 @@ class SearchFragment : Fragment(), SearchContract.View {
         }
     }
 
-    override fun showVideoList(videoList: List<Video>, nextPageToken: String?) {
+    override fun showVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String?) {
         this.nextPageToken = nextPageToken
         videoListAdapter.videoList = videoList.toMutableList()
     }
 
-    override fun addVideoList(videoList: List<Video>, nextPageToken: String?) {
+    override fun addVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String?) {
         this.nextPageToken = nextPageToken
         videoListAdapter.addVideoList(videoList)
     }
@@ -123,7 +123,7 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     interface SearchFragmentListener {
-        fun showVideo(video: Video)
+        fun showVideo(video: SearchResponse.Video)
     }
 
     companion object {

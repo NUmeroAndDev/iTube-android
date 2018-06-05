@@ -6,25 +6,25 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.numero.itube.R
-import com.numero.itube.model.Video
+import com.numero.itube.api.response.SearchResponse
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.view_holder_video.*
 
 class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoViewHolder>() {
 
-    var videoList: MutableList<Video> = mutableListOf()
+    var videoList: MutableList<SearchResponse.Video> = mutableListOf()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    private var onItemClickListener: ((video: Video) -> Unit)? = null
+    private var onItemClickListener: ((video: SearchResponse.Video) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: ((video: Video) -> Unit)) {
+    fun setOnItemClickListener(listener: ((video: SearchResponse.Video) -> Unit)) {
         onItemClickListener = listener
     }
 
-    fun addVideoList(list: List<Video>) {
+    fun addVideoList(list: List<SearchResponse.Video>) {
         videoList.addAll(list)
         notifyDataSetChanged()
     }
@@ -45,7 +45,7 @@ class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoViewHolder>(
 
     class VideoViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun setVideo(video: Video) {
+        fun setVideo(video: SearchResponse.Video) {
             titleTextView.text = video.snippet.title
             Glide.with(itemView.context).load(video.snippet.thumbnails.high.url).into(thumbnailImageView)
 //                    .diskCacheStrategy(DiskCacheStrategy.NONE)
