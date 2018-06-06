@@ -13,22 +13,22 @@ import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.VideoDetailResponse
-import com.numero.itube.contract.DetailContract
+import com.numero.itube.contract.VideoDetailContract
 import com.numero.itube.extension.component
-import com.numero.itube.presenter.DetailPresenter
+import com.numero.itube.presenter.VideoDetailPresenter
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.YoutubeRepository
-import kotlinx.android.synthetic.main.fragment_detail.*
+import kotlinx.android.synthetic.main.fragment_video_detail.*
 import javax.inject.Inject
 
-class DetailFragment : Fragment(), DetailContract.View {
+class VideoDetailFragment : Fragment(), VideoDetailContract.View {
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
     @Inject
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
 
-    private lateinit var presenter: DetailContract.Presenter
+    private lateinit var presenter: VideoDetailContract.Presenter
     private lateinit var channelId: String
     private var listener: DetailFragmentListener? = null
 
@@ -46,11 +46,11 @@ class DetailFragment : Fragment(), DetailContract.View {
         val arguments = arguments ?: return
         val videoId = arguments.getString(ARG_VIDEO_ID)
         channelId = arguments.getString(ARG_CHANNEL_ID)
-        DetailPresenter(this, youtubeRepository, favoriteVideoRepository, videoId, channelId)
+        VideoDetailPresenter(this, youtubeRepository, favoriteVideoRepository, videoId, channelId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        return inflater.inflate(R.layout.fragment_video_detail, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -104,7 +104,7 @@ class DetailFragment : Fragment(), DetailContract.View {
         listener?.onIsRegisteredFavorite(isRegistered)
     }
 
-    override fun setPresenter(presenter: DetailContract.Presenter) {
+    override fun setPresenter(presenter: VideoDetailContract.Presenter) {
         this.presenter = presenter
     }
 
@@ -126,7 +126,7 @@ class DetailFragment : Fragment(), DetailContract.View {
         private const val ARG_VIDEO_ID = "ARG_VIDEO_ID"
         private const val ARG_CHANNEL_ID = "ARG_CHANNEL_ID"
 
-        fun newInstance(videoId: String, channelId: String): DetailFragment = DetailFragment().apply {
+        fun newInstance(videoId: String, channelId: String): VideoDetailFragment = VideoDetailFragment().apply {
             arguments = bundleOf(
                     ARG_VIDEO_ID to videoId,
                     ARG_CHANNEL_ID to channelId)

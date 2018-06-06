@@ -57,7 +57,7 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         if (findFragment(R.id.detailContainer) == null) {
-            replace(R.id.detailContainer, DetailFragment.newInstance(videoId, channelId))
+            replace(R.id.detailContainer, VideoDetailFragment.newInstance(videoId, channelId))
         }
 
         videoListAdapter.apply {

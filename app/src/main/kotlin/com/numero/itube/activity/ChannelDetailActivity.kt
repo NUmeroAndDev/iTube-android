@@ -11,10 +11,10 @@ import com.numero.itube.R
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
-import com.numero.itube.fragment.ChannelVideoFragment
+import com.numero.itube.fragment.ChannelVideoListFragment
 import kotlinx.android.synthetic.main.activity_channel_detail.*
 
-class ChannelDetailActivity : AppCompatActivity(), ChannelVideoFragment.ChannelVideoFragmentListener {
+class ChannelDetailActivity : AppCompatActivity(), ChannelVideoListFragment.ChannelVideoFragmentListener {
 
     private val channelName: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_NAME) }
     private val channelId: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_ID) }
@@ -35,7 +35,7 @@ class ChannelDetailActivity : AppCompatActivity(), ChannelVideoFragment.ChannelV
         Glide.with(this).load(thumbnailUrl).apply(RequestOptions().circleCrop()).into(channelImageView)
 
         if (findFragment(R.id.container) == null) {
-            replace(R.id.container, ChannelVideoFragment.newInstance(channelId), false)
+            replace(R.id.container, ChannelVideoListFragment.newInstance(channelId), false)
         }
     }
 

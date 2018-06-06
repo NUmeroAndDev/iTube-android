@@ -13,12 +13,12 @@ import javax.inject.Singleton
     (RepositoryModule::class)
 ])
 interface ApplicationComponent {
-    fun inject(detailFragment: DetailFragment)
-    fun inject(favoriteFragment: FavoriteFragment)
+    fun inject(videoDetailFragment: VideoDetailFragment)
+    fun inject(favoriteVideoListFragment: FavoriteVideoListFragment)
     fun inject(relativeFavoriteFragment: RelativeFavoriteFragment)
     fun inject(relativeFragment: RelativeFragment)
     fun inject(searchFragment: SearchFragment)
-    fun inject(channelVideoFragment: ChannelVideoFragment)
+    fun inject(channelVideoListFragment: ChannelVideoListFragment)
 
     fun inject(playerActivity: PlayerActivity)
 }

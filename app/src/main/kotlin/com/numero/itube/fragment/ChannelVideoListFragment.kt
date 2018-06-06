@@ -10,23 +10,23 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.api.response.SearchResponse
-import com.numero.itube.contract.ChannelDetailContract
+import com.numero.itube.contract.ChannelVideoListContract
 import com.numero.itube.extension.component
 import com.numero.itube.model.Thumbnail
-import com.numero.itube.presenter.ChannelDetailPresenter
+import com.numero.itube.presenter.ChannelVideoListPresenter
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.adapter.VideoListAdapter
-import kotlinx.android.synthetic.main.fragment_channel_video.*
+import kotlinx.android.synthetic.main.fragment_channel_video_list.*
 import javax.inject.Inject
 
-class ChannelVideoFragment : Fragment(), ChannelDetailContract.View {
+class ChannelVideoListFragment : Fragment(), ChannelVideoListContract.View {
 
     @Inject
     lateinit var youtubeApiRepository: YoutubeRepository
 
     private var listener: ChannelVideoFragmentListener? = null
-    private lateinit var presenter: ChannelDetailContract.Presenter
+    private lateinit var presenter: ChannelVideoListContract.Presenter
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
     private var nextPageToken: String? = null
 
@@ -44,12 +44,12 @@ class ChannelVideoFragment : Fragment(), ChannelDetailContract.View {
         val arguments = arguments ?: return
         val channelId = arguments.getString(ARG_CHANNEL_ID)
 
-        ChannelDetailPresenter(this, youtubeApiRepository, channelId)
+        ChannelVideoListPresenter(this, youtubeApiRepository, channelId)
         presenter.loadChannelDetail(getString(R.string.api_key))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_channel_video, container, false)
+        return inflater.inflate(R.layout.fragment_channel_video_list, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,7 +94,7 @@ class ChannelVideoFragment : Fragment(), ChannelDetailContract.View {
         progressView.hide()
     }
 
-    override fun setPresenter(presenter: ChannelDetailContract.Presenter) {
+    override fun setPresenter(presenter: ChannelVideoListContract.Presenter) {
         this.presenter = presenter
     }
 
@@ -107,7 +107,7 @@ class ChannelVideoFragment : Fragment(), ChannelDetailContract.View {
     companion object {
         private const val ARG_CHANNEL_ID = "ARG_CHANNEL_ID"
 
-        fun newInstance(channelId: String): ChannelVideoFragment = ChannelVideoFragment().apply {
+        fun newInstance(channelId: String): ChannelVideoListFragment = ChannelVideoListFragment().apply {
             arguments = bundleOf(ARG_CHANNEL_ID to channelId)
         }
     }

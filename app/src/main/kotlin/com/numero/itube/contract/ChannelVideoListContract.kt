@@ -5,7 +5,7 @@ import com.numero.itube.model.Thumbnail
 import com.numero.itube.presenter.IPresenter
 import com.numero.itube.view.IView
 
-interface ChannelDetailContract {
+interface ChannelVideoListContract {
 
     interface View : IView<Presenter> {
         fun showChannelThumbnail(thumbnail: Thumbnail)

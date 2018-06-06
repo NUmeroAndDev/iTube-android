@@ -1,7 +1,7 @@
 package com.numero.itube.presenter
 
 import com.numero.itube.api.response.VideoDetailResponse
-import com.numero.itube.contract.DetailContract
+import com.numero.itube.contract.VideoDetailContract
 import com.numero.itube.repository.IFavoriteVideoRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
@@ -10,12 +10,12 @@ import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.cancelChildren
 
-class DetailPresenter(
-        private val view: DetailContract.View,
+class VideoDetailPresenter(
+        private val view: VideoDetailContract.View,
         private val youtubeRepository: IYoutubeRepository,
         private val favoriteRepository: IFavoriteVideoRepository,
         private val videoId: String,
-        private val channelId: String) : DetailContract.Presenter {
+        private val channelId: String) : VideoDetailContract.Presenter {
 
     private var videoDetail: VideoDetailResponse.VideoDetail? = null
     private val job = Job()

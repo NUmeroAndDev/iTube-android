@@ -4,7 +4,7 @@ import com.numero.itube.presenter.IPresenter
 import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.view.IView
 
-interface FavoriteContract {
+interface FavoriteVideoListContract {
 
     interface View : IView<Presenter> {
         fun showVideoList(videoList: List<FavoriteVideo>)
