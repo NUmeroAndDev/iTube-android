@@ -100,8 +100,11 @@ class SearchFragment : Fragment(), SearchContract.View {
 
     }
 
-    override fun showErrorMessage(e: Throwable?) {
+    override fun showErrorMessage(e: Throwable?, retryListener: (() -> Unit)?) {
         errorGroup.visibility = View.VISIBLE
+        retryButton.setOnClickListener {
+            retryListener?.invoke()
+        }
     }
 
     override fun hideErrorMessage() {

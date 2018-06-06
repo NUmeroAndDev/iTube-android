@@ -83,7 +83,7 @@ class ChannelVideoListFragment : Fragment(), ChannelVideoListContract.View {
         videoListAdapter.addVideoList(videoList)
     }
 
-    override fun showErrorMessage(e: Throwable?) {
+    override fun showErrorMessage(e: Throwable?, retryListener: (() -> Unit)?) {
     }
 
     override fun hideErrorMessage() {

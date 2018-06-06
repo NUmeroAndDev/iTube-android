@@ -87,7 +87,7 @@ class RelativeFragment : Fragment(), RelativeContract.View {
         videoListAdapter.videoList = videoList
     }
 
-    override fun showErrorMessage(e: Throwable?) {
+    override fun showErrorMessage(e: Throwable?, retryListener: (() -> Unit)?) {
         e?.printStackTrace()
     }
 

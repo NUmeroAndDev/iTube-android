@@ -40,7 +40,9 @@ class SearchPresenter(
             }
         } catch (t: Throwable) {
             if (nestPageToken == null) {
-                view.showErrorMessage(t)
+                view.showErrorMessage(t, {
+                    executeSearch(key, searchWord, nestPageToken)
+                })
             }
             //TODO ページングでエラー出た時の処理
         } finally {
