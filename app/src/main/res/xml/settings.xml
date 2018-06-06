@@ -3,6 +3,6 @@
 
     <PreferenceScreen
         android:key="licenses"
-        android:title="Licenses" />
+        android:title="@string/licenses" />
 
 </PreferenceScreen>
