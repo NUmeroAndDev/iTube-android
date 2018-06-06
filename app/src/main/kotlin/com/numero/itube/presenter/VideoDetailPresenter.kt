@@ -65,9 +65,7 @@ class VideoDetailPresenter(
 
             view.showVideoDetail(videoDetailResponse.items[0], channelResponse.items[0])
         } catch (t: Throwable) {
-            view.showErrorMessage(t, {
-                executeLoadDetail(key, id, channelId)
-            })
+            view.showErrorMessage(t)
         } finally {
             view.dismissProgress()
         }

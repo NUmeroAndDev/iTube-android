@@ -78,7 +78,7 @@ class FavoriteVideoListFragment : Fragment(), FavoriteVideoListContract.View {
         noFavoriteVideoTextView.visibility = View.INVISIBLE
     }
 
-    override fun showErrorMessage(e: Throwable?, retryListener: (() -> Unit)?) {
+    override fun showErrorMessage(e: Throwable?) {
         e?.printStackTrace()
     }
 

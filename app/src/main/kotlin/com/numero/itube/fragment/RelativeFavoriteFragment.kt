@@ -90,7 +90,7 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
         videoListAdapter.videoList = videoList
     }
 
-    override fun showErrorMessage(e: Throwable?, retryListener: (() -> Unit)?) {
+    override fun showErrorMessage(e: Throwable?) {
         e?.printStackTrace()
     }
 
