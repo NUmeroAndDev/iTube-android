@@ -5,7 +5,7 @@ import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.presenter.IPresenter
 import com.numero.itube.view.IView
 
-interface DetailContract {
+interface VideoDetailContract {
 
     interface View : IView<Presenter> {
         fun showVideoDetail(videoDetail: VideoDetailResponse.VideoDetail, channel: ChannelResponse.Channel)

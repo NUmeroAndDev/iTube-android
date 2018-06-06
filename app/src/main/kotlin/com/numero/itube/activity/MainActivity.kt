@@ -11,14 +11,14 @@ import com.numero.itube.R
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
-import com.numero.itube.fragment.FavoriteFragment
+import com.numero.itube.fragment.FavoriteVideoListFragment
 import com.numero.itube.fragment.SearchFragment
 import com.numero.itube.repository.db.FavoriteVideo
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
         SearchFragment.SearchFragmentListener,
-        FavoriteFragment.FavoriteFragmentListener,
+        FavoriteVideoListFragment.FavoriteFragmentListener,
         Toolbar.OnMenuItemClickListener {
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity(),
         }
 
         if (findFragment(R.id.container) == null) {
-            replace(R.id.container, FavoriteFragment.newInstance(), false)
+            replace(R.id.container, FavoriteVideoListFragment.newInstance(), false)
         }
         if (findFragment(R.id.searchContainer) == null) {
             replace(R.id.searchContainer, SearchFragment.newInstance(), false)
