@@ -14,7 +14,7 @@ import com.numero.itube.presenter.FavoriteVideoListPresenter
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.view.adapter.FavoriteVideoListAdapter
-import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.fragment_favorite_video_list.*
 import javax.inject.Inject
 
 class FavoriteVideoListFragment : Fragment(), FavoriteVideoListContract.View {
@@ -71,11 +71,18 @@ class FavoriteVideoListFragment : Fragment(), FavoriteVideoListContract.View {
     }
 
     override fun showEmptyMessage() {
+        noFavoriteVideoTextView.visibility = View.VISIBLE
+    }
 
+    override fun hideEmptyMessage() {
+        noFavoriteVideoTextView.visibility = View.INVISIBLE
     }
 
     override fun showErrorMessage(e: Throwable?) {
         e?.printStackTrace()
+    }
+
+    override fun hideErrorMessage() {
     }
 
     override fun showProgress() {

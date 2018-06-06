@@ -52,6 +52,10 @@ class SearchFragment : Fragment(), SearchContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        retryButton.setOnClickListener {
+            val word = searchWord ?: return@setOnClickListener
+            presenter.search(getString(R.string.api_key), word)
+        }
 
         searchEditText.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
@@ -101,7 +105,11 @@ class SearchFragment : Fragment(), SearchContract.View {
     }
 
     override fun showErrorMessage(e: Throwable?) {
-        e?.printStackTrace()
+        errorGroup.visibility = View.VISIBLE
+    }
+
+    override fun hideErrorMessage() {
+        errorGroup.visibility = View.GONE
     }
 
     override fun showProgress() {

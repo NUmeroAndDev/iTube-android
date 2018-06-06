@@ -56,6 +56,10 @@ class VideoDetailFragment : Fragment(), VideoDetailContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        retryButton.setOnClickListener {
+            presenter.loadDetail(getString(R.string.api_key))
+        }
+
         presenter.loadDetail(getString(R.string.api_key))
     }
 
@@ -89,7 +93,11 @@ class VideoDetailFragment : Fragment(), VideoDetailContract.View {
     }
 
     override fun showErrorMessage(e: Throwable?) {
-        e?.printStackTrace()
+        errorGroup.visibility = View.VISIBLE
+    }
+
+    override fun hideErrorMessage() {
+        errorGroup.visibility = View.GONE
     }
 
     override fun showProgress() {

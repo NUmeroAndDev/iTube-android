@@ -55,6 +55,7 @@ class VideoDetailPresenter(
     }
 
     private fun executeLoadDetail(key: String, id: String, channelId: String) = async(job + UI) {
+        view.hideErrorMessage()
         view.showProgress()
         try {
             val videoDetailResponse = youtubeRepository.loadDetail(key, id).await()

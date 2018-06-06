@@ -94,6 +94,9 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
         e?.printStackTrace()
     }
 
+    override fun hideErrorMessage() {
+    }
+
     override fun showProgress() {
 
     }

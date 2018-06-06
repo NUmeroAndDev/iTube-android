@@ -2,11 +2,13 @@ package com.numero.itube.contract
 
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.presenter.IPresenter
+import com.numero.itube.view.IErrorHandle
+import com.numero.itube.view.IProgressHandle
 import com.numero.itube.view.IView
 
 interface SearchContract {
 
-    interface View : IView<Presenter> {
+    interface View : IView<Presenter>, IErrorHandle, IProgressHandle {
         fun showVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String? = null)
 
         fun addVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String? = null)
@@ -14,12 +16,6 @@ interface SearchContract {
         fun clearVideoList()
 
         fun showEmptyMessage()
-
-        fun showErrorMessage(e: Throwable?)
-
-        fun showProgress()
-
-        fun dismissProgress()
     }
 
     interface Presenter : IPresenter {

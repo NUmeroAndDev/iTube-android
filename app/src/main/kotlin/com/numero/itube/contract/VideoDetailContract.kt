@@ -3,18 +3,14 @@ package com.numero.itube.contract
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.presenter.IPresenter
+import com.numero.itube.view.IErrorHandle
+import com.numero.itube.view.IProgressHandle
 import com.numero.itube.view.IView
 
 interface VideoDetailContract {
 
-    interface View : IView<Presenter> {
+    interface View : IView<Presenter>, IErrorHandle, IProgressHandle {
         fun showVideoDetail(videoDetail: VideoDetailResponse.VideoDetail, channel: ChannelResponse.Channel)
-
-        fun showErrorMessage(e: Throwable?)
-
-        fun showProgress()
-
-        fun dismissProgress()
 
         fun registeredFavorite(isRegistered: Boolean)
     }
