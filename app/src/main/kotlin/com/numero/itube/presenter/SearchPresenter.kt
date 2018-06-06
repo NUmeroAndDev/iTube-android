@@ -29,6 +29,7 @@ class SearchPresenter(
     }
 
     private fun executeSearch(key: String, searchWord: String, nestPageToken: String?) = async(job + UI) {
+        view.hideErrorMessage()
         view.showProgress()
         try {
             val response = youtubeRepository.search(key, searchWord, nestPageToken).await()
@@ -38,7 +39,10 @@ class SearchPresenter(
                 view.addVideoList(response.items, response.nextPageToken)
             }
         } catch (t: Throwable) {
-            view.showErrorMessage(t)
+            if (nestPageToken == null) {
+                view.showErrorMessage(t)
+            }
+            //TODO ページングでエラー出た時の処理
         } finally {
             view.dismissProgress()
         }
