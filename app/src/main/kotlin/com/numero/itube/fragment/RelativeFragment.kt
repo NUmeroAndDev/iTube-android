@@ -77,6 +77,7 @@ class RelativeFragment : Fragment(), RelativeContract.View {
             presenter.loadDetail(getString(R.string.api_key))
         }
 
+        // TODO 処理をまとめる
         presenter.loadDetail(getString(R.string.api_key))
         presenter.loadRelative(getString(R.string.api_key), videoId)
     }
@@ -119,18 +120,19 @@ class RelativeFragment : Fragment(), RelativeContract.View {
     }
 
     override fun showErrorMessage(e: Throwable?) {
-        e?.printStackTrace()
+        errorGroup.visibility = View.VISIBLE
     }
 
     override fun hideErrorMessage() {
+        errorGroup.visibility = View.GONE
     }
 
     override fun showProgress() {
-
+        progressView?.show()
     }
 
     override fun dismissProgress() {
-
+        progressView?.hide()
     }
 
     override fun setPresenter(presenter: RelativeContract.Presenter) {
