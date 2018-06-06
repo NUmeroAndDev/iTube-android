@@ -40,7 +40,7 @@ data class VideoDetailResponse(
                 val def: Thumbnail,
                 val medium: Thumbnail,
                 val high: Thumbnail,
-                val standard: Thumbnail
+                val standard: Thumbnail?
         ) : Serializable
     }
 }
