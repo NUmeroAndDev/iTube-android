@@ -104,6 +104,9 @@ class SearchFragment : Fragment(), SearchContract.View {
         e?.printStackTrace()
     }
 
+    override fun hideErrorMessage() {
+    }
+
     override fun showProgress() {
         progressView?.show()
     }

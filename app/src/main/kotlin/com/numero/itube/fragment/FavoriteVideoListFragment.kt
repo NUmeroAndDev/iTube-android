@@ -82,6 +82,9 @@ class FavoriteVideoListFragment : Fragment(), FavoriteVideoListContract.View {
         e?.printStackTrace()
     }
 
+    override fun hideErrorMessage() {
+    }
+
     override fun showProgress() {
 
     }

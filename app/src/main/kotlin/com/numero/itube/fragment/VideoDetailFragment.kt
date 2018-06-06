@@ -92,6 +92,10 @@ class VideoDetailFragment : Fragment(), VideoDetailContract.View {
         e?.printStackTrace()
     }
 
+    override fun hideErrorMessage() {
+
+    }
+
     override fun showProgress() {
         progressView?.show()
     }

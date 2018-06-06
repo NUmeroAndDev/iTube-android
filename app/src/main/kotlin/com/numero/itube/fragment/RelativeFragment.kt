@@ -91,6 +91,9 @@ class RelativeFragment : Fragment(), RelativeContract.View {
         e?.printStackTrace()
     }
 
+    override fun hideErrorMessage() {
+    }
+
     override fun showProgress() {
 
     }

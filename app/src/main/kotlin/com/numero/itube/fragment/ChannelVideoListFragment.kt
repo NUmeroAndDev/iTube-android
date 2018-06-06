@@ -86,6 +86,9 @@ class ChannelVideoListFragment : Fragment(), ChannelVideoListContract.View {
     override fun showErrorMessage(e: Throwable?) {
     }
 
+    override fun hideErrorMessage() {
+    }
+
     override fun showProgress() {
         progressView.show()
     }
