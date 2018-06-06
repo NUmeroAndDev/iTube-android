@@ -2,6 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreference
+        android:icon="@drawable/ic_repeat"
         android:key="key_is_play_loop"
         android:title="ループ再生" />
 
