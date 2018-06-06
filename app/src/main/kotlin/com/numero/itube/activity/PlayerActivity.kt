@@ -18,10 +18,10 @@ import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.extension.component
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
-import com.numero.itube.fragment.VideoDetailFragment
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
 import com.numero.itube.fragment.RelativeFavoriteFragment
 import com.numero.itube.fragment.RelativeFragment
+import com.numero.itube.fragment.VideoDetailFragment
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.db.FavoriteVideo
 import kotlinx.android.synthetic.main.activity_player.*
@@ -90,7 +90,7 @@ class PlayerActivity : AppCompatActivity(),
         item ?: return false
         when (item.itemId) {
             R.id.action_settings -> {
-                PlayerSettingsBottomSheetFragment.newInstance().show(supportFragmentManager, PlayerSettingsBottomSheetFragment.TAG)
+                PlayerSettingsBottomSheetFragment.newInstance().show(supportFragmentManager)
             }
         }
         return true

@@ -13,12 +13,15 @@ import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
 import com.numero.itube.fragment.FavoriteVideoListFragment
 import com.numero.itube.fragment.SearchFragment
+import com.numero.itube.fragment.SettingsBottomSheetFragment
+import com.numero.itube.fragment.SettingsFragment
 import com.numero.itube.repository.db.FavoriteVideo
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
         SearchFragment.SearchFragmentListener,
         FavoriteVideoListFragment.FavoriteFragmentListener,
+        SettingsFragment.SettingsFragmentListener,
         Toolbar.OnMenuItemClickListener {
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<FrameLayout>
@@ -68,7 +71,9 @@ class MainActivity : AppCompatActivity(),
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         item ?: return false
         when (item.itemId) {
-            R.id.action_settings -> startActivity(SettingsActivity.createIntent(this))
+            R.id.action_settings -> {
+                SettingsBottomSheetFragment.newInstance().show(supportFragmentManager)
+            }
         }
         return true
     }
@@ -79,6 +84,10 @@ class MainActivity : AppCompatActivity(),
             return
         }
         super.onBackPressed()
+    }
+
+    override fun showLicenses() {
+        startActivity(LicensesActivity.createIntent(this))
     }
 
     override fun showVideo(video: SearchResponse.Video) {

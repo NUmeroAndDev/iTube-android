@@ -30,10 +30,6 @@
         <activity android:name=".activity.ChannelDetailActivity" />
 
         <activity
-            android:name=".activity.SettingsActivity"
-            android:label="@string/settings" />
-
-        <activity
             android:name=".activity.LicensesActivity"
             android:label="@string/licenses" />
 

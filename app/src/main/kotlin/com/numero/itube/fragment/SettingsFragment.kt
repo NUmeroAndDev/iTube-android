@@ -7,7 +7,7 @@ import com.numero.itube.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
-    private var listener: MainSettingsFragmentListener? = null
+    private var listener: SettingsFragmentListener? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
@@ -15,7 +15,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is MainSettingsFragmentListener) {
+        if (context is SettingsFragmentListener) {
             listener = context
         }
     }
@@ -29,7 +29,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    interface MainSettingsFragmentListener {
+    interface SettingsFragmentListener {
         fun showLicenses()
     }
 
