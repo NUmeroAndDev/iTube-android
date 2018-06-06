@@ -11,6 +11,8 @@ interface FavoriteVideoListContract {
 
         fun showEmptyMessage()
 
+        fun hideEmptyMessage()
+
         fun showErrorMessage(e: Throwable?)
 
         fun showProgress()

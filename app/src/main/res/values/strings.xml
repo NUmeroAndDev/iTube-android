@@ -6,4 +6,6 @@
 
     <string name="search_hint_text">検索</string>
 
+    <string name="no_favorite_message">お気に入りの動画がありません</string>
+
 </resources>
