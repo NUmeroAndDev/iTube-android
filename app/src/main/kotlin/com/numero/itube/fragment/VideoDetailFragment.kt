@@ -89,11 +89,11 @@ class VideoDetailFragment : Fragment(), VideoDetailContract.View {
     }
 
     override fun showErrorMessage(e: Throwable?) {
-        e?.printStackTrace()
+        errorGroup.visibility = View.VISIBLE
     }
 
     override fun hideErrorMessage() {
-
+        errorGroup.visibility = View.GONE
     }
 
     override fun showProgress() {

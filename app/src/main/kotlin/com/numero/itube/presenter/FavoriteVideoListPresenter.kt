@@ -26,13 +26,13 @@ class FavoriteVideoListPresenter(
     }
 
     private fun executeLoadFavorite() = async(job + UI) {
+        view.hideEmptyMessage()
         view.showProgress()
         try {
             val list = favoriteRepository.loadFavoriteVideo().await()
             if (list.isEmpty()) {
                 view.showEmptyMessage()
             } else {
-                view.hideEmptyMessage()
                 view.showVideoList(list)
             }
         } catch (t: Throwable) {
