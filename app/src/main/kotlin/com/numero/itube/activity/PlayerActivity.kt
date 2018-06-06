@@ -21,7 +21,6 @@ import com.numero.itube.extension.replace
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
 import com.numero.itube.fragment.RelativeFavoriteFragment
 import com.numero.itube.fragment.RelativeFragment
-import com.numero.itube.fragment.VideoDetailFragment
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.db.FavoriteVideo
 import kotlinx.android.synthetic.main.activity_player.*
@@ -31,7 +30,6 @@ class PlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
         RelativeFragment.RelativeFragmentListener,
         RelativeFavoriteFragment.RelativeFavoriteFragmentListener,
-        VideoDetailFragment.DetailFragmentListener,
         Toolbar.OnMenuItemClickListener,
         YouTubePlayer.PlayerStateChangeListener {
 
@@ -80,7 +78,7 @@ class PlayerActivity : AppCompatActivity(),
         fab.setOnClickListener {
             isRegistered = isRegistered.not()
             val fragment = findFragment(R.id.detailContainer)
-            if (fragment is VideoDetailFragment) {
+            if (fragment is RelativeFragment) {
                 fragment.setIsRegistered(isRegistered)
             }
         }
