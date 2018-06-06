@@ -15,7 +15,6 @@ import javax.inject.Singleton
 interface ApplicationComponent {
     fun inject(detailFragment: DetailFragment)
     fun inject(favoriteFragment: FavoriteFragment)
-    fun inject(playerSettingsBottomSheetFragment: PlayerSettingsBottomSheetFragment)
     fun inject(relativeFavoriteFragment: RelativeFavoriteFragment)
     fun inject(relativeFragment: RelativeFragment)
     fun inject(searchFragment: SearchFragment)

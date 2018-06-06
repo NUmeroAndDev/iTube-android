@@ -2,23 +2,16 @@ package com.numero.itube.repository
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.core.content.edit
+import android.preference.PreferenceManager
 
 class ConfigRepository(context: Context) : IConfigRepository {
 
-    private val preferences: SharedPreferences = context.getSharedPreferences(CONFIG_PREFERENCE, Context.MODE_PRIVATE)
+    private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-    override var isLoop: Boolean
+    override val isLoop: Boolean
         get() = preferences.getBoolean(KEY_IS_LOOP, false)
-        set(value) {
-            preferences.edit {
-                putBoolean(KEY_IS_LOOP, value)
-            }
-        }
 
     companion object {
-        private const val CONFIG_PREFERENCE = "CONFIG_PREFERENCE"
-
-        private const val KEY_IS_LOOP = "KEY_IS_LOOP"
+        private const val KEY_IS_LOOP = "key_is_play_loop"
     }
 }

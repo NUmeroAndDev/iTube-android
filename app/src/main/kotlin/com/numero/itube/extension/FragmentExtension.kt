@@ -29,6 +29,11 @@ fun Fragment.replace(@IdRes res: Int, fragment: Fragment, isAddBackStack: Boolea
     }.commit()
 }
 
+fun Fragment.remove(fragment: Fragment) {
+    val fragmentManager = fragmentManager ?: return
+    fragmentManager.beginTransaction().remove(fragment).commit()
+}
+
 fun Fragment.findFragment(@IdRes byId: Int): Fragment? {
     return fragmentManager?.findFragmentById(byId)
 }
