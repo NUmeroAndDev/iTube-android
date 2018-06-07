@@ -77,9 +77,7 @@ class RelativeFragment : Fragment(), RelativeContract.View {
             presenter.loadDetail(getString(R.string.api_key))
         }
 
-        // TODO 処理をまとめる
         presenter.loadDetail(getString(R.string.api_key))
-        presenter.loadRelative(getString(R.string.api_key), videoId)
     }
 
     override fun onResume() {

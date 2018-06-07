@@ -33,10 +33,6 @@ class RelativePresenter(
         job.cancelChildren()
     }
 
-    override fun loadRelative(key: String, videoId: String) {
-        executeLoadRelative(key, videoId)
-    }
-
     override fun loadDetail(key: String) {
         executeLoadDetail(key, videoId, channelId)
     }
@@ -48,18 +44,6 @@ class RelativePresenter(
 
     override fun unregisterFavorite() {
         executeUnregisterFavorite(videoId)
-    }
-
-    private fun executeLoadRelative(key: String, id: String) = async(job + UI) {
-        view.showProgress()
-        try {
-            val response = youtubeRepository.loadRelative(key, id).await()
-            view.showVideoList(response.items)
-        } catch (t: Throwable) {
-            view.showErrorMessage(t)
-        } finally {
-            view.dismissProgress()
-        }
     }
 
     private fun executeCheckFavorite(videoId: String) = async(job + UI) {
@@ -80,6 +64,9 @@ class RelativePresenter(
 
             val channelResponse = youtubeRepository.loadChannel(key, channelId).await()
 
+            val relativeVideoResponse = youtubeRepository.loadRelative(key, id).await()
+
+            view.showVideoList(relativeVideoResponse.items)
             view.showVideoDetail(videoDetailResponse.items[0], channelResponse.items[0])
         } catch (t: Throwable) {
             view.showErrorMessage(t)

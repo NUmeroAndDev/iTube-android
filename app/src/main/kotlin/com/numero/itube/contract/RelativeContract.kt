@@ -19,8 +19,6 @@ interface RelativeContract {
     }
 
     interface Presenter : IPresenter {
-        fun loadRelative(key: String, videoId: String)
-
         fun loadDetail(key: String)
 
         fun registerFavorite()
