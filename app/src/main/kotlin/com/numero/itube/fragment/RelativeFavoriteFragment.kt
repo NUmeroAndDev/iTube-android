@@ -2,26 +2,33 @@ package com.numero.itube.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
+import com.numero.itube.api.response.ChannelResponse
+import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.contract.RelativeFavoriteContract
 import com.numero.itube.extension.component
-import com.numero.itube.extension.findFragment
-import com.numero.itube.extension.replace
 import com.numero.itube.presenter.RelativeFavoritePresenter
 import com.numero.itube.repository.FavoriteVideoRepository
+import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.view.adapter.RelativeFavoriteVideoListAdapter
 import kotlinx.android.synthetic.main.fragment_relative_favorite.*
+import kotlinx.android.synthetic.main.fragment_video_detail.*
 import javax.inject.Inject
 
 class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
 
+    @Inject
+    lateinit var youtubeRepository: YoutubeRepository
     @Inject
     lateinit var favoriteRepository: FavoriteVideoRepository
 
@@ -46,7 +53,7 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
         videoId = arguments.getString(ARG_VIDEO_ID)
         channelId = arguments.getString(ARG_CHANNEL_ID)
 
-        RelativeFavoritePresenter(this, favoriteRepository)
+        RelativeFavoritePresenter(this, youtubeRepository, favoriteRepository, videoId, channelId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,10 +62,6 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if (findFragment(R.id.detailContainer) == null) {
-            replace(R.id.detailContainer, VideoDetailFragment.newInstance(videoId, channelId))
-        }
 
         videoListAdapter.apply {
             setOnItemClickListener {
@@ -73,7 +76,11 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
             adapter = videoListAdapter
         }
 
-        presenter.loadFavoriteList()
+        retryButton.setOnClickListener {
+            presenter.loadDetail(getString(R.string.api_key))
+        }
+
+        presenter.loadDetail(getString(R.string.api_key))
     }
 
     override fun onResume() {
@@ -90,19 +97,43 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
         videoListAdapter.videoList = videoList
     }
 
+    override fun showVideoDetail(videoDetail: VideoDetailResponse.VideoDetail, channel: ChannelResponse.Channel) {
+        val context = context ?: return
+
+        descriptionTextView.text = videoDetail.snippet.description
+        channelNameTextView.text = channel.snippet.title
+
+        val url = channel.snippet.thumbnails.medium.url
+        Glide.with(context).load(url).apply(RequestOptions().circleCrop()).into(channelImageView)
+        channelLayout.setOnClickListener {
+            val channelName = channelNameTextView.text.toString()
+            listener?.onClickChannel(
+                    channelName,
+                    channelId,
+                    url,
+                    Pair(channelImageView, channelImageView.transitionName),
+                    Pair(channelNameTextView, channelNameTextView.transitionName))
+        }
+    }
+
+    override fun registeredFavorite(isRegistered: Boolean) {
+        listener?.onIsRegisteredFavorite(isRegistered)
+    }
+
     override fun showErrorMessage(e: Throwable?) {
-        e?.printStackTrace()
+        errorGroup.visibility = View.VISIBLE
     }
 
     override fun hideErrorMessage() {
+        errorGroup.visibility = View.GONE
     }
 
     override fun showProgress() {
-
+        progressView?.show()
     }
 
     override fun dismissProgress() {
-
+        progressView?.hide()
     }
 
     override fun setPresenter(presenter: RelativeFavoriteContract.Presenter) {
@@ -113,8 +144,20 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
         videoListAdapter.playNextVideo()
     }
 
+    fun setIsRegistered(isRegistered: Boolean) {
+        if (isRegistered) {
+            presenter.registerFavorite()
+        } else {
+            presenter.unregisterFavorite()
+        }
+    }
+
     interface RelativeFavoriteFragmentListener {
         fun showVideo(video: FavoriteVideo)
+
+        fun onIsRegisteredFavorite(isRegisteredFavorite: Boolean)
+
+        fun onClickChannel(channelName: String, channelId: String, thumbnailUrl: String, vararg transitionViews: Pair<View, String>)
     }
 
     companion object {

@@ -18,7 +18,6 @@ class RelativePresenter(
         private val channelId: String) : RelativeContract.Presenter {
 
     private var videoDetail: VideoDetailResponse.VideoDetail? = null
-
     private val job = Job()
 
     init {

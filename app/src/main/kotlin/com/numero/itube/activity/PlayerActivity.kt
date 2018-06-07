@@ -77,9 +77,10 @@ class PlayerActivity : AppCompatActivity(),
 
         fab.setOnClickListener {
             isRegistered = isRegistered.not()
-            val fragment = findFragment(R.id.detailContainer)
-            if (fragment is RelativeFragment) {
-                fragment.setIsRegistered(isRegistered)
+            val fragment = findFragment(R.id.relativeContainer)
+            when (fragment) {
+                is RelativeFragment -> fragment.setIsRegistered(isRegistered)
+                is RelativeFavoriteFragment -> fragment.setIsRegistered(isRegistered)
             }
         }
     }
