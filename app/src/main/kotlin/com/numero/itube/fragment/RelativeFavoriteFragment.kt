@@ -22,7 +22,7 @@ import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.view.adapter.RelativeFavoriteVideoListAdapter
 import kotlinx.android.synthetic.main.fragment_relative_favorite.*
-import kotlinx.android.synthetic.main.fragment_video_detail.*
+import kotlinx.android.synthetic.main.container_video_detail.*
 import javax.inject.Inject
 
 class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
