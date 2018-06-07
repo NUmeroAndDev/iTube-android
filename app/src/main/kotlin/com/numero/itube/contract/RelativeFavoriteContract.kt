@@ -8,11 +8,11 @@ import com.numero.itube.view.IView
 
 interface RelativeFavoriteContract {
 
-    interface View : IView<Presenter>, IErrorHandle, IProgressHandle {
+    interface View : IView<Presenter>, BaseRelativeContract.IBaseRelativeView, IErrorHandle, IProgressHandle {
         fun showVideoList(videoList: List<FavoriteVideo>)
     }
 
-    interface Presenter : IPresenter {
-        fun loadFavoriteList()
+    interface Presenter : IPresenter, BaseRelativeContract.IBaseRelativePresenter {
+        fun loadDetail(key: String)
     }
 }

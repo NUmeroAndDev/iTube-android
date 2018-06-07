@@ -6,30 +6,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.contract.RelativeContract
 import com.numero.itube.extension.component
-import com.numero.itube.extension.findFragment
-import com.numero.itube.extension.replace
 import com.numero.itube.presenter.RelativePresenter
+import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.adapter.RelativeVideoListAdapter
 import kotlinx.android.synthetic.main.fragment_relative.*
 import javax.inject.Inject
 
-class RelativeFragment : Fragment(), RelativeContract.View {
+class RelativeFragment : BaseRelativeFragment(), RelativeContract.View {
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
+    @Inject
+    lateinit var favoriteVideoRepository: FavoriteVideoRepository
 
     private lateinit var presenter: RelativeContract.Presenter
     private val videoListAdapter: RelativeVideoListAdapter = RelativeVideoListAdapter()
     private var listener: RelativeFragmentListener? = null
-    private lateinit var videoId: String
-    private lateinit var channelId: String
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -43,10 +41,10 @@ class RelativeFragment : Fragment(), RelativeContract.View {
         component?.inject(this)
 
         val arguments = arguments ?: return
-        videoId = arguments.getString(ARG_VIDEO_ID)
-        channelId = arguments.getString(ARG_CHANNEL_ID)
+        val videoId = arguments.getString(ARG_VIDEO_ID)
+        val channelId = arguments.getString(ARG_CHANNEL_ID)
 
-        RelativePresenter(this, youtubeRepository)
+        RelativePresenter(this, youtubeRepository, favoriteVideoRepository, videoId, channelId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,10 +53,6 @@ class RelativeFragment : Fragment(), RelativeContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if (findFragment(R.id.detailContainer) == null) {
-            replace(R.id.detailContainer, VideoDetailFragment.newInstance(videoId, channelId))
-        }
 
         videoListAdapter.setOnItemClickListener {
             // 再生画面へ遷移
@@ -70,7 +64,11 @@ class RelativeFragment : Fragment(), RelativeContract.View {
             adapter = videoListAdapter
         }
 
-        presenter.loadRelative(getString(R.string.api_key), videoId)
+        retryButton.setOnClickListener {
+            presenter.loadDetail(getString(R.string.api_key))
+        }
+
+        presenter.loadDetail(getString(R.string.api_key))
     }
 
     override fun onResume() {
@@ -88,25 +86,34 @@ class RelativeFragment : Fragment(), RelativeContract.View {
     }
 
     override fun showErrorMessage(e: Throwable?) {
-        e?.printStackTrace()
+        errorGroup.visibility = View.VISIBLE
     }
 
     override fun hideErrorMessage() {
+        errorGroup.visibility = View.GONE
     }
 
     override fun showProgress() {
-
+        progressView?.show()
     }
 
     override fun dismissProgress() {
-
+        progressView?.hide()
     }
 
     override fun setPresenter(presenter: RelativeContract.Presenter) {
         this.presenter = presenter
     }
 
-    interface RelativeFragmentListener {
+    override fun setIsRegistered(isRegistered: Boolean) {
+        if (isRegistered) {
+            presenter.registerFavorite()
+        } else {
+            presenter.unregisterFavorite()
+        }
+    }
+
+    interface RelativeFragmentListener : BaseRelativeFragmentListener {
         fun showVideo(video: SearchResponse.Video)
     }
 

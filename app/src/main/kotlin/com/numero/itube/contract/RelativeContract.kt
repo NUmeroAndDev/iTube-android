@@ -8,11 +8,11 @@ import com.numero.itube.view.IView
 
 interface RelativeContract {
 
-    interface View : IView<Presenter>, IErrorHandle, IProgressHandle {
+    interface View : IView<Presenter>, BaseRelativeContract.IBaseRelativeView, IErrorHandle, IProgressHandle {
         fun showVideoList(videoList: List<SearchResponse.Video>)
     }
 
-    interface Presenter : IPresenter {
-        fun loadRelative(key: String, videoId: String)
+    interface Presenter : IPresenter, BaseRelativeContract.IBaseRelativePresenter {
+        fun loadDetail(key: String)
     }
 }

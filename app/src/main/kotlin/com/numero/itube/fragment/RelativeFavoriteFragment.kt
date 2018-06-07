@@ -6,22 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.contract.RelativeFavoriteContract
 import com.numero.itube.extension.component
-import com.numero.itube.extension.findFragment
-import com.numero.itube.extension.replace
 import com.numero.itube.presenter.RelativeFavoritePresenter
 import com.numero.itube.repository.FavoriteVideoRepository
+import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.view.adapter.RelativeFavoriteVideoListAdapter
 import kotlinx.android.synthetic.main.fragment_relative_favorite.*
 import javax.inject.Inject
 
-class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
+class RelativeFavoriteFragment : BaseRelativeFragment(), RelativeFavoriteContract.View {
 
+    @Inject
+    lateinit var youtubeRepository: YoutubeRepository
     @Inject
     lateinit var favoriteRepository: FavoriteVideoRepository
 
@@ -29,7 +29,6 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
     private val videoListAdapter: RelativeFavoriteVideoListAdapter = RelativeFavoriteVideoListAdapter()
     private var listener: RelativeFavoriteFragmentListener? = null
     private lateinit var videoId: String
-    private lateinit var channelId: String
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -44,9 +43,9 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
 
         val arguments = arguments ?: return
         videoId = arguments.getString(ARG_VIDEO_ID)
-        channelId = arguments.getString(ARG_CHANNEL_ID)
+        val channelId = arguments.getString(ARG_CHANNEL_ID)
 
-        RelativeFavoritePresenter(this, favoriteRepository)
+        RelativeFavoritePresenter(this, youtubeRepository, favoriteRepository, videoId, channelId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,10 +54,6 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if (findFragment(R.id.detailContainer) == null) {
-            replace(R.id.detailContainer, VideoDetailFragment.newInstance(videoId, channelId))
-        }
 
         videoListAdapter.apply {
             setOnItemClickListener {
@@ -73,7 +68,11 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
             adapter = videoListAdapter
         }
 
-        presenter.loadFavoriteList()
+        retryButton.setOnClickListener {
+            presenter.loadDetail(getString(R.string.api_key))
+        }
+
+        presenter.loadDetail(getString(R.string.api_key))
     }
 
     override fun onResume() {
@@ -91,18 +90,19 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
     }
 
     override fun showErrorMessage(e: Throwable?) {
-        e?.printStackTrace()
+        errorGroup.visibility = View.VISIBLE
     }
 
     override fun hideErrorMessage() {
+        errorGroup.visibility = View.GONE
     }
 
     override fun showProgress() {
-
+        progressView?.show()
     }
 
     override fun dismissProgress() {
-
+        progressView?.hide()
     }
 
     override fun setPresenter(presenter: RelativeFavoriteContract.Presenter) {
@@ -113,7 +113,15 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
         videoListAdapter.playNextVideo()
     }
 
-    interface RelativeFavoriteFragmentListener {
+    override fun setIsRegistered(isRegistered: Boolean) {
+        if (isRegistered) {
+            presenter.registerFavorite()
+        } else {
+            presenter.unregisterFavorite()
+        }
+    }
+
+    interface RelativeFavoriteFragmentListener : BaseRelativeFragment.BaseRelativeFragmentListener {
         fun showVideo(video: FavoriteVideo)
     }
 
