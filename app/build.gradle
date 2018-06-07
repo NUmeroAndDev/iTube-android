@@ -10,8 +10,8 @@ apply plugin: 'com.cookpad.android.licensetools'
 
 android {
 
-    compileSdkVersion 'android-P'
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.0'
 
     defaultConfig {
         applicationId "com.numero.itube"
@@ -56,9 +56,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     implementation 'com.google.android.material:material:1.0.0-alpha1'
-    implementation 'androidx.appcompat:appcompat:1.0.0-alpha1'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0-alpha1'
-    implementation 'androidx.preference:preference:1.0.0-alpha1'
+    implementation 'androidx.appcompat:appcompat:1.0.0-alpha3'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0-alpha3'
+    implementation 'androidx.preference:preference:1.0.0-alpha3'
 
     implementation 'androidx.constraintlayout:constraintlayout:1.1.0'
 
