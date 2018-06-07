@@ -66,7 +66,7 @@ class RelativePresenter(
             val relativeVideoResponse = youtubeRepository.loadRelative(key, id).await()
 
             view.showVideoList(relativeVideoResponse.items)
-            view.showVideoDetail(videoDetailResponse.items[0], channelResponse.items[0])
+            view.showVideoDetail(videoDetailResponse.items[0], channelResponse.items[0], channelId)
         } catch (t: Throwable) {
             view.showErrorMessage(t)
         } finally {

@@ -15,6 +15,7 @@ import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
 import com.numero.itube.R
 import com.numero.itube.api.response.SearchResponse
+import com.numero.itube.contract.BaseRelativeContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
@@ -78,9 +79,8 @@ class PlayerActivity : AppCompatActivity(),
         fab.setOnClickListener {
             isRegistered = isRegistered.not()
             val fragment = findFragment(R.id.relativeContainer)
-            when (fragment) {
-                is RelativeFragment -> fragment.setIsRegistered(isRegistered)
-                is RelativeFavoriteFragment -> fragment.setIsRegistered(isRegistered)
+            if (fragment is BaseRelativeContract.IBaseRelativeView) {
+                fragment.setIsRegistered(isRegistered)
             }
         }
     }

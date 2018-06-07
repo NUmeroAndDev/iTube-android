@@ -66,7 +66,7 @@ class RelativeFavoritePresenter(
             val list = favoriteRepository.loadFavoriteVideo().await()
             view.showVideoList(list)
 
-            view.showVideoDetail(videoDetailResponse.items[0], channelResponse.items[0])
+            view.showVideoDetail(videoDetailResponse.items[0], channelResponse.items[0], channelId)
         } catch (t: Throwable) {
             view.showErrorMessage(t)
         } finally {

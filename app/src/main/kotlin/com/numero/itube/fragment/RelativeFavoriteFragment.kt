@@ -2,18 +2,12 @@ package com.numero.itube.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Pair
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
-import com.numero.itube.api.response.ChannelResponse
-import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.contract.RelativeFavoriteContract
 import com.numero.itube.extension.component
 import com.numero.itube.presenter.RelativeFavoritePresenter
@@ -22,10 +16,9 @@ import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.view.adapter.RelativeFavoriteVideoListAdapter
 import kotlinx.android.synthetic.main.fragment_relative_favorite.*
-import kotlinx.android.synthetic.main.container_video_detail.*
 import javax.inject.Inject
 
-class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
+class RelativeFavoriteFragment : BaseRelativeFragment(), RelativeFavoriteContract.View {
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
@@ -36,7 +29,6 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
     private val videoListAdapter: RelativeFavoriteVideoListAdapter = RelativeFavoriteVideoListAdapter()
     private var listener: RelativeFavoriteFragmentListener? = null
     private lateinit var videoId: String
-    private lateinit var channelId: String
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -51,7 +43,7 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
 
         val arguments = arguments ?: return
         videoId = arguments.getString(ARG_VIDEO_ID)
-        channelId = arguments.getString(ARG_CHANNEL_ID)
+        val channelId = arguments.getString(ARG_CHANNEL_ID)
 
         RelativeFavoritePresenter(this, youtubeRepository, favoriteRepository, videoId, channelId)
     }
@@ -97,29 +89,6 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
         videoListAdapter.videoList = videoList
     }
 
-    override fun showVideoDetail(videoDetail: VideoDetailResponse.VideoDetail, channel: ChannelResponse.Channel) {
-        val context = context ?: return
-
-        descriptionTextView.text = videoDetail.snippet.description
-        channelNameTextView.text = channel.snippet.title
-
-        val url = channel.snippet.thumbnails.medium.url
-        Glide.with(context).load(url).apply(RequestOptions().circleCrop()).into(channelImageView)
-        channelLayout.setOnClickListener {
-            val channelName = channelNameTextView.text.toString()
-            listener?.onClickChannel(
-                    channelName,
-                    channelId,
-                    url,
-                    Pair(channelImageView, channelImageView.transitionName),
-                    Pair(channelNameTextView, channelNameTextView.transitionName))
-        }
-    }
-
-    override fun registeredFavorite(isRegistered: Boolean) {
-        listener?.onIsRegisteredFavorite(isRegistered)
-    }
-
     override fun showErrorMessage(e: Throwable?) {
         errorGroup.visibility = View.VISIBLE
     }
@@ -144,7 +113,7 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
         videoListAdapter.playNextVideo()
     }
 
-    fun setIsRegistered(isRegistered: Boolean) {
+    override fun setIsRegistered(isRegistered: Boolean) {
         if (isRegistered) {
             presenter.registerFavorite()
         } else {
@@ -152,12 +121,8 @@ class RelativeFavoriteFragment : Fragment(), RelativeFavoriteContract.View {
         }
     }
 
-    interface RelativeFavoriteFragmentListener {
+    interface RelativeFavoriteFragmentListener : BaseRelativeFragment.BaseRelativeFragmentListener {
         fun showVideo(video: FavoriteVideo)
-
-        fun onIsRegisteredFavorite(isRegisteredFavorite: Boolean)
-
-        fun onClickChannel(channelName: String, channelId: String, thumbnailUrl: String, vararg transitionViews: Pair<View, String>)
     }
 
     companion object {
