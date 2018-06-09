@@ -1,6 +1,6 @@
 # iTube-android
 
-![Android Studio](https://img.shields.io/badge/Android%20Studio-3.2%20Canary16-green.svg)
+![Android Studio](https://img.shields.io/badge/Android%20Studio-3.2%20Canary17-green.svg)
 ![Kotlin](https://img.shields.io/badge/kotlin-1.2.41-yellow.svg)
 
 ## About  
