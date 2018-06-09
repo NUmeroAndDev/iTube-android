@@ -55,12 +55,12 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
-    implementation 'com.google.android.material:material:1.0.0-alpha1'
+    implementation 'com.google.android.material:material:1.0.0-alpha3'
     implementation 'androidx.appcompat:appcompat:1.0.0-alpha3'
     implementation 'androidx.recyclerview:recyclerview:1.0.0-alpha3'
     implementation 'androidx.preference:preference:1.0.0-alpha3'
 
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.1'
 
     implementation "se.ansman.kotshi:api:$kotshi_version"
     kapt "se.ansman.kotshi:compiler:$kotshi_version"
