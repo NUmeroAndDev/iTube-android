@@ -60,7 +60,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0-alpha3'
     implementation 'androidx.preference:preference:1.0.0-alpha3'
 
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.1'
 
     implementation "se.ansman.kotshi:api:$kotshi_version"
     kapt "se.ansman.kotshi:compiler:$kotshi_version"

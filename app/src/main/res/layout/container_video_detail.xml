@@ -11,7 +11,7 @@
     app:cardCornerRadius="8dp"
     app:cardElevation="8dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -83,6 +83,6 @@
             app:layout_constraintTop_toBottomOf="@id/channelNameBottomDivider"
             tools:text="Description" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
