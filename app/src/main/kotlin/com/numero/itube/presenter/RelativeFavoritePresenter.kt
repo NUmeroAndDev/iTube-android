@@ -5,6 +5,10 @@ import com.numero.itube.contract.RelativeFavoriteContract
 import com.numero.itube.repository.IFavoriteVideoRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.Observables
+import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
@@ -19,6 +23,7 @@ class RelativeFavoritePresenter(
 
     private var videoDetail: VideoDetailResponse.VideoDetail? = null
     private val job = Job()
+    private var disposable: Disposable? = null
 
     init {
         view.setPresenter(this)
@@ -30,10 +35,16 @@ class RelativeFavoritePresenter(
 
     override fun unSubscribe() {
         job.cancelChildren()
+        disposable?.apply {
+            if (isDisposed.not()) {
+                dispose()
+            }
+        }
     }
 
     override fun loadDetail(key: String) {
         executeLoadDetail(key, videoId, channelId)
+        executeLoadVideoList()
     }
 
     override fun registerFavorite() {
@@ -54,19 +65,30 @@ class RelativeFavoritePresenter(
         }
     }
 
-    private fun executeLoadDetail(key: String, id: String, channelId: String) = async(job + UI) {
+    private fun executeLoadDetail(key: String, id: String, channelId: String) {
         view.hideErrorMessage()
         view.showProgress()
+        disposable = Observables.zip(youtubeRepository.loadDetail(key, id), youtubeRepository.loadChannel(key, channelId), { videoDetail, channel ->
+            videoDetail to channel
+        })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onNext = {
+                            videoDetail = it.first.items[0]
+                            view.showVideoDetail(it.first.items[0], it.second.items[0], channelId)
+                            view.dismissProgress()
+                        },
+                        onError = {
+                            view.showErrorMessage(it)
+                            view.dismissProgress()
+                        }
+                )
+    }
+
+    private fun executeLoadVideoList() = async(job + UI) {
         try {
-            val videoDetailResponse = youtubeRepository.loadDetail(key, id).await()
-            videoDetail = videoDetailResponse.items[0]
-
-            val channelResponse = youtubeRepository.loadChannel(key, channelId).await()
-
             val list = favoriteRepository.loadFavoriteVideo().await()
             view.showVideoList(list)
-
-            view.showVideoDetail(videoDetailResponse.items[0], channelResponse.items[0], channelId)
         } catch (t: Throwable) {
             view.showErrorMessage(t)
         } finally {
