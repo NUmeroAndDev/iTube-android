@@ -5,11 +5,12 @@ import com.numero.itube.api.response.ChannelDetailResponse
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoDetailResponse
-import kotlinx.coroutines.experimental.Deferred
+import io.reactivex.Observable
+import io.reactivex.Single
 
 class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository {
 
-    override fun search(key: String, searchWord: String, nextPageToken: String?): Deferred<SearchResponse> {
+    override fun search(key: String, searchWord: String, nextPageToken: String?): Observable<SearchResponse> {
         return if (nextPageToken == null) {
             youtubeApi.search(key, searchWord)
         } else {
@@ -17,23 +18,23 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         }
     }
 
-    override fun loadRelative(key: String, id: String): Deferred<SearchResponse> {
+    override fun loadRelative(key: String, id: String): Observable<SearchResponse> {
         return youtubeApi.searchRelative(key, id)
     }
 
-    override fun loadDetail(key: String, id: String): Deferred<VideoDetailResponse> {
+    override fun loadDetail(key: String, id: String): Observable<VideoDetailResponse> {
         return youtubeApi.videoDetail(key, id)
     }
 
-    override fun loadChannel(key: String, id: String): Deferred<ChannelResponse> {
+    override fun loadChannel(key: String, id: String): Observable<ChannelResponse> {
         return youtubeApi.channel(key, id)
     }
 
-    override fun loadChannelDetail(key: String, id: String): Deferred<ChannelDetailResponse> {
+    override fun loadChannelDetail(key: String, id: String): Observable<ChannelDetailResponse> {
         return youtubeApi.channelDetail(key, id)
     }
 
-    override fun loadChannelVideo(key: String, id: String, nextPageToken: String?): Deferred<SearchResponse> {
+    override fun loadChannelVideo(key: String, id: String, nextPageToken: String?): Observable<SearchResponse> {
         return if (nextPageToken == null) {
             youtubeApi.searchChannelVideo(key, id)
         } else {

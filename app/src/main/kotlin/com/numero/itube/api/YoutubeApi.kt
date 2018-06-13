@@ -4,7 +4,7 @@ import com.numero.itube.api.response.ChannelDetailResponse
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoDetailResponse
-import kotlinx.coroutines.experimental.Deferred
+import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -17,7 +17,7 @@ interface YoutubeApi {
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
-    ): Deferred<SearchResponse>
+    ): Observable<SearchResponse>
 
     @GET("search")
     fun search(
@@ -26,7 +26,7 @@ interface YoutubeApi {
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
-    ): Deferred<SearchResponse>
+    ): Observable<SearchResponse>
 
     @GET("search")
     fun searchChannelVideo(
@@ -35,7 +35,7 @@ interface YoutubeApi {
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
-    ): Deferred<SearchResponse>
+    ): Observable<SearchResponse>
 
     @GET("search")
     fun searchChannelVideo(
@@ -45,7 +45,7 @@ interface YoutubeApi {
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
-    ): Deferred<SearchResponse>
+    ): Observable<SearchResponse>
 
     @GET("search")
     fun searchRelative(
@@ -54,26 +54,26 @@ interface YoutubeApi {
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
-    ): Deferred<SearchResponse>
+    ): Observable<SearchResponse>
 
     @GET("videos")
     fun videoDetail(
             @Query("key") key: String,
             @Query("id") id: String,
             @Query("part") part: String = "id,snippet"
-    ): Deferred<VideoDetailResponse>
+    ): Observable<VideoDetailResponse>
 
     @GET("channels")
     fun channel(
             @Query("key") key: String,
             @Query("id") id: String,
             @Query("part") part: String = "id,snippet"
-    ): Deferred<ChannelResponse>
+    ): Observable<ChannelResponse>
 
     @GET("channels")
     fun channelDetail(
             @Query("key") key: String,
             @Query("id") id: String,
             @Query("part") part: String = "id,snippet,brandingSettings"
-    ): Deferred<ChannelDetailResponse>
+    ): Observable<ChannelDetailResponse>
 }

@@ -2,17 +2,16 @@ package com.numero.itube.presenter
 
 import com.numero.itube.contract.ChannelVideoListContract
 import com.numero.itube.repository.IYoutubeRepository
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.cancelChildren
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.subscribeBy
 
 class ChannelVideoListPresenter(
         private val view: ChannelVideoListContract.View,
         private val youtubeRepository: IYoutubeRepository,
         private val channelId: String) : ChannelVideoListContract.Presenter {
 
-    private val job = Job()
+    private var disposable: Disposable? = null
 
     init {
         view.setPresenter(this)
@@ -22,41 +21,34 @@ class ChannelVideoListPresenter(
     }
 
     override fun unSubscribe() {
-        job.cancelChildren()
+        disposable?.apply {
+            if (isDisposed.not()) {
+                dispose()
+            }
+        }
     }
 
     override fun loadChannelDetail(key: String) {
-        executeLoadChannelDetail(key, channelId)
+        executeLoadChannelVideo(key, channelId)
     }
 
     override fun loadNextVideo(key: String, nextPageToken: String) {
         executeLoadChannelVideo(key, channelId, nextPageToken)
     }
 
-    private fun executeLoadChannelDetail(key: String, channelId: String) = async(job + UI) {
+    private fun executeLoadChannelVideo(key: String, channelId: String, nextPageToken: String? = null) {
         view.showProgress()
-        try {
-            val videoResponse = youtubeRepository.loadChannelVideo(key, channelId).await()
-            view.showVideoList(videoResponse.items, videoResponse.nextPageToken)
-        } catch (t: Throwable) {
-            t.printStackTrace()
-            view.showErrorMessage(t)
-        } finally {
-            view.dismissProgress()
-        }
-    }
-
-    private fun executeLoadChannelVideo(key: String, channelId: String, nextPageToken: String) = async(job + UI) {
-        view.showProgress()
-        try {
-            val videoResponse = youtubeRepository.loadChannelVideo(key, channelId, nextPageToken).await()
-
-            view.showAddedVideoList(videoResponse.items, videoResponse.nextPageToken)
-        } catch (t: Throwable) {
-            t.printStackTrace()
-            view.showErrorMessage(t)
-        } finally {
-            view.dismissProgress()
-        }
+        disposable = youtubeRepository.loadChannelVideo(key, channelId, nextPageToken)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onNext = {
+                            view.showVideoList(it.items, it.nextPageToken)
+                            view.dismissProgress()
+                        },
+                        onError = {
+                            view.showErrorMessage(it)
+                            view.dismissProgress()
+                        }
+                )
     }
 }

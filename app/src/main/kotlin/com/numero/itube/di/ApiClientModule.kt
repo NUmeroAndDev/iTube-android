@@ -1,6 +1,5 @@
 package com.numero.itube.di
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import com.numero.itube.BuildConfig
 import com.numero.itube.api.ApplicationJsonAdapterFactory
 import com.numero.itube.api.YoutubeApi
@@ -10,6 +9,7 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -39,7 +39,7 @@ class ApiClientModule {
                 .baseUrl("https://www.googleapis.com/youtube/v3/")
                 .client(okHttpClient)
                 .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().add(ApplicationJsonAdapterFactory.INSTANCE).build()))
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
                 .build()
     }
 
