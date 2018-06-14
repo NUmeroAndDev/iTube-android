@@ -1,5 +1,6 @@
 package com.numero.itube.presenter
 
+import com.numero.itube.api.request.ChannelVideoRequest
 import com.numero.itube.contract.ChannelVideoListContract
 import com.numero.itube.repository.IYoutubeRepository
 import kotlinx.coroutines.experimental.Job
@@ -36,7 +37,8 @@ class ChannelVideoListPresenter(
     private fun executeLoadChannelDetail(key: String, channelId: String) = async(job + UI) {
         view.showProgress()
         try {
-            val videoResponse = youtubeRepository.loadChannelVideo(key, channelId).await()
+            val request = ChannelVideoRequest(key, channelId)
+            val videoResponse = youtubeRepository.loadChannelVideo(request).await()
             view.showVideoList(videoResponse.items, videoResponse.nextPageToken)
         } catch (t: Throwable) {
             t.printStackTrace()
@@ -49,7 +51,8 @@ class ChannelVideoListPresenter(
     private fun executeLoadChannelVideo(key: String, channelId: String, nextPageToken: String) = async(job + UI) {
         view.showProgress()
         try {
-            val videoResponse = youtubeRepository.loadChannelVideo(key, channelId, nextPageToken).await()
+            val request = ChannelVideoRequest(key, channelId, nextPageToken)
+            val videoResponse = youtubeRepository.loadChannelVideo(request).await()
 
             view.showAddedVideoList(videoResponse.items, videoResponse.nextPageToken)
         } catch (t: Throwable) {

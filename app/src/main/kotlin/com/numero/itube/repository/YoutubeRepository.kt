@@ -35,11 +35,12 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         return youtubeApi.channelDetail(request.key, request.id)
     }
 
-    override fun loadChannelVideo(key: String, id: String, nextPageToken: String?): Deferred<SearchResponse> {
-        return if (nextPageToken == null) {
-            youtubeApi.searchChannelVideo(key, id)
+    override fun loadChannelVideo(request: ChannelVideoRequest): Deferred<SearchResponse> {
+        return if (request.hasNextPageToken.not()) {
+            youtubeApi.searchChannelVideo(request.key, request.channelId)
         } else {
-            youtubeApi.searchChannelVideo(key, id, nextPageToken = nextPageToken)
+            val token = checkNotNull(request.nextPageToken)
+            youtubeApi.searchChannelVideo(request.key, request.channelId, nextPageToken = token)
         }
     }
 }

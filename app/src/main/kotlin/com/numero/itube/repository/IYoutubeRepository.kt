@@ -18,5 +18,5 @@ interface IYoutubeRepository {
 
     fun loadChannelDetail(request: ChannelDetailRequest): Deferred<ChannelDetailResponse>
 
-    fun loadChannelVideo(key: String, id: String, nextPageToken: String? = null): Deferred<SearchResponse>
+    fun loadChannelVideo(request: ChannelVideoRequest): Deferred<SearchResponse>
 }
