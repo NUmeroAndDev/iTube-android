@@ -1,5 +1,6 @@
 package com.numero.itube.repository
 
+import com.numero.itube.api.request.RelativeVideoRequest
 import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.ChannelDetailResponse
 import com.numero.itube.api.response.ChannelResponse
@@ -10,7 +11,7 @@ import kotlinx.coroutines.experimental.Deferred
 interface IYoutubeRepository {
     fun search(request: SearchVideoRequest): Deferred<SearchResponse>
 
-    fun loadRelative(key: String, id: String): Deferred<SearchResponse>
+    fun loadRelative(request: RelativeVideoRequest): Deferred<SearchResponse>
 
     fun loadDetail(key: String, id: String): Deferred<VideoDetailResponse>
 

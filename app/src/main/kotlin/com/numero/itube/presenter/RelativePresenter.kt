@@ -1,5 +1,6 @@
 package com.numero.itube.presenter
 
+import com.numero.itube.api.request.RelativeVideoRequest
 import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.contract.RelativeContract
 import com.numero.itube.repository.IFavoriteVideoRepository
@@ -63,7 +64,8 @@ class RelativePresenter(
 
             val channelResponse = youtubeRepository.loadChannel(key, channelId).await()
 
-            val relativeVideoResponse = youtubeRepository.loadRelative(key, id).await()
+            val relativeRequest = RelativeVideoRequest(key, id)
+            val relativeVideoResponse = youtubeRepository.loadRelative(relativeRequest).await()
 
             view.showVideoList(relativeVideoResponse.items)
             view.showVideoDetail(videoDetailResponse.items[0], channelResponse.items[0], channelId)
