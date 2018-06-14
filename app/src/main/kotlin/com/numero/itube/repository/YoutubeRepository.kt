@@ -1,10 +1,7 @@
 package com.numero.itube.repository
 
 import com.numero.itube.api.YoutubeApi
-import com.numero.itube.api.request.ChannelRequest
-import com.numero.itube.api.request.RelativeVideoRequest
-import com.numero.itube.api.request.SearchVideoRequest
-import com.numero.itube.api.request.VideoDetailRequest
+import com.numero.itube.api.request.*
 import com.numero.itube.api.response.ChannelDetailResponse
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
@@ -34,8 +31,8 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         return youtubeApi.channel(request.key, request.id)
     }
 
-    override fun loadChannelDetail(key: String, id: String): Deferred<ChannelDetailResponse> {
-        return youtubeApi.channelDetail(key, id)
+    override fun loadChannelDetail(request: ChannelDetailRequest): Deferred<ChannelDetailResponse> {
+        return youtubeApi.channelDetail(request.key, request.id)
     }
 
     override fun loadChannelVideo(key: String, id: String, nextPageToken: String?): Deferred<SearchResponse> {
