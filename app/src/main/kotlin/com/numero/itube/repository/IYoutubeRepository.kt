@@ -2,6 +2,7 @@ package com.numero.itube.repository
 
 import com.numero.itube.api.request.RelativeVideoRequest
 import com.numero.itube.api.request.SearchVideoRequest
+import com.numero.itube.api.request.VideoDetailRequest
 import com.numero.itube.api.response.ChannelDetailResponse
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
@@ -13,7 +14,7 @@ interface IYoutubeRepository {
 
     fun loadRelative(request: RelativeVideoRequest): Deferred<SearchResponse>
 
-    fun loadDetail(key: String, id: String): Deferred<VideoDetailResponse>
+    fun loadDetail(request: VideoDetailRequest): Deferred<VideoDetailResponse>
 
     fun loadChannel(key: String, id: String): Deferred<ChannelResponse>
 
