@@ -1,5 +1,6 @@
 package com.numero.itube.repository
 
+import com.numero.itube.api.request.ChannelRequest
 import com.numero.itube.api.request.RelativeVideoRequest
 import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.request.VideoDetailRequest
@@ -16,7 +17,7 @@ interface IYoutubeRepository {
 
     fun loadDetail(request: VideoDetailRequest): Deferred<VideoDetailResponse>
 
-    fun loadChannel(key: String, id: String): Deferred<ChannelResponse>
+    fun loadChannel(request: ChannelRequest): Deferred<ChannelResponse>
 
     fun loadChannelDetail(key: String, id: String): Deferred<ChannelDetailResponse>
 

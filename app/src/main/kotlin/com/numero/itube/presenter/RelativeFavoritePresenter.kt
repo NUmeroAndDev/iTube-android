@@ -1,5 +1,6 @@
 package com.numero.itube.presenter
 
+import com.numero.itube.api.request.ChannelRequest
 import com.numero.itube.api.request.VideoDetailRequest
 import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.contract.RelativeFavoriteContract
@@ -63,7 +64,8 @@ class RelativeFavoritePresenter(
             val videoDetailResponse = youtubeRepository.loadDetail(detailRequest).await()
             videoDetail = videoDetailResponse.items[0]
 
-            val channelResponse = youtubeRepository.loadChannel(key, channelId).await()
+            val channelRequest = ChannelRequest(key, channelId)
+            val channelResponse = youtubeRepository.loadChannel(channelRequest).await()
 
             val list = favoriteRepository.loadFavoriteVideo().await()
             view.showVideoList(list)
