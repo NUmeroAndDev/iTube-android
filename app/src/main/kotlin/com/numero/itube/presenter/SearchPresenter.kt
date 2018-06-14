@@ -1,5 +1,6 @@
 package com.numero.itube.presenter
 
+import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.contract.SearchContract
 import com.numero.itube.repository.IYoutubeRepository
 import kotlinx.coroutines.experimental.Job
@@ -32,7 +33,8 @@ class SearchPresenter(
         view.hideErrorMessage()
         view.showProgress()
         try {
-            val response = youtubeRepository.search(key, searchWord, nestPageToken).await()
+            val request = SearchVideoRequest(key, searchWord, nestPageToken)
+            val response = youtubeRepository.search(request).await()
             if (nestPageToken == null) {
                 view.showVideoList(response.items, response.nextPageToken)
             } else {

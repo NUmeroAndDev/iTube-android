@@ -1,6 +1,7 @@
 package com.numero.itube.repository
 
 import com.numero.itube.api.YoutubeApi
+import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.ChannelDetailResponse
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
@@ -9,11 +10,12 @@ import kotlinx.coroutines.experimental.Deferred
 
 class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository {
 
-    override fun search(key: String, searchWord: String, nextPageToken: String?): Deferred<SearchResponse> {
-        return if (nextPageToken == null) {
-            youtubeApi.search(key, searchWord)
+    override fun search(request: SearchVideoRequest): Deferred<SearchResponse> {
+        return if (request.hasNextPageToken.not()) {
+            youtubeApi.search(request.key, request.searchWord)
         } else {
-            youtubeApi.search(key, searchWord, nextPageToken = nextPageToken)
+            val token = checkNotNull(request.nextPageToken)
+            youtubeApi.search(request.key, request.searchWord, nextPageToken = token)
         }
     }
 
