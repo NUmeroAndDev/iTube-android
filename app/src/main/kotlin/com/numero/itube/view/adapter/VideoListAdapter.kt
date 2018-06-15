@@ -14,7 +14,11 @@ class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoViewHolder>(
 
     var videoList: MutableList<SearchResponse.Video> = mutableListOf()
         set(value) {
-            field = value
+            if (field.isEmpty()) {
+                field = value
+            } else {
+                field.addAll(value)
+            }
             notifyDataSetChanged()
         }
 

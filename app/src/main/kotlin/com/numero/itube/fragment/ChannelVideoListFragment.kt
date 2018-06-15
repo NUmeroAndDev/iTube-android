@@ -7,26 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.api.response.SearchResponse
-import com.numero.itube.contract.ChannelVideoListContract
 import com.numero.itube.extension.component
-import com.numero.itube.model.Thumbnail
-import com.numero.itube.presenter.ChannelVideoListPresenter
+import com.numero.itube.extension.observeNonNull
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.adapter.VideoListAdapter
+import com.numero.itube.viewmodel.ChannelVideoListViewModel
+import com.numero.itube.viewmodel.ChannelVideoListViewModelFactory
 import kotlinx.android.synthetic.main.fragment_channel_video_list.*
 import javax.inject.Inject
 
-class ChannelVideoListFragment : Fragment(), ChannelVideoListContract.View {
+class ChannelVideoListFragment : Fragment() {
 
     @Inject
     lateinit var youtubeApiRepository: YoutubeRepository
+    private lateinit var viewModel: ChannelVideoListViewModel
 
     private var listener: ChannelVideoFragmentListener? = null
-    private lateinit var presenter: ChannelVideoListContract.Presenter
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
     private var nextPageToken: String? = null
 
@@ -44,8 +45,24 @@ class ChannelVideoListFragment : Fragment(), ChannelVideoListContract.View {
         val arguments = arguments ?: return
         val channelId = arguments.getString(ARG_CHANNEL_ID)
 
-        ChannelVideoListPresenter(this, youtubeApiRepository, channelId)
-        presenter.loadChannelDetail(getString(R.string.api_key))
+        val factory = ChannelVideoListViewModelFactory(youtubeApiRepository, channelId)
+        viewModel = ViewModelProviders.of(this, factory).get(ChannelVideoListViewModel::class.java)
+
+        viewModel.videoList.observeNonNull(this) {
+            videoListAdapter.videoList = it.toMutableList()
+        }
+
+        viewModel.nextPageToken.observeNonNull(this) {
+            this.nextPageToken = it
+        }
+
+        viewModel.progress.observeNonNull(this) {
+            if (it) {
+                progressView.show()
+            } else {
+                progressView.hide()
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,43 +79,12 @@ class ChannelVideoListFragment : Fragment(), ChannelVideoListContract.View {
             layoutManager = manager
             addOnScrollListener(EndlessScrollListener(manager) {
                 val nextPageToken = nextPageToken ?: return@EndlessScrollListener
-                presenter.loadNextVideo(getString(R.string.api_key), nextPageToken)
+                viewModel.loadNextVideo(getString(R.string.api_key), nextPageToken)
             })
             adapter = videoListAdapter
         }
 
-        presenter.loadChannelDetail(getString(R.string.api_key))
-    }
-
-    override fun showChannelThumbnail(thumbnail: Thumbnail) {
-    }
-
-    override fun showVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String?) {
-        this.nextPageToken = nextPageToken
-        videoListAdapter.videoList = videoList.toMutableList()
-    }
-
-    override fun showAddedVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String?) {
-        this.nextPageToken = nextPageToken
-        videoListAdapter.addVideoList(videoList)
-    }
-
-    override fun showErrorMessage(e: Throwable?) {
-    }
-
-    override fun hideErrorMessage() {
-    }
-
-    override fun showProgress() {
-        progressView.show()
-    }
-
-    override fun dismissProgress() {
-        progressView.hide()
-    }
-
-    override fun setPresenter(presenter: ChannelVideoListContract.Presenter) {
-        this.presenter = presenter
+        viewModel.loadChannelDetail(getString(R.string.api_key))
     }
 
     interface ChannelVideoFragmentListener {
