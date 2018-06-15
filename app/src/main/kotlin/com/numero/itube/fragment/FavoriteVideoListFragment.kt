@@ -6,23 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
-import com.numero.itube.contract.FavoriteVideoListContract
 import com.numero.itube.extension.component
-import com.numero.itube.presenter.FavoriteVideoListPresenter
+import com.numero.itube.extension.observeNonNull
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.view.adapter.FavoriteVideoListAdapter
+import com.numero.itube.viewmodel.FavoriteVideoListViewModel
+import com.numero.itube.viewmodel.factory.FavoriteVideoListViewModelFactory
 import kotlinx.android.synthetic.main.fragment_favorite_video_list.*
 import javax.inject.Inject
 
-class FavoriteVideoListFragment : Fragment(), FavoriteVideoListContract.View {
+class FavoriteVideoListFragment : Fragment() {
 
     @Inject
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
 
-    private lateinit var presenter: FavoriteVideoListContract.Presenter
+    private lateinit var viewModel: FavoriteVideoListViewModel
     private val videoListAdapter: FavoriteVideoListAdapter = FavoriteVideoListAdapter()
     private var listener: FavoriteFragmentListener? = null
 
@@ -37,7 +39,12 @@ class FavoriteVideoListFragment : Fragment(), FavoriteVideoListContract.View {
         super.onCreate(savedInstanceState)
         component?.inject(this)
 
-        FavoriteVideoListPresenter(this, favoriteVideoRepository)
+        val factory = FavoriteVideoListViewModelFactory(favoriteVideoRepository)
+        viewModel = ViewModelProviders.of(this, factory).get(FavoriteVideoListViewModel::class.java)
+
+        viewModel.videoList.observeNonNull(this) {
+            videoListAdapter.videoList = it
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,44 +65,16 @@ class FavoriteVideoListFragment : Fragment(), FavoriteVideoListContract.View {
 
     override fun onResume() {
         super.onResume()
-        presenter.subscribe()
+        viewModel.loadFavoriteVideoList()
     }
 
-    override fun onPause() {
-        super.onPause()
-        presenter.unSubscribe()
-    }
-
-    override fun showVideoList(videoList: List<FavoriteVideo>) {
-        videoListAdapter.videoList = videoList
-    }
-
-    override fun showEmptyMessage() {
-        noFavoriteVideoTextView.visibility = View.VISIBLE
-    }
-
-    override fun hideEmptyMessage() {
-        noFavoriteVideoTextView.visibility = View.INVISIBLE
-    }
-
-    override fun showErrorMessage(e: Throwable?) {
-        e?.printStackTrace()
-    }
-
-    override fun hideErrorMessage() {
-    }
-
-    override fun showProgress() {
-
-    }
-
-    override fun dismissProgress() {
-
-    }
-
-    override fun setPresenter(presenter: FavoriteVideoListContract.Presenter) {
-        this.presenter = presenter
-    }
+//    override fun showEmptyMessage() {
+//        noFavoriteVideoTextView.visibility = View.VISIBLE
+//    }
+//
+//    override fun hideEmptyMessage() {
+//        noFavoriteVideoTextView.visibility = View.INVISIBLE
+//    }
 
     interface FavoriteFragmentListener {
         fun showVideo(video: FavoriteVideo)
