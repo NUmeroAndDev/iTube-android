@@ -6,26 +6,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.api.response.SearchResponse
-import com.numero.itube.contract.RelativeContract
 import com.numero.itube.extension.component
-import com.numero.itube.presenter.RelativePresenter
+import com.numero.itube.extension.observeNonNull
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.adapter.RelativeVideoListAdapter
+import com.numero.itube.viewmodel.RelativeViewModel
+import com.numero.itube.viewmodel.factory.RelativeViewModelFactory
 import kotlinx.android.synthetic.main.fragment_relative.*
 import javax.inject.Inject
 
-class RelativeFragment : BaseRelativeFragment(), RelativeContract.View {
+class RelativeFragment : BaseRelativeFragment() {
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
     @Inject
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
 
-    private lateinit var presenter: RelativeContract.Presenter
+    private lateinit var viewModel: RelativeViewModel
     private val videoListAdapter: RelativeVideoListAdapter = RelativeVideoListAdapter()
     private var listener: RelativeFragmentListener? = null
 
@@ -44,7 +46,35 @@ class RelativeFragment : BaseRelativeFragment(), RelativeContract.View {
         val videoId = arguments.getString(ARG_VIDEO_ID)
         val channelId = arguments.getString(ARG_CHANNEL_ID)
 
-        RelativePresenter(this, youtubeRepository, favoriteVideoRepository, videoId, channelId)
+        val factory = RelativeViewModelFactory(youtubeRepository, favoriteVideoRepository, videoId, channelId)
+        viewModel = ViewModelProviders.of(this, factory).get(RelativeViewModel::class.java)
+
+        viewModel.videoList.observeNonNull(this) {
+            videoListAdapter.videoList = it
+        }
+        viewModel.channel.observeNonNull(this) {
+            showChannelDetail(it, channelId)
+        }
+        viewModel.videoDetail.observeNonNull(this) {
+            showVideoDetail(it)
+        }
+        viewModel.isFavorite.observeNonNull(this) {
+            registeredFavorite(it)
+        }
+        viewModel.progress.observeNonNull(this) {
+            if (it) {
+                progressView.show()
+            } else {
+                progressView.hide()
+            }
+        }
+        viewModel.isShowError.observeNonNull(this) {
+            errorGroup.visibility = if (it) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -65,51 +95,18 @@ class RelativeFragment : BaseRelativeFragment(), RelativeContract.View {
         }
 
         retryButton.setOnClickListener {
-            presenter.loadDetail(getString(R.string.api_key))
+            viewModel.loadVideoAndChannelDetail(getString(R.string.api_key))
         }
 
-        presenter.loadDetail(getString(R.string.api_key))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        presenter.subscribe()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        presenter.unSubscribe()
-    }
-
-    override fun showVideoList(videoList: List<SearchResponse.Video>) {
-        videoListAdapter.videoList = videoList
-    }
-
-    override fun showErrorMessage(e: Throwable?) {
-        errorGroup.visibility = View.VISIBLE
-    }
-
-    override fun hideErrorMessage() {
-        errorGroup.visibility = View.GONE
-    }
-
-    override fun showProgress() {
-        progressView?.show()
-    }
-
-    override fun dismissProgress() {
-        progressView?.hide()
-    }
-
-    override fun setPresenter(presenter: RelativeContract.Presenter) {
-        this.presenter = presenter
+        viewModel.checkFavorite()
+        viewModel.loadVideoAndChannelDetail(getString(R.string.api_key))
     }
 
     override fun setIsRegistered(isRegistered: Boolean) {
         if (isRegistered) {
-            presenter.registerFavorite()
+            viewModel.registerFavorite()
         } else {
-            presenter.unregisterFavorite()
+            viewModel.unregisterFavorite()
         }
     }
 

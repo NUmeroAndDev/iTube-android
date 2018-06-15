@@ -15,10 +15,10 @@ import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
 import com.numero.itube.R
 import com.numero.itube.api.response.SearchResponse
-import com.numero.itube.contract.BaseRelativeContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
+import com.numero.itube.fragment.BaseRelativeFragment
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
 import com.numero.itube.fragment.RelativeFavoriteFragment
 import com.numero.itube.fragment.RelativeFragment
@@ -79,7 +79,7 @@ class PlayerActivity : AppCompatActivity(),
         fab.setOnClickListener {
             isRegistered = isRegistered.not()
             val fragment = findFragment(R.id.relativeContainer)
-            if (fragment is BaseRelativeContract.IBaseRelativeView) {
+            if (fragment is BaseRelativeFragment) {
                 fragment.setIsRegistered(isRegistered)
             }
         }
