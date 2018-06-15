@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
@@ -49,17 +50,21 @@ class ChannelVideoListFragment : Fragment() {
         viewModel = ViewModelProviders.of(this, factory).get(ChannelVideoListViewModel::class.java)
 
         viewModel.videoList.observeNonNull(this) {
-            videoListAdapter.videoList = it.toMutableList()
+            videoListAdapter.submitList(it)
         }
-        viewModel.nextPageToken.observeNonNull(this) {
+        viewModel.nextPageToken.observe(this, Observer {
             this.nextPageToken = it
-        }
+        })
         viewModel.progress.observeNonNull(this) {
             if (it) {
                 progressView.show()
             } else {
                 progressView.hide()
             }
+        }
+        if (savedInstanceState == null) {
+            // 画面回転時には以前のデータが復帰される
+            viewModel.loadChannelVideo(getString(R.string.api_key))
         }
     }
 
@@ -81,8 +86,6 @@ class ChannelVideoListFragment : Fragment() {
             })
             adapter = videoListAdapter
         }
-
-        viewModel.loadChannelVideo(getString(R.string.api_key))
     }
 
     interface ChannelVideoFragmentListener {

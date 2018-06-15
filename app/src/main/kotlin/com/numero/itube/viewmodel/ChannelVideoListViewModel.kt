@@ -33,7 +33,17 @@ class ChannelVideoListViewModel(
         try {
             val request = ChannelVideoRequest(key, channelId, nextPageToken)
             val videoResponse = youtubeRepository.loadChannelVideo(request).await()
-            videoList.postValue(videoResponse.items)
+            val old = videoList.value
+            if (old == null) {
+                videoList.postValue(videoResponse.items)
+            } else {
+                // 既存のリストを追加してリスト全体を返す
+                val list = mutableListOf<SearchResponse.Video>().apply {
+                    addAll(old)
+                    addAll(videoResponse.items)
+                }
+                videoList.postValue(list)
+            }
             this@ChannelVideoListViewModel.nextPageToken.postValue(videoResponse.nextPageToken)
         } catch (t: Throwable) {
             t.printStackTrace()

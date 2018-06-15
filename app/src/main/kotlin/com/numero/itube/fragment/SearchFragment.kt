@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
@@ -48,11 +49,11 @@ class SearchFragment : Fragment() {
         viewModel = ViewModelProviders.of(this, factory).get(SearchVideoViewModel::class.java)
 
         viewModel.videoList.observeNonNull(this) {
-            videoListAdapter.videoList = it.toMutableList()
+            videoListAdapter.submitList(it)
         }
-        viewModel.nextPageToken.observeNonNull(this) {
+        viewModel.nextPageToken.observe(this, Observer {
             nextPageToken = it
-        }
+        })
         viewModel.progress.observeNonNull(this) {
             if (it) {
                 progressView.show()

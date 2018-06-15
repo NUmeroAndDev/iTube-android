@@ -3,6 +3,8 @@ package com.numero.itube.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.numero.itube.R
@@ -10,21 +12,10 @@ import com.numero.itube.api.response.SearchResponse
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.view_holder_video.*
 
-class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoViewHolder>() {
-
-    var videoList: MutableList<SearchResponse.Video> = mutableListOf()
-        set(value) {
-            if (field.isEmpty()) {
-                field = value
-            } else {
-                field.addAll(value)
-            }
-            notifyDataSetChanged()
-        }
+class VideoListAdapter : ListAdapter<SearchResponse.Video, VideoListAdapter.VideoViewHolder>(diffCallback) {
 
     fun clearList() {
-        videoList.clear()
-        notifyDataSetChanged()
+        submitList(mutableListOf())
     }
 
     private var onItemClickListener: ((video: SearchResponse.Video) -> Unit)? = null
@@ -37,10 +28,8 @@ class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoViewHolder>(
         return VideoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_holder_video, parent, false))
     }
 
-    override fun getItemCount(): Int = videoList.size
-
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
-        val video = videoList[position]
+        val video = getItem(position)
         holder.setVideo(video)
         holder.itemView.setOnClickListener {
             onItemClickListener?.invoke(video)
@@ -53,6 +42,18 @@ class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoViewHolder>(
             titleTextView.text = video.snippet.title
             Glide.with(itemView.context).load(video.snippet.thumbnails.high.url).into(thumbnailImageView)
 //                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+        }
+    }
+
+    companion object {
+        val diffCallback = object : DiffUtil.ItemCallback<SearchResponse.Video>() {
+            override fun areItemsTheSame(oldItem: SearchResponse.Video, newItem: SearchResponse.Video): Boolean {
+                return oldItem.id.videoId == newItem.id.videoId
+            }
+
+            override fun areContentsTheSame(oldItem: SearchResponse.Video, newItem: SearchResponse.Video): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 }

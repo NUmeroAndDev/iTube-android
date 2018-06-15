@@ -30,7 +30,17 @@ class SearchVideoViewModel(private val youtubeRepository: IYoutubeRepository) : 
         try {
             val request = SearchVideoRequest(key, searchWord, nestPageToken)
             val response = youtubeRepository.search(request).await()
-            videoList.postValue(response.items)
+            val old = videoList.value
+            if (old == null) {
+                videoList.postValue(response.items)
+            } else {
+                // 既存のリストを追加してリスト全体を返す
+                val list = mutableListOf<SearchResponse.Video>().apply {
+                    addAll(old)
+                    addAll(response.items)
+                }
+                videoList.postValue(list)
+            }
             nextPageToken.postValue(response.nextPageToken)
         } catch (t: Throwable) {
             if (nestPageToken == null) {
