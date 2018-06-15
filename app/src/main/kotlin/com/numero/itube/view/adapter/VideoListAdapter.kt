@@ -22,15 +22,15 @@ class VideoListAdapter : RecyclerView.Adapter<VideoListAdapter.VideoViewHolder>(
             notifyDataSetChanged()
         }
 
+    fun clearList() {
+        videoList.clear()
+        notifyDataSetChanged()
+    }
+
     private var onItemClickListener: ((video: SearchResponse.Video) -> Unit)? = null
 
     fun setOnItemClickListener(listener: ((video: SearchResponse.Video) -> Unit)) {
         onItemClickListener = listener
-    }
-
-    fun addVideoList(list: List<SearchResponse.Video>) {
-        videoList.addAll(list)
-        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {

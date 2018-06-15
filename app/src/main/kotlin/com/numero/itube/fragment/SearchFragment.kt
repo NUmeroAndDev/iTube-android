@@ -7,25 +7,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.api.response.SearchResponse
-import com.numero.itube.contract.SearchContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.hideKeyboard
-import com.numero.itube.presenter.SearchPresenter
+import com.numero.itube.extension.observeNonNull
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.adapter.VideoListAdapter
+import com.numero.itube.viewmodel.SearchVideoViewModel
+import com.numero.itube.viewmodel.factory.SearchVideoViewModelFactory
 import kotlinx.android.synthetic.main.fragment_search.*
 import javax.inject.Inject
 
-class SearchFragment : Fragment(), SearchContract.View {
+class SearchFragment : Fragment() {
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
 
-    private lateinit var presenter: SearchContract.Presenter
+    private lateinit var viewModel: SearchVideoViewModel
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
     private var listener: SearchFragmentListener? = null
     private var searchWord: String? = null
@@ -42,7 +44,22 @@ class SearchFragment : Fragment(), SearchContract.View {
         super.onCreate(savedInstanceState)
         component?.inject(this)
 
-        SearchPresenter(this, youtubeRepository)
+        val factory = SearchVideoViewModelFactory(youtubeRepository)
+        viewModel = ViewModelProviders.of(this, factory).get(SearchVideoViewModel::class.java)
+
+        viewModel.videoList.observeNonNull(this) {
+            videoListAdapter.videoList = it.toMutableList()
+        }
+        viewModel.nextPageToken.observeNonNull(this) {
+            nextPageToken = it
+        }
+        viewModel.progress.observeNonNull(this) {
+            if (it) {
+                progressView.show()
+            } else {
+                progressView.hide()
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -54,7 +71,7 @@ class SearchFragment : Fragment(), SearchContract.View {
 
         retryButton.setOnClickListener {
             val word = searchWord ?: return@setOnClickListener
-            presenter.search(getString(R.string.api_key), word)
+            viewModel.search(getString(R.string.api_key), word)
         }
 
         searchEditText.setOnEditorActionListener { _, i, _ ->
@@ -62,7 +79,7 @@ class SearchFragment : Fragment(), SearchContract.View {
                 searchWord = searchEditText.text.toString()
                 val word = searchWord ?: return@setOnEditorActionListener false
                 hideKeyboard()
-                presenter.search(getString(R.string.api_key), word)
+                viewModel.search(getString(R.string.api_key), word)
             }
             return@setOnEditorActionListener false
         }
@@ -79,55 +96,34 @@ class SearchFragment : Fragment(), SearchContract.View {
                     return@EndlessScrollListener
                 }
                 val word = searchWord ?: return@EndlessScrollListener
-                presenter.search(getString(R.string.api_key), word, nextPageToken)
+                viewModel.search(getString(R.string.api_key), word, nextPageToken)
             })
             setHasFixedSize(true)
             adapter = videoListAdapter
         }
     }
 
-    override fun showVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String?) {
-        this.nextPageToken = nextPageToken
-        videoListAdapter.videoList = videoList.toMutableList()
-    }
 
-    override fun addVideoList(videoList: List<SearchResponse.Video>, nextPageToken: String?) {
-        this.nextPageToken = nextPageToken
-        videoListAdapter.addVideoList(videoList)
-    }
+//    override fun clearVideoList() {
+//        videoListAdapter.videoList = mutableListOf()
+//    }
+//
+//    override fun showEmptyMessage() {
+//
+//    }
 
-    override fun clearVideoList() {
-        videoListAdapter.videoList = mutableListOf()
-    }
-
-    override fun showEmptyMessage() {
-
-    }
-
-    override fun showErrorMessage(e: Throwable?) {
-        errorGroup.visibility = View.VISIBLE
-    }
-
-    override fun hideErrorMessage() {
-        errorGroup.visibility = View.GONE
-    }
-
-    override fun showProgress() {
-        progressView?.show()
-    }
-
-    override fun dismissProgress() {
-        progressView?.hide()
-    }
-
-    override fun setPresenter(presenter: SearchContract.Presenter) {
-        this.presenter = presenter
-    }
+//    override fun showErrorMessage(e: Throwable?) {
+//        errorGroup.visibility = View.VISIBLE
+//    }
+//
+//    override fun hideErrorMessage() {
+//        errorGroup.visibility = View.GONE
+//    }
 
     fun clearSearching() {
         searchWord = null
         searchEditText.setText("")
-        videoListAdapter.videoList = mutableListOf()
+        videoListAdapter.clearList()
     }
 
     interface SearchFragmentListener {
