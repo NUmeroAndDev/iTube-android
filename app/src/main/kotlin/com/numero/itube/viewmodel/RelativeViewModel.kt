@@ -29,7 +29,9 @@ class RelativeViewModel(
     val videoDetail: MutableLiveData<VideoDetailResponse.VideoDetail> = MutableLiveData()
     val isFavorite: MutableLiveData<Boolean> = MutableLiveData()
     val channel: MutableLiveData<ChannelResponse.Channel> = MutableLiveData()
+
     override val error: MutableLiveData<Throwable> = MutableLiveData()
+    override val isShowError: MutableLiveData<Boolean> = MutableLiveData()
     override val progress: MutableLiveData<Boolean> = MutableLiveData()
 
     fun checkFavorite() {
@@ -59,6 +61,7 @@ class RelativeViewModel(
     }
 
     private fun executeLoadDetail(key: String, id: String, channelId: String) = async(job + UI) {
+        isShowError.postValue(false)
         progress.postValue(true)
         try {
             val detailRequest = VideoDetailRequest(key, id)
@@ -74,6 +77,7 @@ class RelativeViewModel(
             videoList.postValue(relativeVideoResponse.items)
             channel.postValue(channelResponse.items[0])
         } catch (t: Throwable) {
+            isShowError.postValue(false)
             error.postValue(t)
         } finally {
             progress.postValue(false)

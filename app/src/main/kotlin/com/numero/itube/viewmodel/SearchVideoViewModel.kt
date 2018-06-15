@@ -15,7 +15,9 @@ class SearchVideoViewModel(private val youtubeRepository: IYoutubeRepository) : 
 
     val videoList: MutableLiveData<List<SearchResponse.Video>> = MutableLiveData()
     val nextPageToken: MutableLiveData<String> = MutableLiveData()
+
     override val error: MutableLiveData<Throwable> = MutableLiveData()
+    override val isShowError: MutableLiveData<Boolean> = MutableLiveData()
     override val progress: MutableLiveData<Boolean> = MutableLiveData()
 
     fun search(key: String, searchWord: String, nestPageToken: String? = null) {
@@ -23,6 +25,7 @@ class SearchVideoViewModel(private val youtubeRepository: IYoutubeRepository) : 
     }
 
     private fun executeSearch(key: String, searchWord: String, nestPageToken: String?) = async(job + UI) {
+        isShowError.postValue(false)
         progress.postValue(true)
         try {
             val request = SearchVideoRequest(key, searchWord, nestPageToken)
@@ -31,6 +34,7 @@ class SearchVideoViewModel(private val youtubeRepository: IYoutubeRepository) : 
             nextPageToken.postValue(response.nextPageToken)
         } catch (t: Throwable) {
             if (nestPageToken == null) {
+                isShowError.postValue(true)
                 error.postValue(t)
             }
             //TODO ページングでエラー出た時の処理

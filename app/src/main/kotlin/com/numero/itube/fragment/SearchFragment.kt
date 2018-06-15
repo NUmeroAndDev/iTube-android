@@ -60,6 +60,13 @@ class SearchFragment : Fragment() {
                 progressView.hide()
             }
         }
+        viewModel.isShowError.observeNonNull(this) {
+            errorGroup.visibility = if (it) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -103,27 +110,11 @@ class SearchFragment : Fragment() {
         }
     }
 
-
-//    override fun clearVideoList() {
-//        videoListAdapter.videoList = mutableListOf()
-//    }
-//
-//    override fun showEmptyMessage() {
-//
-//    }
-
-//    override fun showErrorMessage(e: Throwable?) {
-//        errorGroup.visibility = View.VISIBLE
-//    }
-//
-//    override fun hideErrorMessage() {
-//        errorGroup.visibility = View.GONE
-//    }
-
     fun clearSearching() {
         searchWord = null
         searchEditText.setText("")
         videoListAdapter.clearList()
+        errorGroup.visibility = View.GONE
     }
 
     interface SearchFragmentListener {

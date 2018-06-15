@@ -51,11 +51,9 @@ class ChannelVideoListFragment : Fragment() {
         viewModel.videoList.observeNonNull(this) {
             videoListAdapter.videoList = it.toMutableList()
         }
-
         viewModel.nextPageToken.observeNonNull(this) {
             this.nextPageToken = it
         }
-
         viewModel.progress.observeNonNull(this) {
             if (it) {
                 progressView.show()
@@ -79,12 +77,12 @@ class ChannelVideoListFragment : Fragment() {
             layoutManager = manager
             addOnScrollListener(EndlessScrollListener(manager) {
                 val nextPageToken = nextPageToken ?: return@EndlessScrollListener
-                viewModel.loadNextVideo(getString(R.string.api_key), nextPageToken)
+                viewModel.loadChannelVideo(getString(R.string.api_key), nextPageToken)
             })
             adapter = videoListAdapter
         }
 
-        viewModel.loadChannelDetail(getString(R.string.api_key))
+        viewModel.loadChannelVideo(getString(R.string.api_key))
     }
 
     interface ChannelVideoFragmentListener {

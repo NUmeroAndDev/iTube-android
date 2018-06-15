@@ -13,7 +13,9 @@ class FavoriteVideoListViewModel(private val favoriteRepository: IFavoriteVideoR
     private val job = Job()
 
     val videoList: MutableLiveData<List<FavoriteVideo>> = MutableLiveData()
+
     override val error: MutableLiveData<Throwable> = MutableLiveData()
+    override val isShowError: MutableLiveData<Boolean> = MutableLiveData()
     override val progress: MutableLiveData<Boolean> = MutableLiveData()
 
     fun loadFavoriteVideoList() {

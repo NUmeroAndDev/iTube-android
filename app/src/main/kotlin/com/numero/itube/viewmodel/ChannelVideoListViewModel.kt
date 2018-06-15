@@ -18,33 +18,17 @@ class ChannelVideoListViewModel(
 
     val videoList: MutableLiveData<List<SearchResponse.Video>> = MutableLiveData()
     val nextPageToken: MutableLiveData<String> = MutableLiveData()
+
     override val error: MutableLiveData<Throwable> = MutableLiveData()
+    override val isShowError: MutableLiveData<Boolean> = MutableLiveData()
     override val progress: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun loadChannelDetail(key: String) {
-        executeLoadChannelDetail(key, channelId)
-    }
-
-    fun loadNextVideo(key: String, nextPageToken: String) {
+    fun loadChannelVideo(key: String, nextPageToken: String? = null) {
         executeLoadChannelVideo(key, channelId, nextPageToken)
     }
 
-    private fun executeLoadChannelDetail(key: String, channelId: String) = async(job + UI) {
-        progress.postValue(true)
-        try {
-            val request = ChannelVideoRequest(key, channelId)
-            val videoResponse = youtubeRepository.loadChannelVideo(request).await()
-            videoList.postValue(videoResponse.items)
-            nextPageToken.postValue(videoResponse.nextPageToken)
-        } catch (t: Throwable) {
-            t.printStackTrace()
-            error.postValue(t)
-        } finally {
-            progress.postValue(false)
-        }
-    }
-
-    private fun executeLoadChannelVideo(key: String, channelId: String, nextPageToken: String) = async(job + UI) {
+    private fun executeLoadChannelVideo(key: String, channelId: String, nextPageToken: String?) = async(job + UI) {
+        isShowError.postValue(false)
         progress.postValue(true)
         try {
             val request = ChannelVideoRequest(key, channelId, nextPageToken)
@@ -53,6 +37,7 @@ class ChannelVideoListViewModel(
             this@ChannelVideoListViewModel.nextPageToken.postValue(videoResponse.nextPageToken)
         } catch (t: Throwable) {
             t.printStackTrace()
+            isShowError.postValue(true)
             error.postValue(t)
         } finally {
             progress.postValue(false)

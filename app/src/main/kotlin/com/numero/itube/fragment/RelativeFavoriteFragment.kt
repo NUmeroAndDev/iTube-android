@@ -54,7 +54,6 @@ class RelativeFavoriteFragment : BaseRelativeFragment() {
         viewModel.videoList.observeNonNull(this) {
             videoListAdapter.videoList = it
         }
-
         viewModel.progress.observeNonNull(this) {
             if (it) {
                 progressView.show()
@@ -62,17 +61,21 @@ class RelativeFavoriteFragment : BaseRelativeFragment() {
                 progressView.hide()
             }
         }
-
         viewModel.channel.observeNonNull(this) {
             showChannelDetail(it, channelId)
         }
-
         viewModel.videoDetail.observeNonNull(this) {
             showVideoDetail(it)
         }
-
         viewModel.isFavorite.observeNonNull(this) {
             registeredFavorite(it)
+        }
+        viewModel.isShowError.observeNonNull(this) {
+            errorGroup.visibility = if (it) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
         }
     }
 
@@ -103,14 +106,6 @@ class RelativeFavoriteFragment : BaseRelativeFragment() {
         viewModel.loadVideoAndChannelDetail(getString(R.string.api_key))
         viewModel.checkFavorite()
     }
-
-//    override fun showErrorMessage(e: Throwable?) {
-//        errorGroup.visibility = View.VISIBLE
-//    }
-//
-//    override fun hideErrorMessage() {
-//        errorGroup.visibility = View.GONE
-//    }
 
     fun playNextVideo() {
         videoListAdapter.playNextVideo()
