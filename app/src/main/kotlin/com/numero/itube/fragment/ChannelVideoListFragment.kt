@@ -17,7 +17,7 @@ import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.adapter.VideoListAdapter
 import com.numero.itube.viewmodel.ChannelVideoListViewModel
-import com.numero.itube.viewmodel.ChannelVideoListViewModelFactory
+import com.numero.itube.viewmodel.factory.ChannelVideoListViewModelFactory
 import kotlinx.android.synthetic.main.fragment_channel_video_list.*
 import javax.inject.Inject
 

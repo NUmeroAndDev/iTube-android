@@ -1,8 +1,9 @@
-package com.numero.itube.viewmodel
+package com.numero.itube.viewmodel.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.numero.itube.repository.IYoutubeRepository
+import com.numero.itube.viewmodel.ChannelVideoListViewModel
 
 class ChannelVideoListViewModelFactory(
         private val youtubeRepository: IYoutubeRepository,
