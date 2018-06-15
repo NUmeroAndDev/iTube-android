@@ -8,13 +8,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.VideoDetailResponse
-import com.numero.itube.contract.BaseRelativeContract
 import kotlinx.android.synthetic.main.container_video_detail.*
 
 /**
  * ここはVideoDetail系の処理をまとめるためだけのFragment
  */
-open class BaseRelativeFragment : Fragment(), BaseRelativeContract.IBaseRelativeView {
+open class BaseRelativeFragment : Fragment() {
 
     private var listener: BaseRelativeFragmentListener? = null
 
@@ -22,25 +21,6 @@ open class BaseRelativeFragment : Fragment(), BaseRelativeContract.IBaseRelative
         super.onAttach(context)
         if (context is BaseRelativeFragmentListener) {
             listener = context
-        }
-    }
-
-    override fun showVideoDetail(videoDetail: VideoDetailResponse.VideoDetail, channel: ChannelResponse.Channel, channelId: String) {
-        val context = context ?: return
-
-        descriptionTextView.text = videoDetail.snippet.description
-        channelNameTextView.text = channel.snippet.title
-
-        val url = channel.snippet.thumbnails.medium.url
-        Glide.with(context).load(url).apply(RequestOptions().circleCrop()).into(channelImageView)
-        channelLayout.setOnClickListener {
-            val channelName = channelNameTextView.text.toString()
-            listener?.onClickChannel(
-                    channelName,
-                    channelId,
-                    url,
-                    Pair(channelImageView, channelImageView.transitionName),
-                    Pair(channelNameTextView, channelNameTextView.transitionName))
         }
     }
 
@@ -66,11 +46,11 @@ open class BaseRelativeFragment : Fragment(), BaseRelativeContract.IBaseRelative
         descriptionTextView.text = videoDetail.snippet.description
     }
 
-    override fun registeredFavorite(isRegistered: Boolean) {
+    fun registeredFavorite(isRegistered: Boolean) {
         listener?.onIsRegisteredFavorite(isRegistered)
     }
 
-    override fun setIsRegistered(isRegistered: Boolean) {
+    open fun setIsRegistered(isRegistered: Boolean) {
         //継承先で使用するためここでは使わない
     }
 
