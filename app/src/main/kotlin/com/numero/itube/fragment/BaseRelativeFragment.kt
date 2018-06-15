@@ -44,6 +44,28 @@ open class BaseRelativeFragment : Fragment(), BaseRelativeContract.IBaseRelative
         }
     }
 
+    fun showChannelDetail(channel: ChannelResponse.Channel, channelId: String) {
+        val context = context ?: return
+
+        channelNameTextView.text = channel.snippet.title
+
+        val url = channel.snippet.thumbnails.medium.url
+        Glide.with(context).load(url).apply(RequestOptions().circleCrop()).into(channelImageView)
+        channelLayout.setOnClickListener {
+            val channelName = channelNameTextView.text.toString()
+            listener?.onClickChannel(
+                    channelName,
+                    channelId,
+                    url,
+                    Pair(channelImageView, channelImageView.transitionName),
+                    Pair(channelNameTextView, channelNameTextView.transitionName))
+        }
+    }
+
+    fun showVideoDetail(videoDetail: VideoDetailResponse.VideoDetail) {
+        descriptionTextView.text = videoDetail.snippet.description
+    }
+
     override fun registeredFavorite(isRegistered: Boolean) {
         listener?.onIsRegisteredFavorite(isRegistered)
     }
