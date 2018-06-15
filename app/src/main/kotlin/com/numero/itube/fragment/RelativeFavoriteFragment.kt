@@ -62,6 +62,7 @@ class RelativeFavoriteFragment : BaseRelativeFragment() {
                 progressView.hide()
             }
         }
+
         viewModel.channel.observeNonNull(this) {
             showChannelDetail(it, channelId)
         }

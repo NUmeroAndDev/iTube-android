@@ -60,6 +60,18 @@ class RelativeFragment : BaseRelativeFragment() {
         viewModel.videoDetail.observeNonNull(this) {
             showVideoDetail(it)
         }
+
+        viewModel.isFavorite.observeNonNull(this) {
+            registeredFavorite(it)
+        }
+
+        viewModel.progress.observeNonNull(this) {
+            if (it) {
+                progressView.show()
+            } else {
+                progressView.hide()
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
