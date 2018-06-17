@@ -1,9 +1,6 @@
 package com.numero.itube.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.numero.itube.api.request.ChannelRequest
 import com.numero.itube.api.request.RelativeVideoRequest
 import com.numero.itube.api.request.VideoDetailRequest
@@ -74,7 +71,21 @@ class RelativeViewModel(
     // FIXME エラーどうする?
     override val error: MutableLiveData<Throwable> = MutableLiveData()
     override val isShowError: MutableLiveData<Boolean> = MutableLiveData()
-    override val progress: MutableLiveData<Boolean> = MutableLiveData()
+    override val progress: MutableLiveData<Boolean> = MediatorLiveData<Boolean>().apply {
+        var count = 0
+        addSource(detailResponseLiveData) {
+            count++
+            postValue(count < 3)
+        }
+        addSource(channelResponseLiveData) {
+            count++
+            postValue(count < 3)
+        }
+        addSource(relativeResponseLiveData) {
+            count++
+            postValue(count < 3)
+        }
+    }
 
     fun checkFavorite() {
         executeCheckFavorite(videoId)
@@ -103,6 +114,7 @@ class RelativeViewModel(
     }
 
     private fun executeLoadDetail(key: String, id: String, channelId: String) {
+        progress.postValue(true)
 
         val detailRequest = VideoDetailRequest(key, id)
         val channelRequest = ChannelRequest(key, channelId)

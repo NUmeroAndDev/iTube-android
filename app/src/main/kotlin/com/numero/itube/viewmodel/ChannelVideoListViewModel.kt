@@ -20,6 +20,7 @@ class ChannelVideoListViewModel(
     }
 
     val videoList: LiveData<List<SearchResponse.Video>> = Transformations.map(responseLiveData) {
+        progress.postValue(false)
         // FIXME ページング
         when (it) {
             is Response.Success -> it.response.items
