@@ -1,10 +1,13 @@
 package com.numero.itube.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.numero.itube.api.request.ChannelRequest
 import com.numero.itube.api.request.VideoDetailRequest
 import com.numero.itube.api.response.ChannelResponse
+import com.numero.itube.api.response.Response
 import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.repository.IFavoriteVideoRepository
 import com.numero.itube.repository.IYoutubeRepository
@@ -22,11 +25,36 @@ class RelativeFavoriteViewModel(
 
     private val job = Job()
 
+    private val detailRequestLiveData = MutableLiveData<VideoDetailRequest>()
+    private val detailResponseLiveData = Transformations.switchMap(detailRequestLiveData) {
+        youtubeRepository.loadDetailResponse(it)
+    }
+
+    private val channelRequestLiveData = MutableLiveData<ChannelRequest>()
+    private val channelResponseLiveData = Transformations.switchMap(channelRequestLiveData) {
+        youtubeRepository.loadChannelResponse(it)
+    }
+
     val videoList: MutableLiveData<List<FavoriteVideo>> = MutableLiveData()
-    val nextPageToken: MutableLiveData<String> = MutableLiveData()
-    val videoDetail: MutableLiveData<VideoDetailResponse.VideoDetail> = MutableLiveData()
+    val videoDetail: LiveData<VideoDetailResponse.VideoDetail> = Transformations.map(detailResponseLiveData) {
+        when (it) {
+            is Response.Success -> it.response.items[0]
+            else -> {
+                error.postValue(it.throwable)
+                null
+            }
+        }
+    }
     val isFavorite: MutableLiveData<Boolean> = MutableLiveData()
-    val channel: MutableLiveData<ChannelResponse.Channel> = MutableLiveData()
+    val channel: LiveData<ChannelResponse.Channel> = Transformations.map(channelResponseLiveData) {
+        when (it) {
+            is Response.Success -> it.response.items[0]
+            else -> {
+                error.postValue(it.throwable)
+                null
+            }
+        }
+    }
 
     override val error: MutableLiveData<Throwable> = MutableLiveData()
     override val isShowError: MutableLiveData<Boolean> = MutableLiveData()
@@ -37,7 +65,12 @@ class RelativeFavoriteViewModel(
     }
 
     fun loadVideoAndChannelDetail(key: String) {
-        executeLoadDetail(key, videoId, channelId)
+        val detailRequest = VideoDetailRequest(key, videoId)
+        val channelRequest = ChannelRequest(key, channelId)
+
+        detailRequestLiveData.postValue(detailRequest)
+        channelRequestLiveData.postValue(channelRequest)
+        executeLoadDetail()
     }
 
     fun registerFavorite() {
@@ -58,21 +91,10 @@ class RelativeFavoriteViewModel(
         }
     }
 
-    private fun executeLoadDetail(key: String, id: String, channelId: String) = async(job + UI) {
-        isShowError.postValue(false)
-        progress.postValue(true)
+    private fun executeLoadDetail() = async(job + UI) {
         try {
-            val detailRequest = VideoDetailRequest(key, id)
-            val videoDetailResponse = youtubeRepository.loadDetail(detailRequest).await()
-            videoDetail.postValue(videoDetailResponse.items[0])
-
-            val channelRequest = ChannelRequest(key, channelId)
-            val channelResponse = youtubeRepository.loadChannel(channelRequest).await()
-
             val favoriteVideoList = favoriteRepository.loadFavoriteVideo().await()
-
             videoList.postValue(favoriteVideoList)
-            channel.postValue(channelResponse.items[0])
         } catch (t: Throwable) {
             isShowError.postValue(true)
             error.postValue(t)

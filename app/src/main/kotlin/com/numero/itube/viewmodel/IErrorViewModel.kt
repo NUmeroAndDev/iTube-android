@@ -1,9 +1,9 @@
 package com.numero.itube.viewmodel
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 
 interface IErrorViewModel {
-    val error: MutableLiveData<Throwable>
+    val error: LiveData<Throwable>
 
-    val isShowError: MutableLiveData<Boolean>
+    val isShowError: LiveData<Boolean>
 }

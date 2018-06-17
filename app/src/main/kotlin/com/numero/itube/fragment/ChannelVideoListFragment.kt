@@ -64,7 +64,7 @@ class ChannelVideoListFragment : Fragment() {
         }
         if (savedInstanceState == null) {
             // 画面回転時には以前のデータが復帰される
-            viewModel.loadChannelVideo(getString(R.string.api_key))
+            loadChannelVideo()
         }
     }
 
@@ -81,11 +81,14 @@ class ChannelVideoListFragment : Fragment() {
             val manager = LinearLayoutManager(context)
             layoutManager = manager
             addOnScrollListener(EndlessScrollListener(manager) {
-                val nextPageToken = nextPageToken ?: return@EndlessScrollListener
-                viewModel.loadChannelVideo(getString(R.string.api_key), nextPageToken)
+                loadChannelVideo(nextPageToken)
             })
             adapter = videoListAdapter
         }
+    }
+
+    private fun loadChannelVideo(nextPageToken: String? = null) {
+        viewModel.loadChannelVideo(getString(R.string.api_key), nextPageToken)
     }
 
     interface ChannelVideoFragmentListener {
