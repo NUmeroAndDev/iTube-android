@@ -1,4 +1,11 @@
 <resources>
     <dimen name="relative_list_width">104dp</dimen>
     <dimen name="relative_list_height">104dp</dimen>
+
+    <!--Video's Card-->
+    <dimen name="video_card_corner_radius">8dp</dimen>
+    <dimen name="video_card_elevation">0dp</dimen>
+    <dimen name="video_card_stroke_width">1dp</dimen>
+    <dimen name="thumbnail_corner_radius">4dp</dimen>
+
 </resources>

@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
 import com.numero.itube.repository.db.FavoriteVideo
 import kotlinx.android.extensions.LayoutContainer
@@ -42,7 +44,12 @@ class FavoriteVideoListAdapter : RecyclerView.Adapter<FavoriteVideoListAdapter.V
 
         fun setVideo(video: FavoriteVideo) {
             titleTextView.text = video.title
-            Glide.with(itemView.context).load(video.thumbnailUrl).into(thumbnailImageView)
+
+            val cornerRadius = itemView.context.resources.getDimensionPixelSize(R.dimen.thumbnail_corner_radius)
+            Glide.with(itemView.context)
+                    .load(video.thumbnailUrl)
+                    .apply(RequestOptions().transform(RoundedCorners(cornerRadius)))
+                    .into(thumbnailImageView)
             //.diskCacheStrategy(DiskCacheStrategy.NONE)
         }
     }

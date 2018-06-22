@@ -4,11 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="8dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="8dp">
+    app:cardCornerRadius="@dimen/video_card_corner_radius"
+    app:cardElevation="@dimen/video_card_elevation"
+    app:strokeColor="@color/stroke"
+    app:strokeWidth="@dimen/video_card_stroke_width">
 
     <androidx.constraintlayout.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,9 +24,11 @@
             android:id="@+id/thumbnailImageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/titleTextView"
+            android:layout_margin="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="w,480:360"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/titleTextView"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,12 +39,13 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:padding="16dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/thumbnailImageView"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintStart_toEndOf="@+id/thumbnailImageView"
+            app:layout_constraintTop_toTopOf="parent"
             tools:text="Title" />
 
     </androidx.constraintlayout.ConstraintLayout>
