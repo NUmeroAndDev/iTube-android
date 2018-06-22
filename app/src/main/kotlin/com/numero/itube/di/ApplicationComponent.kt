@@ -1,6 +1,7 @@
 package com.numero.itube.di
 
 import com.numero.itube.activity.PlayerActivity
+import com.numero.itube.activity.SearchActivity
 import com.numero.itube.fragment.*
 import dagger.Component
 import javax.inject.Singleton
@@ -19,5 +20,6 @@ interface ApplicationComponent {
     fun inject(searchFragment: SearchFragment)
     fun inject(channelVideoListFragment: ChannelVideoListFragment)
 
+    fun inject(searchActivity: SearchActivity)
     fun inject(playerActivity: PlayerActivity)
 }
