@@ -86,6 +86,7 @@ class SearchActivity : AppCompatActivity() {
                 searchWord = query
                 val word = searchWord ?: return false
                 loadSearch(word)
+                searchView.clearFocus()
                 return false
             }
 
