@@ -1,9 +1,9 @@
 package com.numero.itube.activity
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import com.numero.itube.R
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.replace
@@ -15,8 +15,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),
         FavoriteVideoListFragment.FavoriteFragmentListener,
-        SettingsFragment.SettingsFragmentListener,
-        Toolbar.OnMenuItemClickListener {
+        SettingsFragment.SettingsFragmentListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,24 +25,25 @@ class MainActivity : AppCompatActivity(),
         if (findFragment(R.id.container) == null) {
             replace(R.id.container, FavoriteVideoListFragment.newInstance(), false)
         }
-
-        bottomAppBar.apply {
-            replaceMenu(R.menu.menu_main)
-            setOnMenuItemClickListener(this@MainActivity)
-        }
     }
 
-    override fun onMenuItemClick(item: MenuItem?): Boolean {
-        item ?: return false
-        when (item.itemId) {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             R.id.action_settings -> {
                 SettingsBottomSheetFragment.newInstance().show(supportFragmentManager)
+                true
             }
             R.id.action_search -> {
                 startActivity(SearchActivity.createIntent(this))
+                true
             }
+            else -> super.onOptionsItemSelected(item)
         }
-        return true
     }
 
     override fun showLicenses() {

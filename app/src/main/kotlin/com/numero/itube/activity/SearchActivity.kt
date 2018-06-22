@@ -3,15 +3,15 @@ package com.numero.itube.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
-import com.numero.itube.extension.hideKeyboard
 import com.numero.itube.extension.observeNonNull
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
@@ -34,7 +34,10 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        setSupportActionBar(toolbar)
         component?.inject(this)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val factory = SearchVideoViewModelFactory(youtubeRepository)
         viewModel = ViewModelProviders.of(this, factory).get(SearchVideoViewModel::class.java)
@@ -63,23 +66,39 @@ class SearchActivity : AppCompatActivity() {
         initViews()
     }
 
-    private fun initViews() {
-        backImageButton.setOnClickListener {
-            finish()
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun initViews() {
         retryButton.setOnClickListener {
             val word = searchWord ?: return@setOnClickListener
             viewModel.search(getString(R.string.api_key), word)
         }
-        searchEditText.setOnEditorActionListener { _, i, _ ->
-            if (i == EditorInfo.IME_ACTION_SEARCH) {
-                searchWord = searchEditText.text.toString()
-                val word = searchWord ?: return@setOnEditorActionListener false
-                hideKeyboard()
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchWord = query
+                val word = searchWord ?: return false
                 loadSearch(word)
+                return false
             }
-            return@setOnEditorActionListener false
-        }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    // 初期化
+                    searchWord = null
+                    videoListAdapter.clearList()
+                    errorGroup.visibility = View.GONE
+                }
+                return false
+            }
+        })
         videoListAdapter.setOnItemClickListener {
             startActivity(PlayerActivity.createIntent(this, it))
         }
@@ -101,13 +120,6 @@ class SearchActivity : AppCompatActivity() {
 
     private fun loadSearch(searchWord: String, nextPageToken: String? = null) {
         viewModel.search(getString(R.string.api_key), searchWord, nextPageToken)
-    }
-
-    private fun clearSearching() {
-        searchWord = null
-        searchEditText.setText("")
-        videoListAdapter.clearList()
-        errorGroup.visibility = View.GONE
     }
 
     companion object {
