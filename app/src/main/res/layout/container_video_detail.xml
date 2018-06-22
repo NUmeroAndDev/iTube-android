@@ -4,12 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="12dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="8dp">
+    app:cardElevation="@dimen/video_card_elevation"
+    app:strokeColor="@color/stroke"
+    app:strokeWidth="@dimen/video_card_stroke_width">
 
     <androidx.constraintlayout.ConstraintLayout
         android:layout_width="match_parent"
