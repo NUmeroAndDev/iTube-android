@@ -10,11 +10,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
-import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.extension.component
 import com.numero.itube.extension.hideKeyboard
 import com.numero.itube.extension.observeNonNull
-import com.numero.itube.fragment.SearchFragment
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.adapter.VideoListAdapter
@@ -23,15 +21,13 @@ import com.numero.itube.viewmodel.factory.SearchVideoViewModelFactory
 import kotlinx.android.synthetic.main.activity_search.*
 import javax.inject.Inject
 
-class SearchActivity : AppCompatActivity(),
-        SearchFragment.SearchFragmentListener {
+class SearchActivity : AppCompatActivity() {
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
 
     private lateinit var viewModel: SearchVideoViewModel
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
-    private var listener: SearchFragment.SearchFragmentListener? = null
     private var searchWord: String? = null
     private var nextPageToken: String? = null
 
@@ -85,8 +81,7 @@ class SearchActivity : AppCompatActivity(),
             return@setOnEditorActionListener false
         }
         videoListAdapter.setOnItemClickListener {
-            // 再生画面へ遷移
-            listener?.showVideo(it)
+            startActivity(PlayerActivity.createIntent(this, it))
         }
         videoRecyclerView.apply {
             val manager = LinearLayoutManager(context)
@@ -113,10 +108,6 @@ class SearchActivity : AppCompatActivity(),
         searchEditText.setText("")
         videoListAdapter.clearList()
         errorGroup.visibility = View.GONE
-    }
-
-    override fun showVideo(video: SearchResponse.Video) {
-        startActivity(PlayerActivity.createIntent(this, video))
     }
 
     companion object {
