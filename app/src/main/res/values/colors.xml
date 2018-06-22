@@ -18,6 +18,7 @@
 
     <color name="fab_background">#FFFFFF</color>
     <color name="divider">#1C000000</color>
+    <color name="stroke">#1C000000</color>
 
     <color name="playing_background">#8A000000</color>
 </resources>

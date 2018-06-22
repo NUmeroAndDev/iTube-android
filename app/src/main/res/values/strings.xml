@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">iTube</string>
-    
+
+    <string name="search">検索</string>
     <string name="settings">設定</string>
     <string name="licenses">ライセンス</string>
 

@@ -1,7 +1,11 @@
 package com.numero.itube.di
 
 import com.numero.itube.activity.PlayerActivity
-import com.numero.itube.fragment.*
+import com.numero.itube.activity.SearchActivity
+import com.numero.itube.fragment.ChannelVideoListFragment
+import com.numero.itube.fragment.FavoriteVideoListFragment
+import com.numero.itube.fragment.RelativeFavoriteFragment
+import com.numero.itube.fragment.RelativeFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -16,8 +20,8 @@ interface ApplicationComponent {
     fun inject(favoriteVideoListFragment: FavoriteVideoListFragment)
     fun inject(relativeFavoriteFragment: RelativeFavoriteFragment)
     fun inject(relativeFragment: RelativeFragment)
-    fun inject(searchFragment: SearchFragment)
     fun inject(channelVideoListFragment: ChannelVideoListFragment)
 
+    fun inject(searchActivity: SearchActivity)
     fun inject(playerActivity: PlayerActivity)
 }

@@ -11,23 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/app_name"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="20sp" />
-
-        </androidx.appcompat.widget.Toolbar>
+            android:gravity="center"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -46,51 +38,5 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.ConstraintLayout>
-
-    <FrameLayout
-        android:id="@+id/bottomSheetLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="8dp"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="0dp"
-        app:layout_behavior="@string/bottom_sheet_behavior">
-
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/bottomSheetCardView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="-16dp"
-            android:layout_marginTop="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="8dp">
-
-            <FrameLayout
-                android:id="@+id/searchContainer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="16dp" />
-
-        </com.google.android.material.card.MaterialCardView>
-
-    </FrameLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_anchor="@+id/bottomAppBar"
-        app:srcCompat="@drawable/ic_search" />
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:fabAlignmentMode="end"
-        app:fabAttached="true" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

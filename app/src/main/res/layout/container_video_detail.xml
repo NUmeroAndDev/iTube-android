@@ -4,12 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="12dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="8dp">
+    app:cardElevation="@dimen/video_card_elevation"
+    app:strokeColor="@color/stroke"
+    app:strokeWidth="@dimen/video_card_stroke_width">
 
     <androidx.constraintlayout.ConstraintLayout
         android:layout_width="match_parent"
@@ -36,9 +34,8 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:transitionName="channelName"
             app:layout_constraintBottom_toBottomOf="@+id/channelImageView"
             app:layout_constraintEnd_toEndOf="parent"
