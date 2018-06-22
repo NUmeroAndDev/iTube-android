@@ -24,7 +24,10 @@
                 android:id="@+id/favoriteVideoRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clipToPadding="false"
                 android:overScrollMode="never"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
                 android:scrollbars="none" />
 
             <include
