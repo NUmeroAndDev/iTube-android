@@ -82,6 +82,9 @@ class SearchFragment : Fragment() {
             viewModel.search(getString(R.string.api_key), word)
         }
 
+        backImageButton.setOnClickListener {
+            activity?.onBackPressed()
+        }
         searchEditText.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_SEARCH) {
                 searchWord = searchEditText.text.toString()

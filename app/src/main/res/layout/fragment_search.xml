@@ -8,10 +8,9 @@
         android:id="@+id/searchLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
+        android:layout_margin="16dp"
         app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,13 +19,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/searchImageView"
+            <ImageButton
+                android:id="@+id/backImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="8dp"
-                android:src="@drawable/ic_search"
-                android:tint="?android:attr/textColorPrimary"
+                android:src="@drawable/ic_arrow_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +48,7 @@
                 android:scrollHorizontally="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/searchImageView"
+                app:layout_constraintStart_toEndOf="@+id/backImageButton"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.ConstraintLayout>
