@@ -1,46 +1,71 @@
 package com.numero.itube.repository
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.numero.itube.api.YoutubeApi
 import com.numero.itube.api.request.*
-import com.numero.itube.api.response.ChannelDetailResponse
-import com.numero.itube.api.response.ChannelResponse
-import com.numero.itube.api.response.SearchResponse
-import com.numero.itube.api.response.VideoDetailResponse
-import kotlinx.coroutines.experimental.Deferred
+import com.numero.itube.api.response.*
+import com.numero.itube.extension.execute
 
 class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository {
 
-    override fun search(request: SearchVideoRequest): Deferred<SearchResponse> {
-        return if (request.hasNextPageToken.not()) {
+    override fun loadSearchResponse(request: SearchVideoRequest): LiveData<Response<SearchResponse>> {
+        val response = MutableLiveData<Response<SearchResponse>>()
+        val call = if (request.hasNextPageToken.not()) {
             youtubeApi.search(request.key, request.searchWord)
         } else {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.search(request.key, request.searchWord, nextPageToken = token)
         }
+        call.execute {
+            response.postValue(it)
+        }
+        return response
     }
 
-    override fun loadRelative(request: RelativeVideoRequest): Deferred<SearchResponse> {
-        return youtubeApi.searchRelative(request.key, request.videoId)
+    override fun loadRelativeResponse(request: RelativeVideoRequest): LiveData<Response<SearchResponse>> {
+        val response = MutableLiveData<Response<SearchResponse>>()
+        youtubeApi.searchRelative(request.key, request.videoId).execute {
+            response.postValue(it)
+        }
+        return response
     }
 
-    override fun loadDetail(request: VideoDetailRequest): Deferred<VideoDetailResponse> {
-        return youtubeApi.videoDetail(request.key, request.id)
+    override fun loadDetailResponse(request: VideoDetailRequest): LiveData<Response<VideoDetailResponse>> {
+        val response = MutableLiveData<Response<VideoDetailResponse>>()
+        youtubeApi.videoDetail(request.key, request.id).execute {
+            response.postValue(it)
+        }
+        return response
     }
 
-    override fun loadChannel(request: ChannelRequest): Deferred<ChannelResponse> {
-        return youtubeApi.channel(request.key, request.id)
+    override fun loadChannelResponse(request: ChannelRequest): LiveData<Response<ChannelResponse>> {
+        val response = MutableLiveData<Response<ChannelResponse>>()
+        youtubeApi.channel(request.key, request.id).execute {
+            response.postValue(it)
+        }
+        return response
     }
 
-    override fun loadChannelDetail(request: ChannelDetailRequest): Deferred<ChannelDetailResponse> {
-        return youtubeApi.channelDetail(request.key, request.id)
+    override fun loadChannelDetailResponse(request: ChannelDetailRequest): LiveData<Response<ChannelDetailResponse>> {
+        val response = MutableLiveData<Response<ChannelDetailResponse>>()
+        youtubeApi.channelDetail(request.key, request.id).execute {
+            response.postValue(it)
+        }
+        return response
     }
 
-    override fun loadChannelVideo(request: ChannelVideoRequest): Deferred<SearchResponse> {
-        return if (request.hasNextPageToken.not()) {
+    override fun loadChannelVideoResponse(request: ChannelVideoRequest): LiveData<Response<SearchResponse>> {
+        val response = MutableLiveData<Response<SearchResponse>>()
+        val call = if (request.hasNextPageToken.not()) {
             youtubeApi.searchChannelVideo(request.key, request.channelId)
         } else {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.searchChannelVideo(request.key, request.channelId, nextPageToken = token)
         }
+        call.execute {
+            response.postValue(it)
+        }
+        return response
     }
 }

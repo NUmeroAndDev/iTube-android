@@ -1,22 +1,20 @@
 package com.numero.itube.repository
 
+import androidx.lifecycle.LiveData
 import com.numero.itube.api.request.*
-import com.numero.itube.api.response.ChannelDetailResponse
-import com.numero.itube.api.response.ChannelResponse
-import com.numero.itube.api.response.SearchResponse
-import com.numero.itube.api.response.VideoDetailResponse
-import kotlinx.coroutines.experimental.Deferred
+import com.numero.itube.api.response.*
 
 interface IYoutubeRepository {
-    fun search(request: SearchVideoRequest): Deferred<SearchResponse>
 
-    fun loadRelative(request: RelativeVideoRequest): Deferred<SearchResponse>
+    fun loadSearchResponse(request: SearchVideoRequest): LiveData<Response<SearchResponse>>
 
-    fun loadDetail(request: VideoDetailRequest): Deferred<VideoDetailResponse>
+    fun loadRelativeResponse(request: RelativeVideoRequest): LiveData<Response<SearchResponse>>
 
-    fun loadChannel(request: ChannelRequest): Deferred<ChannelResponse>
+    fun loadDetailResponse(request: VideoDetailRequest): LiveData<Response<VideoDetailResponse>>
 
-    fun loadChannelDetail(request: ChannelDetailRequest): Deferred<ChannelDetailResponse>
+    fun loadChannelResponse(request: ChannelRequest): LiveData<Response<ChannelResponse>>
 
-    fun loadChannelVideo(request: ChannelVideoRequest): Deferred<SearchResponse>
+    fun loadChannelDetailResponse(request: ChannelDetailRequest): LiveData<Response<ChannelDetailResponse>>
+
+    fun loadChannelVideoResponse(request: ChannelVideoRequest): LiveData<Response<SearchResponse>>
 }

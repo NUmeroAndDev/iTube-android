@@ -1,11 +1,11 @@
 package com.numero.itube.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.numero.itube.api.request.ChannelRequest
 import com.numero.itube.api.request.RelativeVideoRequest
 import com.numero.itube.api.request.VideoDetailRequest
 import com.numero.itube.api.response.ChannelResponse
+import com.numero.itube.api.response.Response
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.repository.IFavoriteVideoRepository
@@ -24,15 +24,68 @@ class RelativeViewModel(
 
     private val job = Job()
 
-    val videoList: MutableLiveData<List<SearchResponse.Video>> = MutableLiveData()
-    val nextPageToken: MutableLiveData<String> = MutableLiveData()
-    val videoDetail: MutableLiveData<VideoDetailResponse.VideoDetail> = MutableLiveData()
-    val isFavorite: MutableLiveData<Boolean> = MutableLiveData()
-    val channel: MutableLiveData<ChannelResponse.Channel> = MutableLiveData()
+    private val detailRequestLiveData = MutableLiveData<VideoDetailRequest>()
+    private val detailResponseLiveData = Transformations.switchMap(detailRequestLiveData) {
+        youtubeRepository.loadDetailResponse(it)
+    }
 
+    private val channelRequestLiveData = MutableLiveData<ChannelRequest>()
+    private val channelResponseLiveData = Transformations.switchMap(channelRequestLiveData) {
+        youtubeRepository.loadChannelResponse(it)
+    }
+
+    private val relativeRequestLiveData = MutableLiveData<RelativeVideoRequest>()
+    private val relativeResponseLiveData = Transformations.switchMap(relativeRequestLiveData) {
+        youtubeRepository.loadRelativeResponse(it)
+    }
+
+    val videoList: LiveData<List<SearchResponse.Video>> = Transformations.map(relativeResponseLiveData) {
+        when (it) {
+            is Response.Success -> it.response.items
+            else -> {
+                error.postValue(it.throwable)
+                null
+            }
+        }
+    }
+    val videoDetail: LiveData<VideoDetailResponse.VideoDetail> = Transformations.map(detailResponseLiveData) {
+        when (it) {
+            is Response.Success -> it.response.items[0]
+            else -> {
+                error.postValue(it.throwable)
+                null
+            }
+        }
+    }
+    val isFavorite: MutableLiveData<Boolean> = MutableLiveData()
+    val channel: LiveData<ChannelResponse.Channel> = Transformations.map(channelResponseLiveData) {
+        when (it) {
+            is Response.Success -> it.response.items[0]
+            else -> {
+                error.postValue(it.throwable)
+                null
+            }
+        }
+    }
+
+    // FIXME エラーどうする?
     override val error: MutableLiveData<Throwable> = MutableLiveData()
     override val isShowError: MutableLiveData<Boolean> = MutableLiveData()
-    override val progress: MutableLiveData<Boolean> = MutableLiveData()
+    override val progress: MutableLiveData<Boolean> = MediatorLiveData<Boolean>().apply {
+        var count = 0
+        addSource(detailResponseLiveData) {
+            count++
+            postValue(count < 3)
+        }
+        addSource(channelResponseLiveData) {
+            count++
+            postValue(count < 3)
+        }
+        addSource(relativeResponseLiveData) {
+            count++
+            postValue(count < 3)
+        }
+    }
 
     fun checkFavorite() {
         executeCheckFavorite(videoId)
@@ -60,28 +113,16 @@ class RelativeViewModel(
         }
     }
 
-    private fun executeLoadDetail(key: String, id: String, channelId: String) = async(job + UI) {
-        isShowError.postValue(false)
+    private fun executeLoadDetail(key: String, id: String, channelId: String) {
         progress.postValue(true)
-        try {
-            val detailRequest = VideoDetailRequest(key, id)
-            val videoDetailResponse = youtubeRepository.loadDetail(detailRequest).await()
-            videoDetail.postValue(videoDetailResponse.items[0])
 
-            val channelRequest = ChannelRequest(key, channelId)
-            val channelResponse = youtubeRepository.loadChannel(channelRequest).await()
+        val detailRequest = VideoDetailRequest(key, id)
+        val channelRequest = ChannelRequest(key, channelId)
+        val relativeRequest = RelativeVideoRequest(key, id)
 
-            val relativeRequest = RelativeVideoRequest(key, id)
-            val relativeVideoResponse = youtubeRepository.loadRelative(relativeRequest).await()
-
-            videoList.postValue(relativeVideoResponse.items)
-            channel.postValue(channelResponse.items[0])
-        } catch (t: Throwable) {
-            isShowError.postValue(false)
-            error.postValue(t)
-        } finally {
-            progress.postValue(false)
-        }
+        detailRequestLiveData.postValue(detailRequest)
+        channelRequestLiveData.postValue(channelRequest)
+        relativeRequestLiveData.postValue(relativeRequest)
     }
 
     private fun executeRegisterFavorite(video: VideoDetailResponse.VideoDetail) = async(job + UI) {

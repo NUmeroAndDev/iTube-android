@@ -87,7 +87,7 @@ class SearchFragment : Fragment() {
                 searchWord = searchEditText.text.toString()
                 val word = searchWord ?: return@setOnEditorActionListener false
                 hideKeyboard()
-                viewModel.search(getString(R.string.api_key), word)
+                loadSearch(word)
             }
             return@setOnEditorActionListener false
         }
@@ -104,11 +104,15 @@ class SearchFragment : Fragment() {
                     return@EndlessScrollListener
                 }
                 val word = searchWord ?: return@EndlessScrollListener
-                viewModel.search(getString(R.string.api_key), word, nextPageToken)
+                loadSearch(word, nextPageToken)
             })
             setHasFixedSize(true)
             adapter = videoListAdapter
         }
+    }
+
+    private fun loadSearch(searchWord: String, nextPageToken: String? = null) {
+        viewModel.search(getString(R.string.api_key), searchWord, nextPageToken)
     }
 
     fun clearSearching() {
