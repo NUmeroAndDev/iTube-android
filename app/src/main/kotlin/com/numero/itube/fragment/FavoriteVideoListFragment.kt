@@ -45,6 +45,13 @@ class FavoriteVideoListFragment : Fragment() {
         viewModel.videoList.observeNonNull(this) {
             videoListAdapter.videoList = it
         }
+        viewModel.isShowEmptyMessage.observeNonNull(this) {
+            noFavoriteVideoTextView.visibility = if (it) {
+                View.VISIBLE
+            } else {
+                View.INVISIBLE
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,14 +74,6 @@ class FavoriteVideoListFragment : Fragment() {
         super.onResume()
         viewModel.loadFavoriteVideoList()
     }
-
-//    override fun showEmptyMessage() {
-//        noFavoriteVideoTextView.visibility = View.VISIBLE
-//    }
-//
-//    override fun hideEmptyMessage() {
-//        noFavoriteVideoTextView.visibility = View.INVISIBLE
-//    }
 
     interface FavoriteFragmentListener {
         fun showVideo(video: FavoriteVideo)

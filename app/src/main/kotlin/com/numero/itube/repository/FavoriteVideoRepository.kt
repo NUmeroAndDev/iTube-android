@@ -2,32 +2,50 @@ package com.numero.itube.repository
 
 import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.repository.db.FavoriteVideoDao
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.async
+import io.reactivex.Flowable
+import io.reactivex.Maybe
+import io.reactivex.schedulers.Schedulers
 
 class FavoriteVideoRepository(private val favoriteVideoDao: FavoriteVideoDao) : IFavoriteVideoRepository {
 
-    override fun createFavoriteVideo(favoriteVideo: FavoriteVideo): Deferred<FavoriteVideo> = async {
-        favoriteVideoDao.create(favoriteVideo)
-        favoriteVideo
+    override fun createFavoriteVideo(favoriteVideo: FavoriteVideo): Flowable<FavoriteVideo> {
+        return Flowable.just(favoriteVideo)
+                .doOnNext {
+                    favoriteVideoDao.create(favoriteVideo)
+                }
+                .subscribeOn(Schedulers.io())
     }
 
-    override fun loadFavoriteVideo(): Deferred<List<FavoriteVideo>> = async {
-        favoriteVideoDao.findAll()
+    override fun loadFavoriteVideo(): Maybe<List<FavoriteVideo>> {
+        return favoriteVideoDao.findAll()
+                .subscribeOn(Schedulers.io())
     }
 
-    override fun updateFavoriteVideo(favoriteVideo: FavoriteVideo): Deferred<FavoriteVideo> = async {
-        favoriteVideoDao.update(favoriteVideo)
-        favoriteVideo
+    override fun updateFavoriteVideo(favoriteVideo: FavoriteVideo): Flowable<FavoriteVideo> {
+        return Flowable.just(favoriteVideo)
+                .doOnNext {
+                    favoriteVideoDao.update(favoriteVideo)
+                }
+                .subscribeOn(Schedulers.io())
     }
 
-    override fun deleteFavoriteVideo(id: String): Deferred<String> = async {
-        favoriteVideoDao.deleteVideo(id)
-        id
+    override fun deleteFavoriteVideo(id: String): Flowable<String> {
+        return Flowable.just(id)
+                .doOnNext {
+                    favoriteVideoDao.deleteVideo(id)
+                }
+                .subscribeOn(Schedulers.io())
     }
 
-    override fun existFavoriteVideo(id: String): Deferred<Boolean> = async {
-        favoriteVideoDao.findVideo(id).isNotEmpty()
+    override fun existFavoriteVideo(id: String): Flowable<Boolean> {
+        return Flowable.just(id)
+                .flatMap {
+                    favoriteVideoDao.findVideo(id)
+                }
+                .map {
+                    it.isNotEmpty()
+                }
+                .subscribeOn(Schedulers.io())
     }
 
 }
