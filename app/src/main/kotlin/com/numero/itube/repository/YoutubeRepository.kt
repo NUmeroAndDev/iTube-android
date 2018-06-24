@@ -3,9 +3,15 @@ package com.numero.itube.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.numero.itube.api.YoutubeApi
-import com.numero.itube.api.request.*
-import com.numero.itube.api.response.*
-import com.numero.itube.extension.execute
+import com.numero.itube.api.request.ChannelVideoRequest
+import com.numero.itube.api.request.RelativeRequest
+import com.numero.itube.api.request.SearchVideoRequest
+import com.numero.itube.api.response.RelativeResponse
+import com.numero.itube.api.response.Response
+import com.numero.itube.api.response.SearchResponse
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.Observables
+import io.reactivex.rxkotlin.subscribeBy
 
 class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository {
 
@@ -14,72 +20,73 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
     override fun loadSearchResponse(request: SearchVideoRequest): LiveData<Response<SearchResponse>> {
         isProgressLiveData.postValue(true)
         val response = MutableLiveData<Response<SearchResponse>>()
-        val call = if (request.hasNextPageToken.not()) {
+        val stream = if (request.hasNextPageToken.not()) {
             youtubeApi.search(request.key, request.searchWord)
         } else {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.search(request.key, request.searchWord, nextPageToken = token)
         }
-        call.execute {
-            isProgressLiveData.postValue(false)
-            response.postValue(it)
-        }
+        stream.observeOn(AndroidSchedulers.mainThread())
+                .doOnNext {
+                    isProgressLiveData.postValue(false)
+                }
+                .subscribeBy(
+                        onNext = {
+                            response.postValue(Response.Success(it))
+                        },
+                        onError = {
+                            response.postValue(Response.Error(it))
+                        }
+                )
         return response
     }
 
-    override fun loadRelativeResponse(request: RelativeVideoRequest): LiveData<Response<SearchResponse>> {
+    override fun loadRelative(request: RelativeRequest): LiveData<Response<RelativeResponse>> {
         isProgressLiveData.postValue(true)
-        val response = MutableLiveData<Response<SearchResponse>>()
-        youtubeApi.searchRelative(request.key, request.videoId).execute {
-            isProgressLiveData.postValue(false)
-            response.postValue(it)
+        val response = MutableLiveData<Response<RelativeResponse>>()
+        val streams = Observables.zip(
+                youtubeApi.searchRelative(request.key, request.videoId),
+                youtubeApi.channel(request.key, request.channelId),
+                youtubeApi.videoDetail(request.key, request.videoId)
+        ) { relativeResponse, channelResponse, detailResponse ->
+            RelativeResponse(relativeResponse, channelResponse, detailResponse)
         }
-        return response
-    }
-
-    override fun loadDetailResponse(request: VideoDetailRequest): LiveData<Response<VideoDetailResponse>> {
-        isProgressLiveData.postValue(true)
-        val response = MutableLiveData<Response<VideoDetailResponse>>()
-        youtubeApi.videoDetail(request.key, request.id).execute {
-            isProgressLiveData.postValue(false)
-            response.postValue(it)
-        }
-        return response
-    }
-
-    override fun loadChannelResponse(request: ChannelRequest): LiveData<Response<ChannelResponse>> {
-        isProgressLiveData.postValue(true)
-        val response = MutableLiveData<Response<ChannelResponse>>()
-        youtubeApi.channel(request.key, request.id).execute {
-            isProgressLiveData.postValue(false)
-            response.postValue(it)
-        }
-        return response
-    }
-
-    override fun loadChannelDetailResponse(request: ChannelDetailRequest): LiveData<Response<ChannelDetailResponse>> {
-        isProgressLiveData.postValue(true)
-        val response = MutableLiveData<Response<ChannelDetailResponse>>()
-        youtubeApi.channelDetail(request.key, request.id).execute {
-            isProgressLiveData.postValue(false)
-            response.postValue(it)
-        }
+        streams.observeOn(AndroidSchedulers.mainThread())
+                .doOnNext {
+                    isProgressLiveData.postValue(false)
+                }
+                .subscribeBy(
+                        onNext = {
+                            response.postValue(Response.Success(it))
+                        },
+                        onError = {
+                            response.postValue(Response.Error(it))
+                        }
+                )
         return response
     }
 
     override fun loadChannelVideoResponse(request: ChannelVideoRequest): LiveData<Response<SearchResponse>> {
         isProgressLiveData.postValue(true)
         val response = MutableLiveData<Response<SearchResponse>>()
-        val call = if (request.hasNextPageToken.not()) {
+        val stream = if (request.hasNextPageToken.not()) {
             youtubeApi.searchChannelVideo(request.key, request.channelId)
         } else {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.searchChannelVideo(request.key, request.channelId, nextPageToken = token)
         }
-        call.execute {
-            isProgressLiveData.postValue(false)
-            response.postValue(it)
-        }
+        stream.observeOn(AndroidSchedulers.mainThread())
+                .doOnNext {
+                    isProgressLiveData.postValue(false)
+                }
+                .subscribeBy(
+                        onNext = {
+                            response.postValue(Response.Success(it))
+                        },
+                        onError = {
+                            response.postValue(Response.Error(it))
+                        }
+                )
         return response
     }
 }

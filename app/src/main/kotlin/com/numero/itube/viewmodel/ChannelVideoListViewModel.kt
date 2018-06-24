@@ -40,10 +40,7 @@ class ChannelVideoListViewModel(
         null
     }
     override val isShowError: LiveData<Boolean> = Transformations.map(responseLiveData) {
-        if (it is Response.Error) {
-            it.throwable != null
-        }
-        false
+        it is Response.Error
     }
     override val progress: LiveData<Boolean> = youtubeRepository.isProgressLiveData
 

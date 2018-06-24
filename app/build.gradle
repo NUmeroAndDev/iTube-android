@@ -62,10 +62,15 @@ dependencies {
 
     implementation 'androidx.constraintlayout:constraintlayout:1.1.1'
 
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
+
     implementation "se.ansman.kotshi:api:$kotshi_version"
     kapt "se.ansman.kotshi:compiler:$kotshi_version"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
