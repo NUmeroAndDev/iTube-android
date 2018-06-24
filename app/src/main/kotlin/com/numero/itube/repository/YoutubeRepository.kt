@@ -27,14 +27,13 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
             youtubeApi.search(request.key, request.searchWord, nextPageToken = token)
         }
         stream.observeOn(AndroidSchedulers.mainThread())
-                .doOnNext {
-                    isProgressLiveData.postValue(false)
-                }
                 .subscribeBy(
                         onNext = {
+                            isProgressLiveData.postValue(false)
                             response.postValue(Response.Success(it))
                         },
                         onError = {
+                            isProgressLiveData.postValue(false)
                             response.postValue(Response.Error(it))
                         }
                 )
@@ -52,14 +51,13 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
             RelativeResponse(relativeResponse, channelResponse, detailResponse)
         }
         streams.observeOn(AndroidSchedulers.mainThread())
-                .doOnNext {
-                    isProgressLiveData.postValue(false)
-                }
                 .subscribeBy(
                         onNext = {
+                            isProgressLiveData.postValue(false)
                             response.postValue(Response.Success(it))
                         },
                         onError = {
+                            isProgressLiveData.postValue(false)
                             response.postValue(Response.Error(it))
                         }
                 )
@@ -76,14 +74,13 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
             youtubeApi.searchChannelVideo(request.key, request.channelId, nextPageToken = token)
         }
         stream.observeOn(AndroidSchedulers.mainThread())
-                .doOnNext {
-                    isProgressLiveData.postValue(false)
-                }
                 .subscribeBy(
                         onNext = {
+                            isProgressLiveData.postValue(false)
                             response.postValue(Response.Success(it))
                         },
                         onError = {
+                            isProgressLiveData.postValue(false)
                             response.postValue(Response.Error(it))
                         }
                 )
