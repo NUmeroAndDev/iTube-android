@@ -20,7 +20,6 @@ class ChannelVideoListViewModel(
     }
 
     val videoList: LiveData<List<SearchResponse.Video>> = Transformations.map(responseLiveData) {
-        progress.postValue(false)
         // FIXME ページング
         when (it) {
             is Response.Success -> it.response.items
@@ -35,17 +34,21 @@ class ChannelVideoListViewModel(
     }
 
     override val error: LiveData<Throwable> = Transformations.map(responseLiveData) {
-        it.throwable
+        if (it is Response.Error) {
+            it.throwable
+        }
+        null
     }
     override val isShowError: LiveData<Boolean> = Transformations.map(responseLiveData) {
-        progress.postValue(false)
-        it.throwable != null
+        if (it is Response.Error) {
+            it.throwable != null
+        }
+        false
     }
-    override val progress: MutableLiveData<Boolean> = MutableLiveData()
+    override val progress: LiveData<Boolean> = youtubeRepository.isProgressLiveData
 
     fun loadChannelVideo(key: String, nextPageToken: String? = null) {
         val request = ChannelVideoRequest(key, channelId, nextPageToken)
-        progress.postValue(true)
         requestLiveData.postValue(request)
     }
 

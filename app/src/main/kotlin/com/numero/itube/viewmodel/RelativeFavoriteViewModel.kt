@@ -1,6 +1,9 @@
 package com.numero.itube.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import com.numero.itube.api.request.ChannelRequest
 import com.numero.itube.api.request.VideoDetailRequest
 import com.numero.itube.api.response.ChannelResponse
@@ -36,7 +39,7 @@ class RelativeFavoriteViewModel(
     val videoDetail: LiveData<VideoDetailResponse.VideoDetail> = Transformations.map(detailResponseLiveData) {
         when (it) {
             is Response.Success -> it.response.items[0]
-            else -> {
+            is Response.Error -> {
                 error.postValue(it.throwable)
                 null
             }
@@ -46,7 +49,7 @@ class RelativeFavoriteViewModel(
     val channel: LiveData<ChannelResponse.Channel> = Transformations.map(channelResponseLiveData) {
         when (it) {
             is Response.Success -> it.response.items[0]
-            else -> {
+            is Response.Error -> {
                 error.postValue(it.throwable)
                 null
             }
@@ -55,24 +58,13 @@ class RelativeFavoriteViewModel(
 
     override val error: MutableLiveData<Throwable> = MutableLiveData()
     override val isShowError: MutableLiveData<Boolean> = MutableLiveData()
-    override val progress: MutableLiveData<Boolean> = MediatorLiveData<Boolean>().apply {
-        var i = 0
-        addSource(detailResponseLiveData) {
-            i++
-            postValue(i < 2)
-        }
-        addSource(channelResponseLiveData) {
-            i++
-            postValue(i < 2)
-        }
-    }
+    override val progress: LiveData<Boolean> = youtubeRepository.isProgressLiveData
 
     fun checkFavorite() {
         executeCheckFavorite(videoId)
     }
 
     fun loadVideoAndChannelDetail(key: String) {
-        progress.postValue(true)
         val detailRequest = VideoDetailRequest(key, videoId)
         val channelRequest = ChannelRequest(key, channelId)
 

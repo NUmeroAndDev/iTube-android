@@ -18,13 +18,12 @@ class SearchVideoViewModel(private val youtubeRepository: IYoutubeRepository) : 
 
     val videoList: LiveData<List<SearchResponse.Video>> = Transformations.map(responseLiveData) {
         // FIXME ページング
-        progress.postValue(false)
         when (it) {
             is Response.Success -> {
                 isShowError.postValue(false)
                 it.response.items
             }
-            else -> {
+            is Response.Error -> {
                 isShowError.postValue(true)
                 error.postValue(it.throwable)
                 null
@@ -40,11 +39,10 @@ class SearchVideoViewModel(private val youtubeRepository: IYoutubeRepository) : 
 
     override val error: MutableLiveData<Throwable> = MutableLiveData()
     override val isShowError: MutableLiveData<Boolean> = MutableLiveData()
-    override val progress: MutableLiveData<Boolean> = MutableLiveData()
+    override val progress: LiveData<Boolean> = youtubeRepository.isProgressLiveData
 
     fun search(key: String, searchWord: String, nestPageToken: String? = null) {
         val request = SearchVideoRequest(key, searchWord, nestPageToken)
-        progress.postValue(true)
         isShowError.postValue(false)
         requestLiveData.postValue(request)
     }

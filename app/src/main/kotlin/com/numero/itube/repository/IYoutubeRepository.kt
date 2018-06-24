@@ -1,10 +1,13 @@
 package com.numero.itube.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.numero.itube.api.request.*
 import com.numero.itube.api.response.*
 
 interface IYoutubeRepository {
+
+    val isProgressLiveData: MutableLiveData<Boolean>
 
     fun loadSearchResponse(request: SearchVideoRequest): LiveData<Response<SearchResponse>>
 
