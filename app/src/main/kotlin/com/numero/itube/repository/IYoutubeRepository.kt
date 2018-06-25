@@ -7,7 +7,7 @@ import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.RelativeResponse
 import com.numero.itube.api.response.Response
-import com.numero.itube.api.response.SearchResponse
+import com.numero.itube.api.response.VideoResponse
 
 interface IYoutubeRepository {
 
@@ -15,7 +15,7 @@ interface IYoutubeRepository {
 
     fun loadRelative(request: RelativeRequest): LiveData<Response<RelativeResponse>>
 
-    fun loadSearchResponse(request: SearchVideoRequest): LiveData<Response<SearchResponse>>
+    fun loadSearchResponse(request: SearchVideoRequest): LiveData<Response<VideoResponse>>
 
-    fun loadChannelVideoResponse(request: ChannelVideoRequest): LiveData<Response<SearchResponse>>
+    fun loadChannelVideoResponse(request: ChannelVideoRequest): LiveData<Response<VideoResponse>>
 }

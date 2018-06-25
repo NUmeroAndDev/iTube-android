@@ -9,6 +9,7 @@ import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.RelativeResponse
 import com.numero.itube.api.response.Response
 import com.numero.itube.api.response.SearchResponse
+import com.numero.itube.api.response.VideoResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.subscribeBy
@@ -17,16 +18,30 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
 
     override val isProgressLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
-    override fun loadSearchResponse(request: SearchVideoRequest): LiveData<Response<SearchResponse>> {
+    // ページング用
+    private val cacheSearchVideoList: MutableList<SearchResponse.Video> = mutableListOf()
+    private val cacheChannelVideoList: MutableList<SearchResponse.Video> = mutableListOf()
+
+    override fun loadSearchResponse(request: SearchVideoRequest): LiveData<Response<VideoResponse>> {
         isProgressLiveData.postValue(true)
-        val response = MutableLiveData<Response<SearchResponse>>()
+        val response = MutableLiveData<Response<VideoResponse>>()
         val stream = if (request.hasNextPageToken.not()) {
             youtubeApi.search(request.key, request.searchWord)
         } else {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.search(request.key, request.searchWord, nextPageToken = token)
         }
-        stream.observeOn(AndroidSchedulers.mainThread())
+        stream.map {
+            if (request.hasNextPageToken.not()) {
+                cacheSearchVideoList.clear()
+            }
+            cacheSearchVideoList.addAll(it.items)
+            val list = mutableListOf<SearchResponse.Video>().apply {
+                addAll(cacheSearchVideoList)
+            }
+            VideoResponse(it.nextPageToken, list)
+        }
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onNext = {
                             isProgressLiveData.postValue(false)
@@ -64,16 +79,26 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         return response
     }
 
-    override fun loadChannelVideoResponse(request: ChannelVideoRequest): LiveData<Response<SearchResponse>> {
+    override fun loadChannelVideoResponse(request: ChannelVideoRequest): LiveData<Response<VideoResponse>> {
         isProgressLiveData.postValue(true)
-        val response = MutableLiveData<Response<SearchResponse>>()
+        val response = MutableLiveData<Response<VideoResponse>>()
         val stream = if (request.hasNextPageToken.not()) {
             youtubeApi.searchChannelVideo(request.key, request.channelId)
         } else {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.searchChannelVideo(request.key, request.channelId, nextPageToken = token)
         }
-        stream.observeOn(AndroidSchedulers.mainThread())
+        stream.map {
+            if (request.hasNextPageToken.not()) {
+                cacheChannelVideoList.clear()
+            }
+            cacheChannelVideoList.addAll(it.items)
+            val list = mutableListOf<SearchResponse.Video>().apply {
+                addAll(cacheChannelVideoList)
+            }
+            VideoResponse(it.nextPageToken, list)
+        }
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onNext = {
                             isProgressLiveData.postValue(false)

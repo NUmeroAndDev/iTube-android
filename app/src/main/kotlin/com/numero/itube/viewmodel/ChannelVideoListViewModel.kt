@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.numero.itube.api.request.ChannelVideoRequest
 import com.numero.itube.api.response.Response
 import com.numero.itube.api.response.SearchResponse
+import com.numero.itube.api.response.VideoResponse
 import com.numero.itube.repository.IYoutubeRepository
 
 class ChannelVideoListViewModel(
@@ -15,14 +16,13 @@ class ChannelVideoListViewModel(
 ) : ViewModel(), IErrorViewModel, IProgressViewModel {
 
     private val requestLiveData = MutableLiveData<ChannelVideoRequest>()
-    private val responseLiveData: LiveData<Response<SearchResponse>> = Transformations.switchMap(requestLiveData) {
+    private val responseLiveData: LiveData<Response<VideoResponse>> = Transformations.switchMap(requestLiveData) {
         youtubeRepository.loadChannelVideoResponse(it)
     }
 
     val videoList: LiveData<List<SearchResponse.Video>> = Transformations.map(responseLiveData) {
-        // FIXME ページング
         when (it) {
-            is Response.Success -> it.response.items
+            is Response.Success -> it.response.videoList
             else -> null
         }
     }
@@ -48,31 +48,4 @@ class ChannelVideoListViewModel(
         val request = ChannelVideoRequest(key, channelId, nextPageToken)
         requestLiveData.postValue(request)
     }
-
-//    private fun executeLoadChannelVideo(key: String, channelId: String, nextPageToken: String?) = async(job + UI) {
-//        isShowError.postValue(false)
-//        progress.postValue(true)
-//        try {
-//            val request = ChannelVideoRequest(key, channelId, nextPageToken)
-//            val videoResponse = youtubeRepository.loadChannelVideo(request).await()
-//            val old = videoList.value
-//            if (old == null) {
-//                videoList.postValue(videoResponse.items)
-//            } else {
-//                // 既存のリストを追加してリスト全体を返す
-//                val list = mutableListOf<SearchResponse.Video>().apply {
-//                    addAll(old)
-//                    addAll(videoResponse.items)
-//                }
-//                videoList.postValue(list)
-//            }
-//            this@ChannelVideoListViewModel.nextPageToken.postValue(videoResponse.nextPageToken)
-//        } catch (t: Throwable) {
-//            t.printStackTrace()
-//            isShowError.postValue(true)
-//            error.postValue(t)
-//        } finally {
-//            progress.postValue(false)
-//        }
-//    }
 }

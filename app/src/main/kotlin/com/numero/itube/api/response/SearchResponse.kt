@@ -13,7 +13,7 @@ data class SearchResponse(
         val nextPageToken: String?,
         val regionCode: String,
         val pageInfo: PageInfo,
-        val items: List<Video>
+        var items: List<Video>
 ) : Serializable {
 
     @JsonSerializable
