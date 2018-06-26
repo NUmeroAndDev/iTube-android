@@ -1,6 +1,7 @@
 package com.numero.itube.api.request
 
-data class ChannelDetailRequest(
+data class RelativeRequest(
         override val key: String,
-        val id: String
+        val videoId: String,
+        val channelId: String
 ) : YoutubeApiRequest

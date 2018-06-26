@@ -1,17 +1,18 @@
 package com.numero.itube.viewmodel
 
-import androidx.lifecycle.*
-import com.numero.itube.api.request.ChannelRequest
-import com.numero.itube.api.request.VideoDetailRequest
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
+import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.Response
 import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.repository.IFavoriteVideoRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.subscribeBy
 
 class RelativeFavoriteViewModel(
         private val youtubeRepository: IYoutubeRepository,
@@ -20,64 +21,45 @@ class RelativeFavoriteViewModel(
         private val channelId: String
 ) : ViewModel(), IErrorViewModel, IProgressViewModel {
 
-    private val job = Job()
-
-    private val detailRequestLiveData = MutableLiveData<VideoDetailRequest>()
-    private val detailResponseLiveData = Transformations.switchMap(detailRequestLiveData) {
-        youtubeRepository.loadDetailResponse(it)
-    }
-
-    private val channelRequestLiveData = MutableLiveData<ChannelRequest>()
-    private val channelResponseLiveData = Transformations.switchMap(channelRequestLiveData) {
-        youtubeRepository.loadChannelResponse(it)
+    private val relativeRequestLiveData = MutableLiveData<RelativeRequest>()
+    private val relativeResponseLiveData = Transformations.switchMap(relativeRequestLiveData) {
+        youtubeRepository.loadRelative(it)
     }
 
     val videoList: MutableLiveData<List<FavoriteVideo>> = MutableLiveData()
-    val videoDetail: LiveData<VideoDetailResponse.VideoDetail> = Transformations.map(detailResponseLiveData) {
+    val videoDetail: LiveData<VideoDetailResponse.VideoDetail> = Transformations.map(relativeResponseLiveData) {
         when (it) {
-            is Response.Success -> it.response.items[0]
-            else -> {
-                error.postValue(it.throwable)
-                null
-            }
+            is Response.Success -> it.response.videoDetailResponse.items[0]
+            is Response.Error -> null
         }
     }
     val isFavorite: MutableLiveData<Boolean> = MutableLiveData()
-    val channel: LiveData<ChannelResponse.Channel> = Transformations.map(channelResponseLiveData) {
+    val channel: LiveData<ChannelResponse.Channel> = Transformations.map(relativeResponseLiveData) {
         when (it) {
-            is Response.Success -> it.response.items[0]
-            else -> {
-                error.postValue(it.throwable)
-                null
-            }
+            is Response.Success -> it.response.channelResponse.items[0]
+            is Response.Error -> null
         }
     }
 
-    override val error: MutableLiveData<Throwable> = MutableLiveData()
-    override val isShowError: MutableLiveData<Boolean> = MutableLiveData()
-    override val progress: MutableLiveData<Boolean> = MediatorLiveData<Boolean>().apply {
-        var i = 0
-        addSource(detailResponseLiveData) {
-            i++
-            postValue(i < 2)
-        }
-        addSource(channelResponseLiveData) {
-            i++
-            postValue(i < 2)
+    override val error: LiveData<Throwable> = Transformations.map(relativeResponseLiveData) {
+        when (it) {
+            is Response.Error -> it.throwable
+            else -> null
         }
     }
+    override val isShowError: LiveData<Boolean> = Transformations.map(relativeResponseLiveData) {
+        it is Response.Error
+    }
+    override val progress: LiveData<Boolean> = youtubeRepository.isProgressLiveData
 
     fun checkFavorite() {
         executeCheckFavorite(videoId)
     }
 
     fun loadVideoAndChannelDetail(key: String) {
-        progress.postValue(true)
-        val detailRequest = VideoDetailRequest(key, videoId)
-        val channelRequest = ChannelRequest(key, channelId)
+        val request = RelativeRequest(key, videoId, channelId)
 
-        detailRequestLiveData.postValue(detailRequest)
-        channelRequestLiveData.postValue(channelRequest)
+        relativeRequestLiveData.postValue(request)
         executeLoadDetail()
     }
 
@@ -90,48 +72,56 @@ class RelativeFavoriteViewModel(
         executeUnregisterFavorite(videoId)
     }
 
-    private fun executeCheckFavorite(videoId: String) = async(job + UI) {
-        try {
-            val isFind = favoriteRepository.existFavoriteVideo(videoId).await()
-            isFavorite.postValue(isFind)
-        } catch (t: Throwable) {
-            t.printStackTrace()
-        }
+    private fun executeCheckFavorite(videoId: String) {
+        favoriteRepository.existFavoriteVideo(videoId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onNext = {
+                            isFavorite.postValue(it)
+                        },
+                        onError = {
+                        }
+                )
     }
 
-    private fun executeLoadDetail() = async(job + UI) {
-        try {
-            val favoriteVideoList = favoriteRepository.loadFavoriteVideo().await()
-            videoList.postValue(favoriteVideoList)
-        } catch (t: Throwable) {
-            isShowError.postValue(true)
-            error.postValue(t)
-        }
+    private fun executeLoadDetail() {
+        favoriteRepository.loadFavoriteVideo()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onSuccess = {
+                            videoList.postValue(it)
+                        },
+                        onError = {
+                        }
+                )
     }
 
-    private fun executeRegisterFavorite(video: VideoDetailResponse.VideoDetail) = async(job + UI) {
-        try {
-            val favoriteVideo = FavoriteVideo(
-                    video.id,
-                    video.snippet.publishedAt,
-                    video.snippet.title,
-                    video.snippet.channelId,
-                    video.snippet.channelTitle,
-                    video.snippet.thumbnails.high.url)
-            favoriteRepository.createFavoriteVideo(favoriteVideo).await()
-            isFavorite.postValue(true)
-        } catch (t: Throwable) {
-            // TODO エラー処理
-        }
+    private fun executeRegisterFavorite(video: VideoDetailResponse.VideoDetail) {
+        val favoriteVideo = FavoriteVideo(
+                video.id,
+                video.snippet.publishedAt,
+                video.snippet.title,
+                video.snippet.channelId,
+                video.snippet.channelTitle,
+                video.snippet.thumbnails.high.url)
+        favoriteRepository.createFavoriteVideo(favoriteVideo)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onNext = {
+                            isFavorite.postValue(true)
+                        },
+                        onError = {
+                        })
     }
 
-    private fun executeUnregisterFavorite(videoId: String) = async(job + UI) {
-        try {
-            favoriteRepository.deleteFavoriteVideo(videoId).await()
-            isFavorite.postValue(false)
-        } catch (t: Throwable) {
-            t.printStackTrace()
-            // TODO エラー処理
-        }
+    private fun executeUnregisterFavorite(videoId: String) {
+        favoriteRepository.deleteFavoriteVideo(videoId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onNext = {
+                            isFavorite.postValue(false)
+                        },
+                        onError = {
+                        })
     }
 }

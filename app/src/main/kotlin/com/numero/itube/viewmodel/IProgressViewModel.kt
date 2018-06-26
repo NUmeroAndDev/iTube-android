@@ -1,7 +1,7 @@
 package com.numero.itube.viewmodel
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 
 interface IProgressViewModel {
-    val progress: MutableLiveData<Boolean>
+    val progress: LiveData<Boolean>
 }
