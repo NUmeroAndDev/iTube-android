@@ -1,5 +1,5 @@
 <resources>
-    <dimen name="relative_list_height">128dp</dimen>
+    <dimen name="relative_image_width">120dp</dimen>
 
     <!--Video's Card-->
     <dimen name="video_card_corner_radius">8dp</dimen>
