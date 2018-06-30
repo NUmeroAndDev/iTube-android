@@ -1,4 +1,6 @@
 <resources>
+    <dimen name="app_corner_radius">16dp</dimen>
+
     <dimen name="relative_image_width">120dp</dimen>
 
     <!--Video's Card-->

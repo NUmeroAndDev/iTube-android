@@ -4,12 +4,11 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.view.View
 import androidx.fragment.app.FragmentManager
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.numero.itube.R
 import com.numero.itube.extension.findFragment
 import com.numero.itube.extension.remove
 
-class PlayerSettingsBottomSheetFragment : BottomSheetDialogFragment() {
+class PlayerSettingsBottomSheetFragment : RoundedBottomSheetDialogFragment() {
 
     override fun setupDialog(dialog: Dialog?, style: Int) {
         val view = View.inflate(context, R.layout.fragment_player_settings, null)
