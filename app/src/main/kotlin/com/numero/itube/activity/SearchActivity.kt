@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
@@ -28,8 +27,6 @@ class SearchActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SearchVideoViewModel
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
-    private var searchWord: String? = null
-    private var nextPageToken: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +42,6 @@ class SearchActivity : AppCompatActivity() {
         viewModel.videoList.observeNonNull(this) {
             videoListAdapter.submitList(it)
         }
-        viewModel.nextPageToken.observe(this, Observer {
-            nextPageToken = it
-        })
         viewModel.progress.observeNonNull(this) {
             if (it) {
                 progressView.show()
@@ -78,14 +72,12 @@ class SearchActivity : AppCompatActivity() {
 
     private fun initViews() {
         retryButton.setOnClickListener {
-            val word = searchWord ?: return@setOnClickListener
-            viewModel.search(getString(R.string.api_key), word)
+            viewModel.retry(getString(R.string.api_key))
         }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchWord = query
-                val word = searchWord ?: return false
-                loadSearch(word)
+                query ?: return false
+                viewModel.search(getString(R.string.api_key), query)
                 searchView.clearFocus()
                 return false
             }
@@ -93,7 +85,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrEmpty()) {
                     // 初期化
-                    searchWord = null
+                    viewModel.searchWord = null
                     videoListAdapter.clearList()
                     errorGroup.visibility = View.GONE
                 }
@@ -107,21 +99,11 @@ class SearchActivity : AppCompatActivity() {
             val manager = LinearLayoutManager(context)
             layoutManager = manager
             addOnScrollListener(EndlessScrollListener(manager) {
-                if (nextPageToken == null) {
-                    // トークンがない場合、追加読み込みしない
-                    return@EndlessScrollListener
-                }
-                val word = searchView.query.toString()
-                if (word.isEmpty()) return@EndlessScrollListener
-                loadSearch(word, nextPageToken)
+                viewModel.requestMore(getString(R.string.api_key))
             })
             setHasFixedSize(true)
             adapter = videoListAdapter
         }
-    }
-
-    private fun loadSearch(searchWord: String, nextPageToken: String? = null) {
-        viewModel.search(getString(R.string.api_key), searchWord, nextPageToken)
     }
 
     companion object {
