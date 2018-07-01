@@ -17,21 +17,21 @@ class SearchVideoViewModel(private val youtubeRepository: IYoutubeRepository) : 
         youtubeRepository.loadSearchResponse(it)
     }
 
+    var searchWord: String? = null
+    var nextPageToken: String? = null
+
     val videoList: LiveData<List<SearchResponse.Video>> = Transformations.map(responseLiveData) {
         when (it) {
-            is Response.Success -> it.response.videoList
+            is Response.Success -> {
+                nextPageToken = it.response.nextPageToken
+                it.response.videoList
+            }
             is Response.Error -> null
-        }
-    }
-    val nextPageToken: LiveData<String> = Transformations.map(responseLiveData) {
-        when (it) {
-            is Response.Success -> it.response.nextPageToken
-            else -> null
         }
     }
 
     override val error: LiveData<Throwable> = Transformations.map(responseLiveData) {
-        when(it) {
+        when (it) {
             is Response.Error -> it.throwable
             else -> null
         }
@@ -41,8 +41,26 @@ class SearchVideoViewModel(private val youtubeRepository: IYoutubeRepository) : 
     }
     override val progress: LiveData<Boolean> = youtubeRepository.isProgressLiveData
 
-    fun search(key: String, searchWord: String, nestPageToken: String? = null) {
-        val request = SearchVideoRequest(key, searchWord, nestPageToken)
+    fun search(key: String, searchWord: String) {
+        this.searchWord = searchWord
+        val request = SearchVideoRequest(key, searchWord)
         requestLiveData.postValue(request)
+    }
+
+    fun requestMore(key: String) {
+        val searchWord = searchWord ?: return
+        val nextPageToken = nextPageToken ?: return
+        val request = SearchVideoRequest(key, searchWord, nextPageToken)
+        requestLiveData.postValue(request)
+    }
+
+    fun retry(key: String) {
+        val searchWord = searchWord ?: return
+        val nextPageToken = nextPageToken
+        if (nextPageToken == null) {
+            search(key, searchWord)
+        } else {
+            requestMore(key)
+        }
     }
 }
