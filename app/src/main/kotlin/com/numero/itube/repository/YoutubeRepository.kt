@@ -25,11 +25,11 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
     override fun loadSearchResponse(request: SearchVideoRequest): LiveData<Response<VideoResponse>> {
         isProgressLiveData.postValue(true)
         val response = MutableLiveData<Response<VideoResponse>>()
-        val stream = if (request.hasNextPageToken.not()) {
-            youtubeApi.search(request.key, request.searchWord)
-        } else {
+        val stream = if (request.hasNextPageToken) {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.search(request.key, request.searchWord, nextPageToken = token)
+        } else {
+            youtubeApi.search(request.key, request.searchWord)
         }
         stream.map {
             if (request.hasNextPageToken.not()) {
@@ -82,11 +82,11 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
     override fun loadChannelVideoResponse(request: ChannelVideoRequest): LiveData<Response<VideoResponse>> {
         isProgressLiveData.postValue(true)
         val response = MutableLiveData<Response<VideoResponse>>()
-        val stream = if (request.hasNextPageToken.not()) {
-            youtubeApi.searchChannelVideo(request.key, request.channelId)
-        } else {
+        val stream = if (request.hasNextPageToken) {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.searchChannelVideo(request.key, request.channelId, nextPageToken = token)
+        } else {
+            youtubeApi.searchChannelVideo(request.key, request.channelId)
         }
         stream.map {
             if (request.hasNextPageToken.not()) {

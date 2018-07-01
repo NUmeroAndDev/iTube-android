@@ -111,7 +111,8 @@ class SearchActivity : AppCompatActivity() {
                     // トークンがない場合、追加読み込みしない
                     return@EndlessScrollListener
                 }
-                val word = searchWord ?: return@EndlessScrollListener
+                val word = searchView.query.toString()
+                if (word.isEmpty()) return@EndlessScrollListener
                 loadSearch(word, nextPageToken)
             })
             setHasFixedSize(true)

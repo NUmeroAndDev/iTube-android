@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class EndlessScrollListener(
-        private val mLinearLayoutManager: LinearLayoutManager,
+        private val layoutManager: LinearLayoutManager,
         private val onLoadMoreListener: () -> Unit
 ) : RecyclerView.OnScrollListener() {
 
@@ -15,15 +15,16 @@ class EndlessScrollListener(
         super.onScrolled(recyclerView, dx, dy)
 
         val visibleItemCount = recyclerView.childCount
-        val totalItemCount = mLinearLayoutManager.itemCount
-        val firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition()
+        val totalItemCount = layoutManager.itemCount
+        val firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
 
         if (totalItemCount < previousTotal) {
             // リストの要素がクリアされた場合、ここで初期化させる
             previousTotal = 0
+            loading = true
         }
 
-        if (loading.not() and (totalItemCount - visibleItemCount <= firstVisibleItem + VISIBLE_THRES_HOLD)) {
+        if (loading.not() and (totalItemCount - visibleItemCount <= firstVisibleItem + VISIBLE_THRESHOLD)) {
             onLoadMoreListener.invoke()
             loading = true
         }
@@ -35,6 +36,6 @@ class EndlessScrollListener(
     }
 
     companion object {
-        private const val VISIBLE_THRES_HOLD = 2
+        private const val VISIBLE_THRESHOLD = 5
     }
 }
