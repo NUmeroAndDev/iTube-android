@@ -52,7 +52,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0-alpha3'
     implementation 'androidx.preference:preference:1.0.0-alpha3'
 
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.1'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
 
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"

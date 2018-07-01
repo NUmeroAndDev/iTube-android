@@ -15,7 +15,7 @@
     app:strokeColor="@color/stroke"
     app:strokeWidth="@dimen/video_card_stroke_width">
 
-    <androidx.constraintlayout.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground">
@@ -48,6 +48,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Title" />
 
-    </androidx.constraintlayout.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
