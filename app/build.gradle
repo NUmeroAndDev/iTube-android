@@ -45,14 +45,14 @@ dependencies {
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.0.0-alpha3'
+    implementation 'androidx.core:core-ktx:1.0.0-beta01'
 
-    implementation 'com.google.android.material:material:1.0.0-alpha3'
-    implementation 'androidx.appcompat:appcompat:1.0.0-alpha3'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0-alpha3'
-    implementation 'androidx.preference:preference:1.0.0-alpha3'
+    implementation 'com.google.android.material:material:1.0.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0-beta01'
+    implementation 'androidx.preference:preference:1.0.0-beta01'
 
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha1'
 
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
@@ -77,9 +77,9 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.0.0-alpha1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.0.0-beta01"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0-alpha1"
-    implementation "androidx.lifecycle:lifecycle-runtime:2.0.0-alpha1"
+    implementation "androidx.lifecycle:lifecycle-runtime:2.0.0-beta01"
     implementation "androidx.lifecycle:lifecycle-extensions:2.0.0-alpha1"
     implementation 'androidx.room:room-runtime:2.0.0-alpha1'
     implementation "androidx.room:room-rxjava2:2.0.0-alpha1"
