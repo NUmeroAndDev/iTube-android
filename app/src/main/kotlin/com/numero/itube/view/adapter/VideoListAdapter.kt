@@ -16,10 +16,6 @@ import kotlinx.android.synthetic.main.view_holder_video.*
 
 class VideoListAdapter : ListAdapter<SearchResponse.Video, VideoListAdapter.VideoViewHolder>(diffCallback) {
 
-    fun clearList() {
-        submitList(mutableListOf())
-    }
-
     private var onItemClickListener: ((video: SearchResponse.Video) -> Unit)? = null
 
     fun setOnItemClickListener(listener: ((video: SearchResponse.Video) -> Unit)) {

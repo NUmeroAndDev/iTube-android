@@ -23,16 +23,14 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
     private val cacheSearchVideoList: MutableList<SearchResponse.Video> = mutableListOf()
     private val cacheChannelVideoList: MutableList<SearchResponse.Video> = mutableListOf()
 
-    override fun loadSearchResponse(request: SearchVideoRequest): LiveData<Response<VideoResponse>> {
-        isProgressLiveData.postValue(true)
-        val response = MutableLiveData<Response<VideoResponse>>()
+    override fun loadSearchResponse(request: SearchVideoRequest): Observable<VideoResponse> {
         val stream = if (request.hasNextPageToken) {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.search(request.key, request.searchWord, nextPageToken = token)
         } else {
             youtubeApi.search(request.key, request.searchWord)
         }
-        stream.map {
+        return stream.map {
             if (request.hasNextPageToken.not()) {
                 cacheSearchVideoList.clear()
             }
@@ -42,18 +40,6 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
             }
             VideoResponse(it.nextPageToken, list, it.pageInfo.totalResults)
         }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onNext = {
-                            isProgressLiveData.postValue(false)
-                            response.postValue(Response.Success(it))
-                        },
-                        onError = {
-                            isProgressLiveData.postValue(false)
-                            response.postValue(Response.Error(it))
-                        }
-                )
-        return response
     }
 
     override fun loadRelative(request: RelativeRequest): LiveData<Response<RelativeResponse>> {
@@ -81,7 +67,6 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
     }
 
     override fun loadChannelVideoResponse(request: ChannelVideoRequest): Observable<VideoResponse> {
-        isProgressLiveData.postValue(true)
         val stream = if (request.hasNextPageToken) {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.searchChannelVideo(request.key, request.channelId, nextPageToken = token)
