@@ -51,6 +51,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/channelImageView"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 tools:text="ChannelName" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
