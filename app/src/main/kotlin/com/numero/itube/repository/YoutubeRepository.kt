@@ -40,7 +40,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
             val list = mutableListOf<SearchResponse.Video>().apply {
                 addAll(cacheSearchVideoList)
             }
-            VideoResponse(it.nextPageToken, list)
+            VideoResponse(it.nextPageToken, list, it.pageInfo.totalResults)
         }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
@@ -96,7 +96,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
             val list = mutableListOf<SearchResponse.Video>().apply {
                 addAll(cacheChannelVideoList)
             }
-            VideoResponse(it.nextPageToken, list)
+            VideoResponse(it.nextPageToken, list, it.pageInfo.totalResults)
         }
     }
 }

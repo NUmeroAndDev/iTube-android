@@ -79,6 +79,10 @@ class ChannelVideoListFragment : Fragment() {
             val manager = LinearLayoutManager(context)
             layoutManager = manager
             addOnScrollListener(EndlessScrollListener(manager) {
+                val hasNextPage = viewModel.hasNextPage.value
+                if (hasNextPage != null && hasNextPage.not()) {
+                    return@EndlessScrollListener
+                }
                 loadChannelVideo(viewModel.nextPageToken.value)
             })
             adapter = videoListAdapter

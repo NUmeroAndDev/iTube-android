@@ -31,6 +31,7 @@ class ChannelVideoListPresenter(
 
                             viewModel.nextPageToken.postValue(it.nextPageToken)
                             viewModel.videoList.postValue(it.videoList)
+                            viewModel.hasNextPage.postValue(it.hasNextPage)
                         },
                         onError = {
                             viewModel.progress.postValue(false)
