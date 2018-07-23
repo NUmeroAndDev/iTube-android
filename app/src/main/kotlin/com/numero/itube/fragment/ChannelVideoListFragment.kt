@@ -7,18 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.api.response.SearchResponse
+import com.numero.itube.contract.ChannelVideoListContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
+import com.numero.itube.presenter.ChannelVideoListPresenter
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.adapter.VideoListAdapter
 import com.numero.itube.viewmodel.ChannelVideoListViewModel
-import com.numero.itube.viewmodel.factory.ChannelVideoListViewModelFactory
 import kotlinx.android.synthetic.main.fragment_channel_video_list.*
 import javax.inject.Inject
 
@@ -26,11 +26,11 @@ class ChannelVideoListFragment : Fragment() {
 
     @Inject
     lateinit var youtubeApiRepository: YoutubeRepository
+    private lateinit var presenter: ChannelVideoListContract.Presenter
     private lateinit var viewModel: ChannelVideoListViewModel
 
     private var listener: ChannelVideoFragmentListener? = null
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
-    private var nextPageToken: String? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -46,15 +46,10 @@ class ChannelVideoListFragment : Fragment() {
         val arguments = arguments ?: return
         val channelId = arguments.getString(ARG_CHANNEL_ID)
 
-        val factory = ChannelVideoListViewModelFactory(youtubeApiRepository, channelId)
-        viewModel = ViewModelProviders.of(this, factory).get(ChannelVideoListViewModel::class.java)
-
+        viewModel = ViewModelProviders.of(this).get(ChannelVideoListViewModel::class.java)
         viewModel.videoList.observeNonNull(this) {
             videoListAdapter.submitList(it)
         }
-        viewModel.nextPageToken.observe(this, Observer {
-            this.nextPageToken = it
-        })
         viewModel.progress.observeNonNull(this) {
             if (it) {
                 progressView.show()
@@ -62,6 +57,9 @@ class ChannelVideoListFragment : Fragment() {
                 progressView.hide()
             }
         }
+
+        presenter = ChannelVideoListPresenter(viewModel, channelId, youtubeApiRepository)
+
         if (savedInstanceState == null) {
             // 画面回転時には以前のデータが復帰される
             loadChannelVideo()
@@ -81,14 +79,14 @@ class ChannelVideoListFragment : Fragment() {
             val manager = LinearLayoutManager(context)
             layoutManager = manager
             addOnScrollListener(EndlessScrollListener(manager) {
-                loadChannelVideo(nextPageToken)
+                loadChannelVideo(viewModel.nextPageToken.value)
             })
             adapter = videoListAdapter
         }
     }
 
     private fun loadChannelVideo(nextPageToken: String? = null) {
-        viewModel.loadChannelVideo(getString(R.string.api_key), nextPageToken)
+        presenter.loadChannelVideo(getString(R.string.api_key), nextPageToken)
     }
 
     interface ChannelVideoFragmentListener {

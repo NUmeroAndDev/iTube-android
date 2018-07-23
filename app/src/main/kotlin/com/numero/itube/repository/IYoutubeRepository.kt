@@ -8,6 +8,7 @@ import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.RelativeResponse
 import com.numero.itube.api.response.Response
 import com.numero.itube.api.response.VideoResponse
+import io.reactivex.Observable
 
 interface IYoutubeRepository {
 
@@ -17,5 +18,5 @@ interface IYoutubeRepository {
 
     fun loadSearchResponse(request: SearchVideoRequest): LiveData<Response<VideoResponse>>
 
-    fun loadChannelVideoResponse(request: ChannelVideoRequest): LiveData<Response<VideoResponse>>
+    fun loadChannelVideoResponse(request: ChannelVideoRequest): Observable<VideoResponse>
 }

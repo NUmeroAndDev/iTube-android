@@ -10,6 +10,7 @@ import com.numero.itube.api.response.RelativeResponse
 import com.numero.itube.api.response.Response
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoResponse
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.Observables
 import io.reactivex.rxkotlin.subscribeBy
@@ -79,16 +80,15 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         return response
     }
 
-    override fun loadChannelVideoResponse(request: ChannelVideoRequest): LiveData<Response<VideoResponse>> {
+    override fun loadChannelVideoResponse(request: ChannelVideoRequest): Observable<VideoResponse> {
         isProgressLiveData.postValue(true)
-        val response = MutableLiveData<Response<VideoResponse>>()
         val stream = if (request.hasNextPageToken) {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.searchChannelVideo(request.key, request.channelId, nextPageToken = token)
         } else {
             youtubeApi.searchChannelVideo(request.key, request.channelId)
         }
-        stream.map {
+        return stream.map {
             if (request.hasNextPageToken.not()) {
                 cacheChannelVideoList.clear()
             }
@@ -98,17 +98,5 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
             }
             VideoResponse(it.nextPageToken, list)
         }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onNext = {
-                            isProgressLiveData.postValue(false)
-                            response.postValue(Response.Success(it))
-                        },
-                        onError = {
-                            isProgressLiveData.postValue(false)
-                            response.postValue(Response.Error(it))
-                        }
-                )
-        return response
     }
 }
