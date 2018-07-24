@@ -29,8 +29,8 @@ import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
-import com.numero.itube.view.adapter.RelativeFavoriteVideoListAdapter
-import com.numero.itube.view.adapter.RelativeVideoListAdapter
+import com.numero.itube.view.adapter.FavoriteVideoAdapter
+import com.numero.itube.view.adapter.RelativeVideoAdapter
 import com.numero.itube.viewmodel.PlayerViewModel
 import kotlinx.android.synthetic.main.activity_player.*
 import kotlinx.android.synthetic.main.container_player.*
@@ -48,9 +48,10 @@ class PlayerActivity : AppCompatActivity(),
     private val isFavoriteVideo: Boolean by lazy { intent.getBooleanExtra(BUNDLE_IS_FAVORITE_VIDEO, false) }
     private var player: YouTubePlayer? = null
 
-    private val videoListAdapter: RelativeFavoriteVideoListAdapter = RelativeFavoriteVideoListAdapter()
-    private val relativeVideoAdapter: RelativeVideoListAdapter = RelativeVideoListAdapter()
+    private val favoriteVideoAdapter: FavoriteVideoAdapter = FavoriteVideoAdapter()
+    private val relativeVideoAdapter: RelativeVideoAdapter = RelativeVideoAdapter()
     private lateinit var presenter: PlayerContract.Presenter
+    private lateinit var viewModel: PlayerViewModel
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
@@ -71,37 +72,8 @@ class PlayerActivity : AppCompatActivity(),
             title = this@PlayerActivity.title
         }
 
-        val viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
-        viewModel.favoriteVideoList.observeNonNull(this) {
-            videoListAdapter.videoList = it
-        }
-        viewModel.relativeVideoList.observeNonNull(this) {
-            relativeVideoAdapter.videoList = it
-        }
-        viewModel.progress.observeNonNull(this) {
-            //            if (it) {
-//                progressView.show()
-//            } else {
-//                progressView.hide()
-//            }
-        }
-        viewModel.channel.observeNonNull(this) {
-            showChannelDetail(it, channelId)
-        }
-        viewModel.videoDetail.observeNonNull(this) {
-            showVideoDetail(it)
-        }
-        viewModel.isFavorite.observeNonNull(this) {
-            registeredFavorite(it)
-        }
-        viewModel.isShowError.observeNonNull(this) {
-            //            errorGroup.visibility = if (it) {
-//                View.VISIBLE
-//            } else {
-//                View.GONE
-//            }
-        }
-
+        initViewModel()
+        initViews()
         presenter = PlayerPresenter(viewModel, youtubeRepository, favoriteVideoRepository, videoId, channelId)
 
         val youTubePlayerFragment = YouTubePlayerFragment.newInstance().apply {
@@ -109,44 +81,6 @@ class PlayerActivity : AppCompatActivity(),
 //            replace(R.id.playerContainer, this, false)
         }
         youTubePlayerFragment.initialize(getString(R.string.api_key), this)
-
-        bottomAppBar.apply {
-            replaceMenu(R.menu.menu_player)
-            setOnMenuItemClickListener(this@PlayerActivity)
-        }
-        fab.setOnClickListener {
-            val isFavorite = viewModel.isFavorite.value ?: return@setOnClickListener
-            if (isFavorite) {
-                presenter.unregisterFavorite()
-            } else {
-                presenter.registerFavorite()
-            }
-        }
-        videoListAdapter.apply {
-            setOnItemClickListener {
-                // 再生画面へ遷移
-                showVideo(it)
-            }
-            currentVideoId = videoId
-        }
-        favoriteVideoRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            setHasFixedSize(true)
-            adapter = videoListAdapter
-        }
-        relativeVideoAdapter.setOnItemClickListener {
-            // 再生画面へ遷移
-            showVideo(it)
-        }
-        relativeVideoRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            setHasFixedSize(true)
-            adapter = relativeVideoAdapter
-        }
-
-//        retryButton.setOnClickListener {
-//            presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
-//        }
 
         presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
         presenter.checkFavorite()
@@ -201,13 +135,84 @@ class PlayerActivity : AppCompatActivity(),
             player?.play()
             return
         }
-//        val fragment = findFragment(R.id.relativeContainer)
-//        if (fragment is RelativeFavoriteFragment) {
-//            fragment.playNextVideo()
-//        }
+        favoriteVideoAdapter.playNextVideo()
     }
 
     override fun onError(p0: YouTubePlayer.ErrorReason?) {
+    }
+
+    private fun initViewModel(): PlayerViewModel {
+        viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
+        viewModel.favoriteVideoList.observeNonNull(this) {
+            favoriteVideoAdapter.videoList = it
+        }
+        viewModel.relativeVideoList.observeNonNull(this) {
+            relativeVideoAdapter.videoList = it
+        }
+        viewModel.progress.observeNonNull(this) {
+            //            if (it) {
+//                progressView.show()
+//            } else {
+//                progressView.hide()
+//            }
+        }
+        viewModel.channel.observeNonNull(this) {
+            showChannelDetail(it, channelId)
+        }
+        viewModel.videoDetail.observeNonNull(this) {
+            showVideoDetail(it)
+        }
+        viewModel.isFavorite.observeNonNull(this) {
+            registeredFavorite(it)
+        }
+        viewModel.isShowError.observeNonNull(this) {
+            //            errorGroup.visibility = if (it) {
+//                View.VISIBLE
+//            } else {
+//                View.GONE
+//            }
+        }
+        return viewModel
+    }
+
+    private fun initViews() {
+        bottomAppBar.apply {
+            replaceMenu(R.menu.menu_player)
+            setOnMenuItemClickListener(this@PlayerActivity)
+        }
+        fab.setOnClickListener {
+            val isFavorite = viewModel.isFavorite.value ?: return@setOnClickListener
+            if (isFavorite) {
+                presenter.unregisterFavorite()
+            } else {
+                presenter.registerFavorite()
+            }
+        }
+        favoriteVideoAdapter.apply {
+            setOnItemClickListener {
+                // 再生画面へ遷移
+                showVideo(it)
+            }
+            currentVideoId = videoId
+        }
+        favoriteVideoRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            adapter = favoriteVideoAdapter
+        }
+        relativeVideoAdapter.setOnItemClickListener {
+            // 再生画面へ遷移
+            showVideo(it)
+        }
+        relativeVideoRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            adapter = relativeVideoAdapter
+        }
+
+//        retryButton.setOnClickListener {
+//            presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
+//        }
     }
 
     private fun showChannelDetail(channel: ChannelResponse.Channel, channelId: String) {
