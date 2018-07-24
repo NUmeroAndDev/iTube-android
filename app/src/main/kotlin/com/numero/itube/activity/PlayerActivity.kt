@@ -47,7 +47,7 @@ class PlayerActivity : AppCompatActivity(),
     private val title: String by lazy { intent.getStringExtra(BUNDLE_TITLE) }
     private val videoId: String by lazy { intent.getStringExtra(BUNDLE_VIDEO_ID) }
     private val channelId: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_ID) }
-    private val isFavoriteVideo: Boolean by lazy { intent.getBooleanExtra(BUNDLE_IS_FAVORITE_VIDEO, false) }
+    private val isShownFavoriteVideo: Boolean by lazy { intent.getBooleanExtra(BUNDLE_IS_FAVORITE_VIDEO, false) }
     private var player: YouTubePlayer? = null
 
     private val favoriteVideoAdapter: FavoriteVideoAdapter = FavoriteVideoAdapter()
@@ -187,9 +187,11 @@ class PlayerActivity : AppCompatActivity(),
             replaceMenu(R.menu.menu_player)
             setOnMenuItemClickListener(this@PlayerActivity)
 
-            setNavigationIcon(R.drawable.ic_arrow_up)
-            setNavigationOnClickListener {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            if (isShownFavoriteVideo) {
+                setNavigationIcon(R.drawable.ic_arrow_up)
+                setNavigationOnClickListener {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                }
             }
         }
         fab.setOnClickListener {
