@@ -210,6 +210,18 @@ class PlayerActivity : AppCompatActivity(),
             adapter = relativeVideoAdapter
         }
 
+        favoriteTitleTextView.setOnClickListener {
+            // FIXME BottomSheetでお気に入りを表示させる?
+        }
+
+        titleLayout.setOnClickListener {
+            if (detailMotionLayout.progress > 0.5f) {
+                detailMotionLayout.transitionToStart()
+            } else {
+                detailMotionLayout.transitionToEnd()
+            }
+        }
+
 //        retryButton.setOnClickListener {
 //            presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
 //        }
@@ -227,6 +239,7 @@ class PlayerActivity : AppCompatActivity(),
     }
 
     private fun showVideoDetail(videoDetail: VideoDetailResponse.VideoDetail) {
+        titleTextView.text = videoDetail.snippet.title
         descriptionTextView.text = videoDetail.snippet.description
     }
 
