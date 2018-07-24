@@ -47,6 +47,7 @@ class RelativeFavoritePresenter(
                             viewModel.isShowError.postValue(false)
                             viewModel.videoDetail.postValue(it.videoDetailResponse.items[0])
                             viewModel.channel.postValue(it.channelResponse.items[0])
+                            viewModel.relativeVideoList.postValue(it.searchResponse.items)
                         },
                         onError = {
                             viewModel.progress.postValue(false)
@@ -72,7 +73,7 @@ class RelativeFavoritePresenter(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onSuccess = {
-                            viewModel.videoList.postValue(it)
+                            viewModel.favoriteVideoList.postValue(it)
                         },
                         onError = {
                         }

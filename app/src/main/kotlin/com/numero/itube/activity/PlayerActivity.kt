@@ -30,6 +30,7 @@ import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.view.adapter.RelativeFavoriteVideoListAdapter
+import com.numero.itube.view.adapter.RelativeVideoListAdapter
 import com.numero.itube.viewmodel.RelativeFavoriteViewModel
 import kotlinx.android.synthetic.main.activity_player.*
 import kotlinx.android.synthetic.main.container_player.*
@@ -48,6 +49,7 @@ class PlayerActivity : AppCompatActivity(),
     private var player: YouTubePlayer? = null
 
     private val videoListAdapter: RelativeFavoriteVideoListAdapter = RelativeFavoriteVideoListAdapter()
+    private val relativeVideoAdapter: RelativeVideoListAdapter = RelativeVideoListAdapter()
     private lateinit var presenter: RelativeFavoriteContract.Presenter
 
     @Inject
@@ -70,8 +72,11 @@ class PlayerActivity : AppCompatActivity(),
         }
 
         val viewModel = ViewModelProviders.of(this).get(RelativeFavoriteViewModel::class.java)
-        viewModel.videoList.observeNonNull(this) {
+        viewModel.favoriteVideoList.observeNonNull(this) {
             videoListAdapter.videoList = it
+        }
+        viewModel.relativeVideoList.observeNonNull(this) {
+            relativeVideoAdapter.videoList = it
         }
         viewModel.progress.observeNonNull(this) {
             //            if (it) {
@@ -128,6 +133,15 @@ class PlayerActivity : AppCompatActivity(),
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
             adapter = videoListAdapter
+        }
+        relativeVideoAdapter.setOnItemClickListener {
+            // 再生画面へ遷移
+            showVideo(it)
+        }
+        relativeVideoRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            adapter = relativeVideoAdapter
         }
 
 //        retryButton.setOnClickListener {

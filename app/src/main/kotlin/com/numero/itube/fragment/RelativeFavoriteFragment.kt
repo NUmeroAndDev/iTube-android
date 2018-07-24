@@ -49,7 +49,7 @@ class RelativeFavoriteFragment : BaseRelativeFragment() {
         val channelId = arguments.getString(ARG_CHANNEL_ID)
 
         val viewModel = ViewModelProviders.of(this).get(RelativeFavoriteViewModel::class.java)
-        viewModel.videoList.observeNonNull(this) {
+        viewModel.favoriteVideoList.observeNonNull(this) {
             videoListAdapter.videoList = it
         }
         viewModel.progress.observeNonNull(this) {
