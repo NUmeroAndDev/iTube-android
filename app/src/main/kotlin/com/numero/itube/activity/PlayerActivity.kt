@@ -20,18 +20,18 @@ import com.numero.itube.R
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoDetailResponse
-import com.numero.itube.contract.RelativeFavoriteContract
+import com.numero.itube.contract.PlayerContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
-import com.numero.itube.presenter.RelativeFavoritePresenter
+import com.numero.itube.presenter.PlayerPresenter
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.view.adapter.RelativeFavoriteVideoListAdapter
 import com.numero.itube.view.adapter.RelativeVideoListAdapter
-import com.numero.itube.viewmodel.RelativeFavoriteViewModel
+import com.numero.itube.viewmodel.PlayerViewModel
 import kotlinx.android.synthetic.main.activity_player.*
 import kotlinx.android.synthetic.main.container_player.*
 import kotlinx.android.synthetic.main.container_video_detail.*
@@ -50,7 +50,7 @@ class PlayerActivity : AppCompatActivity(),
 
     private val videoListAdapter: RelativeFavoriteVideoListAdapter = RelativeFavoriteVideoListAdapter()
     private val relativeVideoAdapter: RelativeVideoListAdapter = RelativeVideoListAdapter()
-    private lateinit var presenter: RelativeFavoriteContract.Presenter
+    private lateinit var presenter: PlayerContract.Presenter
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
@@ -71,7 +71,7 @@ class PlayerActivity : AppCompatActivity(),
             title = this@PlayerActivity.title
         }
 
-        val viewModel = ViewModelProviders.of(this).get(RelativeFavoriteViewModel::class.java)
+        val viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
         viewModel.favoriteVideoList.observeNonNull(this) {
             videoListAdapter.videoList = it
         }
@@ -102,7 +102,7 @@ class PlayerActivity : AppCompatActivity(),
 //            }
         }
 
-        presenter = RelativeFavoritePresenter(viewModel, youtubeRepository, favoriteVideoRepository, videoId, channelId)
+        presenter = PlayerPresenter(viewModel, youtubeRepository, favoriteVideoRepository, videoId, channelId)
 
         val youTubePlayerFragment = YouTubePlayerFragment.newInstance().apply {
             this@PlayerActivity.fragmentManager.beginTransaction().replace(R.id.playerContainer, this).commit()

@@ -5,10 +5,12 @@ import androidx.lifecycle.ViewModel
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoDetailResponse
+import com.numero.itube.repository.db.FavoriteVideo
 
-class RelativeViewModel: ViewModel(), IErrorViewModel, IProgressViewModel {
+class PlayerViewModel : ViewModel(), IErrorViewModel, IProgressViewModel {
 
-    val videoList: MutableLiveData<List<SearchResponse.Video>> = MutableLiveData()
+    val favoriteVideoList: MutableLiveData<List<FavoriteVideo>> = MutableLiveData()
+    val relativeVideoList: MutableLiveData<List<SearchResponse.Video>> = MutableLiveData()
     val videoDetail: MutableLiveData<VideoDetailResponse.VideoDetail> = MutableLiveData()
     val isFavorite: MutableLiveData<Boolean> = MutableLiveData()
     val channel: MutableLiveData<ChannelResponse.Channel> = MutableLiveData()
