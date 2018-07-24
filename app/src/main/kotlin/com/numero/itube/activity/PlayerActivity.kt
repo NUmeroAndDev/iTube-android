@@ -7,12 +7,14 @@ import android.os.Bundle
 import android.util.Pair
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
@@ -52,6 +54,7 @@ class PlayerActivity : AppCompatActivity(),
     private val relativeVideoAdapter: RelativeVideoAdapter = RelativeVideoAdapter()
     private lateinit var presenter: PlayerContract.Presenter
     private lateinit var viewModel: PlayerViewModel
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
@@ -176,9 +179,18 @@ class PlayerActivity : AppCompatActivity(),
     }
 
     private fun initViews() {
+        bottomSheetBehavior = BottomSheetBehavior.from(favoriteListBottomSheetLayout).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
         bottomAppBar.apply {
             replaceMenu(R.menu.menu_player)
             setOnMenuItemClickListener(this@PlayerActivity)
+
+            setNavigationIcon(R.drawable.ic_arrow_up)
+            setNavigationOnClickListener {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
         }
         fab.setOnClickListener {
             val isFavorite = viewModel.isFavorite.value ?: return@setOnClickListener
@@ -208,10 +220,6 @@ class PlayerActivity : AppCompatActivity(),
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             setHasFixedSize(true)
             adapter = relativeVideoAdapter
-        }
-
-        favoriteTitleTextView.setOnClickListener {
-            // FIXME BottomSheetでお気に入りを表示させる?
         }
 
         titleLayout.setOnClickListener {
