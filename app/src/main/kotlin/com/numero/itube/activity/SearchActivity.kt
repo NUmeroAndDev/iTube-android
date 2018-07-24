@@ -10,13 +10,14 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
+import com.numero.itube.contract.SearchVideoContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
+import com.numero.itube.presenter.SearchVideoPresenter
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.adapter.VideoListAdapter
 import com.numero.itube.viewmodel.SearchVideoViewModel
-import com.numero.itube.viewmodel.factory.SearchVideoViewModelFactory
 import kotlinx.android.synthetic.main.activity_search.*
 import javax.inject.Inject
 
@@ -25,7 +26,7 @@ class SearchActivity : AppCompatActivity() {
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
 
-    private lateinit var viewModel: SearchVideoViewModel
+    private lateinit var presenter: SearchVideoContract.Presenter
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,9 +37,7 @@ class SearchActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val factory = SearchVideoViewModelFactory(youtubeRepository)
-        viewModel = ViewModelProviders.of(this, factory).get(SearchVideoViewModel::class.java)
-
+        val viewModel = ViewModelProviders.of(this).get(SearchVideoViewModel::class.java)
         viewModel.videoList.observeNonNull(this) {
             videoListAdapter.submitList(it)
         }
@@ -57,6 +56,8 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
+        presenter = SearchVideoPresenter(viewModel, youtubeRepository)
+
         initViews()
     }
 
@@ -72,12 +73,12 @@ class SearchActivity : AppCompatActivity() {
 
     private fun initViews() {
         retryButton.setOnClickListener {
-            viewModel.retry(getString(R.string.api_key))
+            presenter.retry(getString(R.string.api_key))
         }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query ?: return false
-                viewModel.search(getString(R.string.api_key), query)
+                presenter.search(getString(R.string.api_key), query)
                 searchView.clearFocus()
                 return false
             }
@@ -85,9 +86,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrEmpty()) {
                     // 初期化
-                    viewModel.searchWord = null
-                    videoListAdapter.clearList()
-                    errorGroup.visibility = View.GONE
+                    presenter.clear()
                 }
                 return false
             }
@@ -99,7 +98,7 @@ class SearchActivity : AppCompatActivity() {
             val manager = LinearLayoutManager(context)
             layoutManager = manager
             addOnScrollListener(EndlessScrollListener(manager) {
-                viewModel.requestMore(getString(R.string.api_key))
+                presenter.requestMore(getString(R.string.api_key))
             })
             setHasFixedSize(true)
             adapter = videoListAdapter

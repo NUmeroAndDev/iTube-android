@@ -10,13 +10,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.api.response.SearchResponse
+import com.numero.itube.contract.RelativeContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
+import com.numero.itube.presenter.RelativePresenter
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.adapter.RelativeVideoListAdapter
 import com.numero.itube.viewmodel.RelativeViewModel
-import com.numero.itube.viewmodel.factory.RelativeViewModelFactory
 import kotlinx.android.synthetic.main.fragment_relative.*
 import javax.inject.Inject
 
@@ -27,7 +28,7 @@ class RelativeFragment : BaseRelativeFragment() {
     @Inject
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
 
-    private lateinit var viewModel: RelativeViewModel
+    private lateinit var presenter: RelativeContract.Presenter
     private val videoListAdapter: RelativeVideoListAdapter = RelativeVideoListAdapter()
     private var listener: RelativeFragmentListener? = null
 
@@ -46,9 +47,7 @@ class RelativeFragment : BaseRelativeFragment() {
         val videoId = arguments.getString(ARG_VIDEO_ID)
         val channelId = arguments.getString(ARG_CHANNEL_ID)
 
-        val factory = RelativeViewModelFactory(youtubeRepository, favoriteVideoRepository, videoId, channelId)
-        viewModel = ViewModelProviders.of(this, factory).get(RelativeViewModel::class.java)
-
+        val viewModel = ViewModelProviders.of(this).get(RelativeViewModel::class.java)
         viewModel.videoList.observeNonNull(this) {
             videoListAdapter.videoList = it
         }
@@ -75,6 +74,8 @@ class RelativeFragment : BaseRelativeFragment() {
                 View.GONE
             }
         }
+
+        presenter = RelativePresenter(viewModel, youtubeRepository, favoriteVideoRepository, videoId, channelId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -95,18 +96,18 @@ class RelativeFragment : BaseRelativeFragment() {
         }
 
         retryButton.setOnClickListener {
-            viewModel.loadVideoAndChannelDetail(getString(R.string.api_key))
+            presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
         }
 
-        viewModel.checkFavorite()
-        viewModel.loadVideoAndChannelDetail(getString(R.string.api_key))
+        presenter.checkFavorite()
+        presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
     }
 
     override fun setIsRegistered(isRegistered: Boolean) {
         if (isRegistered) {
-            viewModel.registerFavorite()
+            presenter.registerFavorite()
         } else {
-            viewModel.unregisterFavorite()
+            presenter.unregisterFavorite()
         }
     }
 

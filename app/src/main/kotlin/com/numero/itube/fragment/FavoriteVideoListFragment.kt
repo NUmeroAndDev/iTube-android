@@ -5,17 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
+import com.numero.itube.contract.FavoriteVideoListContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
+import com.numero.itube.presenter.FavoriteVideoListPresenter
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.view.adapter.FavoriteVideoListAdapter
 import com.numero.itube.viewmodel.FavoriteVideoListViewModel
-import com.numero.itube.viewmodel.factory.FavoriteVideoListViewModelFactory
 import kotlinx.android.synthetic.main.fragment_favorite_video_list.*
 import javax.inject.Inject
 
@@ -24,7 +26,7 @@ class FavoriteVideoListFragment : Fragment() {
     @Inject
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
 
-    private lateinit var viewModel: FavoriteVideoListViewModel
+    private lateinit var presenter: FavoriteVideoListContract.Presenter
     private val videoListAdapter: FavoriteVideoListAdapter = FavoriteVideoListAdapter()
     private var listener: FavoriteFragmentListener? = null
 
@@ -39,19 +41,15 @@ class FavoriteVideoListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         component?.inject(this)
 
-        val factory = FavoriteVideoListViewModelFactory(favoriteVideoRepository)
-        viewModel = ViewModelProviders.of(this, factory).get(FavoriteVideoListViewModel::class.java)
-
+        val viewModel = ViewModelProviders.of(this).get(FavoriteVideoListViewModel::class.java)
         viewModel.videoList.observeNonNull(this) {
             videoListAdapter.videoList = it
         }
         viewModel.isShowEmptyMessage.observeNonNull(this) {
-            noFavoriteVideoTextView.visibility = if (it) {
-                View.VISIBLE
-            } else {
-                View.INVISIBLE
-            }
+            noFavoriteVideoTextView.isInvisible = it.not()
         }
+
+        presenter = FavoriteVideoListPresenter(viewModel, favoriteVideoRepository)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -72,7 +70,7 @@ class FavoriteVideoListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.loadFavoriteVideoList()
+        presenter.loadFavoriteVideoList()
     }
 
     interface FavoriteFragmentListener {
