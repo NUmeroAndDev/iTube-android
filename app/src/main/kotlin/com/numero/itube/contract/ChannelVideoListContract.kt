@@ -5,6 +5,8 @@ import com.numero.itube.presenter.IPresenter
 class ChannelVideoListContract {
 
     interface Presenter : IPresenter {
-        fun loadChannelVideo(key: String, nextPageToken: String? = null)
+        fun loadChannelVideo(key: String)
+
+        fun loadMoreVideo(key: String, nextPageToken: String?)
     }
 }

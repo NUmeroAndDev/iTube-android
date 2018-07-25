@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
-import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.contract.ChannelVideoListContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
@@ -69,7 +68,7 @@ class ChannelDetailActivity : AppCompatActivity() {
         presenter = ChannelVideoListPresenter(viewModel, channelId, youtubeApiRepository)
 
         videoListAdapter.setOnItemClickListener {
-            showVideo(it)
+            startActivity(PlayerActivity.createIntent(this, it))
         }
         videoRecyclerView.apply {
             val manager = LinearLayoutManager(context)
@@ -79,14 +78,14 @@ class ChannelDetailActivity : AppCompatActivity() {
                 if (hasNextPage != null && hasNextPage.not()) {
                     return@EndlessScrollListener
                 }
-                loadChannelVideo(viewModel.nextPageToken.value)
+                presenter.loadMoreVideo(getString(R.string.api_key), viewModel.nextPageToken.value)
             })
             adapter = videoListAdapter
         }
 
         if (savedInstanceState == null) {
             // 画面回転時には以前のデータが復帰される
-            loadChannelVideo()
+            presenter.loadChannelVideo(getString(R.string.api_key))
         }
     }
 
@@ -98,14 +97,6 @@ class ChannelDetailActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun showVideo(video: SearchResponse.Video) {
-        startActivity(PlayerActivity.createIntent(this, video))
-    }
-
-    private fun loadChannelVideo(nextPageToken: String? = null) {
-        presenter.loadChannelVideo(getString(R.string.api_key), nextPageToken)
     }
 
     companion object {
