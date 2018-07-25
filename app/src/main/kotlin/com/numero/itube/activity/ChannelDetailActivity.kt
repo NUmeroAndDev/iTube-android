@@ -47,22 +47,30 @@ class ChannelDetailActivity : AppCompatActivity() {
             setDisplayShowTitleEnabled(false)
         }
 
-        channelNameTextView.text = channelName
-        Glide.with(this).load(thumbnailUrl).apply(RequestOptions().circleCrop()).into(channelImageView)
-
-        viewModel = ViewModelProviders.of(this).get(ChannelVideoListViewModel::class.java)
-        viewModel.videoList.observeNonNull(this) {
-            videoListAdapter.submitList(it)
-        }
-        viewModel.isShowProgress.observeNonNull(this) {
-            progressBar.isInvisible = it.not()
-        }
-        viewModel.channelDetail.observeNonNull(this) {
-            val urlString = it.branding.image.bannerTvMediumImageUrl
-            Glide.with(this).load(urlString).into(thumbnailImageView)
-        }
+        initViews()
+        initViewModel()
 
         presenter = ChannelVideoListPresenter(viewModel, channelId, youtubeApiRepository)
+
+        if (savedInstanceState == null) {
+            // 画面回転時には以前のデータが復帰される
+            presenter.loadChannelVideo(getString(R.string.api_key))
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun initViews() {
+        channelNameTextView.text = channelName
+        Glide.with(this).load(thumbnailUrl).apply(RequestOptions().circleCrop()).into(channelImageView)
 
         videoListAdapter.setOnItemClickListener {
             startActivity(PlayerActivity.createIntent(this, it))
@@ -79,20 +87,19 @@ class ChannelDetailActivity : AppCompatActivity() {
             })
             adapter = videoListAdapter
         }
-
-        if (savedInstanceState == null) {
-            // 画面回転時には以前のデータが復帰される
-            presenter.loadChannelVideo(getString(R.string.api_key))
-        }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this).get(ChannelVideoListViewModel::class.java)
+        viewModel.videoList.observeNonNull(this) {
+            videoListAdapter.submitList(it)
+        }
+        viewModel.isShowProgress.observeNonNull(this) {
+            progressBar.isInvisible = it.not()
+        }
+        viewModel.channelDetail.observeNonNull(this) {
+            val urlString = it.branding.image.bannerTvMediumImageUrl
+            Glide.with(this).load(urlString).into(thumbnailImageView)
         }
     }
 
