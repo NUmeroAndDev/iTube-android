@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -152,12 +153,10 @@ class PlayerActivity : AppCompatActivity(),
         viewModel.relativeVideoList.observeNonNull(this) {
             relativeVideoAdapter.videoList = it
         }
-        viewModel.isShowProgress.observeNonNull(this) {
-            //            if (it) {
-//                progressView.show()
-//            } else {
-//                progressView.hide()
-//            }
+        viewModel.isShowProgress.observeNonNull(this) { isShow: Boolean ->
+            // FIXME 型推論でエラーが出る
+            progressBar.isInvisible = isShow.not()
+            videoDetailLayout.isInvisible = isShow
         }
         viewModel.channel.observeNonNull(this) {
             showChannelDetail(it, channelId)
