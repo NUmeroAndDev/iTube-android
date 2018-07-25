@@ -43,19 +43,19 @@ class SearchVideoPresenter(
     }
 
     private fun executeSearch(request: SearchVideoRequest) {
-        viewModel.progress.postValue(true)
+        viewModel.isShowProgress.postValue(true)
         youtubeRepository.loadSearchResponse(request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onNext = {
-                            viewModel.progress.postValue(false)
+                            viewModel.isShowProgress.postValue(false)
 
                             viewModel.nextPageToken.postValue(it.nextPageToken)
                             viewModel.videoList.postValue(it.videoList)
                             viewModel.hasNextPage.postValue(it.hasNextPage)
                         },
                         onError = {
-                            viewModel.progress.postValue(false)
+                            viewModel.isShowProgress.postValue(false)
                             viewModel.isShowError.postValue(true)
 
                             viewModel.error.postValue(it)

@@ -152,7 +152,7 @@ class PlayerActivity : AppCompatActivity(),
         viewModel.relativeVideoList.observeNonNull(this) {
             relativeVideoAdapter.videoList = it
         }
-        viewModel.progress.observeNonNull(this) {
+        viewModel.isShowProgress.observeNonNull(this) {
             //            if (it) {
 //                progressView.show()
 //            } else {

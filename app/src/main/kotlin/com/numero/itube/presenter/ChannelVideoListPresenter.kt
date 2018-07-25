@@ -21,7 +21,12 @@ class ChannelVideoListPresenter(
     }
 
     override fun loadChannelVideo(key: String) {
-        viewModel.progress.postValue(true)
+        val isShownProgress = viewModel.isShowProgress.value
+        if (isShownProgress != null && isShownProgress) {
+            return
+        }
+
+        viewModel.isShowProgress.postValue(true)
         val request = ChannelVideoRequest(key, channelId)
         val stream = Observables.zip(
                 youtubeRepository.loadChannelDetail(key, channelId),
@@ -32,7 +37,7 @@ class ChannelVideoListPresenter(
         stream.observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onNext = {
-                            viewModel.progress.postValue(false)
+                            viewModel.isShowProgress.postValue(false)
                             viewModel.isShowError.postValue(false)
 
                             val channelDetail = it.first
@@ -44,7 +49,7 @@ class ChannelVideoListPresenter(
                             viewModel.hasNextPage.postValue(videoResponse.hasNextPage)
                         },
                         onError = {
-                            viewModel.progress.postValue(false)
+                            viewModel.isShowProgress.postValue(false)
                             viewModel.isShowError.postValue(true)
 
                             viewModel.error.postValue(it)
@@ -52,13 +57,18 @@ class ChannelVideoListPresenter(
     }
 
     override fun loadMoreVideo(key: String, nextPageToken: String?) {
-        viewModel.progress.postValue(true)
+        val isShownProgress = viewModel.isShowProgress.value
+        if (isShownProgress != null && isShownProgress) {
+            return
+        }
+
+        viewModel.isShowProgress.postValue(true)
         val request = ChannelVideoRequest(key, channelId, nextPageToken)
         youtubeRepository.loadChannelVideoResponse(request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onNext = {
-                            viewModel.progress.postValue(false)
+                            viewModel.isShowProgress.postValue(false)
                             viewModel.isShowError.postValue(false)
 
                             viewModel.nextPageToken.postValue(it.nextPageToken)
@@ -66,7 +76,7 @@ class ChannelVideoListPresenter(
                             viewModel.hasNextPage.postValue(it.hasNextPage)
                         },
                         onError = {
-                            viewModel.progress.postValue(false)
+                            viewModel.isShowProgress.postValue(false)
                             viewModel.isShowError.postValue(true)
 
                             viewModel.error.postValue(it)

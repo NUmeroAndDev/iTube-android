@@ -41,7 +41,7 @@ class SearchActivity : AppCompatActivity() {
         viewModel.videoList.observeNonNull(this) {
             videoListAdapter.submitList(it)
         }
-        viewModel.progress.observeNonNull(this) {
+        viewModel.isShowProgress.observeNonNull(this) {
             if (it) {
                 progressView.show()
             } else {

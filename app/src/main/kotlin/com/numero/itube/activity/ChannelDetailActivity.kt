@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -53,12 +54,8 @@ class ChannelDetailActivity : AppCompatActivity() {
         viewModel.videoList.observeNonNull(this) {
             videoListAdapter.submitList(it)
         }
-        viewModel.progress.observeNonNull(this) {
-            if (it) {
-                progressView.show()
-            } else {
-                progressView.hide()
-            }
+        viewModel.isShowProgress.observeNonNull(this) {
+            progressBar.isInvisible = it.not()
         }
         viewModel.channelDetail.observeNonNull(this) {
             val urlString = it.branding.image.bannerTvMediumImageUrl

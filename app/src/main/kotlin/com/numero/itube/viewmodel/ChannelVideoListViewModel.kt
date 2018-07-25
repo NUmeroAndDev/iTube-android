@@ -13,5 +13,5 @@ class ChannelVideoListViewModel : ViewModel(), IErrorViewModel, IProgressViewMod
 
     override val error: MutableLiveData<Throwable> = MutableLiveData()
     override val isShowError: MutableLiveData<Boolean> = MutableLiveData()
-    override val progress: MutableLiveData<Boolean> = MutableLiveData()
+    override val isShowProgress: MutableLiveData<Boolean> = MutableLiveData()
 }
