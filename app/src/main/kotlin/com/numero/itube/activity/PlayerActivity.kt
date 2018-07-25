@@ -244,7 +244,7 @@ class PlayerActivity : AppCompatActivity(),
         Glide.with(this).load(url).apply(RequestOptions().circleCrop()).into(channelImageView)
         channelLayout.setOnClickListener {
             val channelName = channelNameTextView.text.toString()
-            showChannelDetailScreen(channelName, channelId, url, Pair(channelImageView, channelImageView.transitionName), Pair(channelNameTextView, channelNameTextView.transitionName))
+            showChannelDetailScreen(channelName, channelId, url, Pair(channelImageView, channelImageView.transitionName))
         }
     }
 
@@ -267,8 +267,8 @@ class PlayerActivity : AppCompatActivity(),
         overridePendingTransition(0, 0)
     }
 
-    private fun showChannelDetailScreen(channelName: String, channelId: String, thumbnailUrl: String, vararg transitionViews: Pair<View, String>) {
-        val bundle = ActivityOptions.makeSceneTransitionAnimation(this, *transitionViews).toBundle()
+    private fun showChannelDetailScreen(channelName: String, channelId: String, thumbnailUrl: String, transitionView: Pair<View, String>) {
+        val bundle = ActivityOptions.makeSceneTransitionAnimation(this, transitionView).toBundle()
         startActivity(ChannelDetailActivity.createIntent(this, channelName, channelId, thumbnailUrl), bundle)
     }
 

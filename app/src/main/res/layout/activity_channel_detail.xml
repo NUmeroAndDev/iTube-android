@@ -47,7 +47,6 @@
                 android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textColor="?android:attr/textColorPrimary"
-                android:transitionName="channelName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/channelImageView"
                 app:layout_constraintTop_toTopOf="parent"
