@@ -12,7 +12,7 @@ import com.numero.itube.api.response.SearchResponse
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.view_holder_relative_video.*
 
-class RelativeVideoListAdapter : RecyclerView.Adapter<RelativeVideoListAdapter.VideoViewHolder>() {
+class RelativeVideoAdapter : RecyclerView.Adapter<RelativeVideoAdapter.VideoViewHolder>() {
 
     var videoList: List<SearchResponse.Video> = listOf()
         set(value) {

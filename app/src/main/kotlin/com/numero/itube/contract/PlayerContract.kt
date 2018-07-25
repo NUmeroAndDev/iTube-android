@@ -2,7 +2,7 @@ package com.numero.itube.contract
 
 import com.numero.itube.presenter.IPresenter
 
-class RelativeContract {
+class PlayerContract {
 
     interface Presenter : IPresenter {
         fun checkFavorite()

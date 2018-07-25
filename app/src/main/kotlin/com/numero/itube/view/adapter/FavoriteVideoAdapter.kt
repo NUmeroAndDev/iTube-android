@@ -12,7 +12,7 @@ import com.numero.itube.repository.db.FavoriteVideo
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.view_holder_relative_video.*
 
-class RelativeFavoriteVideoListAdapter : RecyclerView.Adapter<RelativeFavoriteVideoListAdapter.VideoViewHolder>() {
+class FavoriteVideoAdapter : RecyclerView.Adapter<FavoriteVideoAdapter.VideoViewHolder>() {
 
     var videoList: List<FavoriteVideo> = listOf()
         set(value) {

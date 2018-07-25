@@ -7,40 +7,59 @@ import android.os.Bundle
 import android.util.Pair
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
 import com.numero.itube.R
+import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
+import com.numero.itube.api.response.VideoDetailResponse
+import com.numero.itube.contract.PlayerContract
 import com.numero.itube.extension.component
-import com.numero.itube.extension.findFragment
-import com.numero.itube.extension.replace
-import com.numero.itube.fragment.BaseRelativeFragment
+import com.numero.itube.extension.observeNonNull
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
-import com.numero.itube.fragment.RelativeFavoriteFragment
-import com.numero.itube.fragment.RelativeFragment
+import com.numero.itube.presenter.PlayerPresenter
 import com.numero.itube.repository.ConfigRepository
+import com.numero.itube.repository.FavoriteVideoRepository
+import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
+import com.numero.itube.view.adapter.FavoriteVideoAdapter
+import com.numero.itube.view.adapter.RelativeVideoAdapter
+import com.numero.itube.viewmodel.PlayerViewModel
 import kotlinx.android.synthetic.main.activity_player.*
+import kotlinx.android.synthetic.main.container_player.*
+import kotlinx.android.synthetic.main.container_video_detail.*
 import javax.inject.Inject
 
 class PlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
-        RelativeFragment.RelativeFragmentListener,
-        RelativeFavoriteFragment.RelativeFavoriteFragmentListener,
         Toolbar.OnMenuItemClickListener,
         YouTubePlayer.PlayerStateChangeListener {
 
     private val title: String by lazy { intent.getStringExtra(BUNDLE_TITLE) }
     private val videoId: String by lazy { intent.getStringExtra(BUNDLE_VIDEO_ID) }
     private val channelId: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_ID) }
-    private val isFavoriteVideo: Boolean by lazy { intent.getBooleanExtra(BUNDLE_IS_FAVORITE_VIDEO, false) }
+    private val isShownFavoriteVideo: Boolean by lazy { intent.getBooleanExtra(BUNDLE_IS_FAVORITE_VIDEO, false) }
     private var player: YouTubePlayer? = null
-    private var isRegistered: Boolean = false
 
+    private val favoriteVideoAdapter: FavoriteVideoAdapter = FavoriteVideoAdapter()
+    private val relativeVideoAdapter: RelativeVideoAdapter = RelativeVideoAdapter()
+    private lateinit var presenter: PlayerContract.Presenter
+    private lateinit var viewModel: PlayerViewModel
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
+
+    @Inject
+    lateinit var youtubeRepository: YoutubeRepository
+    @Inject
+    lateinit var favoriteVideoRepository: FavoriteVideoRepository
     @Inject
     lateinit var configRepository: ConfigRepository
 
@@ -56,33 +75,18 @@ class PlayerActivity : AppCompatActivity(),
             title = this@PlayerActivity.title
         }
 
+        initViewModel()
+        initViews()
+        presenter = PlayerPresenter(viewModel, youtubeRepository, favoriteVideoRepository, videoId, channelId)
+
         val youTubePlayerFragment = YouTubePlayerFragment.newInstance().apply {
             this@PlayerActivity.fragmentManager.beginTransaction().replace(R.id.playerContainer, this).commit()
 //            replace(R.id.playerContainer, this, false)
         }
         youTubePlayerFragment.initialize(getString(R.string.api_key), this)
 
-        if (findFragment(R.id.relativeContainer) == null) {
-            val fragment: Fragment = if (isFavoriteVideo) {
-                RelativeFavoriteFragment.newInstance(videoId, channelId)
-            } else {
-                RelativeFragment.newInstance(videoId, channelId)
-            }
-            replace(R.id.relativeContainer, fragment)
-        }
-
-        bottomAppBar.apply {
-            replaceMenu(R.menu.menu_player)
-            setOnMenuItemClickListener(this@PlayerActivity)
-        }
-
-        fab.setOnClickListener {
-            isRegistered = isRegistered.not()
-            val fragment = findFragment(R.id.relativeContainer)
-            if (fragment is BaseRelativeFragment) {
-                fragment.setIsRegistered(isRegistered)
-            }
-        }
+        presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
+        presenter.checkFavorite()
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -134,31 +138,136 @@ class PlayerActivity : AppCompatActivity(),
             player?.play()
             return
         }
-        val fragment = findFragment(R.id.relativeContainer)
-        if (fragment is RelativeFavoriteFragment) {
-            fragment.playNextVideo()
-        }
+        favoriteVideoAdapter.playNextVideo()
     }
 
     override fun onError(p0: YouTubePlayer.ErrorReason?) {
     }
 
-    override fun showVideo(video: SearchResponse.Video) {
+    private fun initViewModel(): PlayerViewModel {
+        viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
+        viewModel.favoriteVideoList.observeNonNull(this) {
+            favoriteVideoAdapter.videoList = it
+        }
+        viewModel.relativeVideoList.observeNonNull(this) {
+            relativeVideoAdapter.videoList = it
+        }
+        viewModel.progress.observeNonNull(this) {
+            //            if (it) {
+//                progressView.show()
+//            } else {
+//                progressView.hide()
+//            }
+        }
+        viewModel.channel.observeNonNull(this) {
+            showChannelDetail(it, channelId)
+        }
+        viewModel.videoDetail.observeNonNull(this) {
+            showVideoDetail(it)
+        }
+        viewModel.isFavorite.observeNonNull(this) {
+            registeredFavorite(it)
+        }
+        viewModel.isShowError.observeNonNull(this) {
+            //            errorGroup.visibility = if (it) {
+//                View.VISIBLE
+//            } else {
+//                View.GONE
+//            }
+        }
+        return viewModel
+    }
+
+    private fun initViews() {
+        bottomSheetBehavior = BottomSheetBehavior.from(favoriteListBottomSheetLayout).apply {
+            state = BottomSheetBehavior.STATE_HIDDEN
+        }
+
+        bottomAppBar.apply {
+            replaceMenu(R.menu.menu_player)
+            setOnMenuItemClickListener(this@PlayerActivity)
+
+            if (isShownFavoriteVideo) {
+                setNavigationIcon(R.drawable.ic_arrow_up)
+                setNavigationOnClickListener {
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                }
+            }
+        }
+        fab.setOnClickListener {
+            val isFavorite = viewModel.isFavorite.value ?: return@setOnClickListener
+            if (isFavorite) {
+                presenter.unregisterFavorite()
+            } else {
+                presenter.registerFavorite()
+            }
+        }
+        favoriteVideoAdapter.apply {
+            setOnItemClickListener {
+                // 再生画面へ遷移
+                showVideo(it)
+            }
+            currentVideoId = videoId
+        }
+        favoriteVideoRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            adapter = favoriteVideoAdapter
+        }
+        relativeVideoAdapter.setOnItemClickListener {
+            // 再生画面へ遷移
+            showVideo(it)
+        }
+        relativeVideoRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            setHasFixedSize(true)
+            adapter = relativeVideoAdapter
+        }
+
+        titleLayout.setOnClickListener {
+            if (detailMotionLayout.progress > 0.5f) {
+                detailMotionLayout.transitionToStart()
+            } else {
+                detailMotionLayout.transitionToEnd()
+            }
+        }
+
+//        retryButton.setOnClickListener {
+//            presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
+//        }
+    }
+
+    private fun showChannelDetail(channel: ChannelResponse.Channel, channelId: String) {
+        channelNameTextView.text = channel.snippet.title
+
+        val url = channel.snippet.thumbnails.medium.url
+        Glide.with(this).load(url).apply(RequestOptions().circleCrop()).into(channelImageView)
+        channelLayout.setOnClickListener {
+            val channelName = channelNameTextView.text.toString()
+            showChannelDetailScreen(channelName, channelId, url, Pair(channelImageView, channelImageView.transitionName), Pair(channelNameTextView, channelNameTextView.transitionName))
+        }
+    }
+
+    private fun showVideoDetail(videoDetail: VideoDetailResponse.VideoDetail) {
+        titleTextView.text = videoDetail.snippet.title
+        descriptionTextView.text = videoDetail.snippet.description
+    }
+
+    private fun registeredFavorite(isRegistered: Boolean) {
+        fab.setImageResource(if (isRegistered) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
+    }
+
+    private fun showVideo(video: SearchResponse.Video) {
         startActivity(PlayerActivity.createIntent(this, video))
         overridePendingTransition(0, 0)
     }
 
-    override fun showVideo(video: FavoriteVideo) {
+    private fun showVideo(video: FavoriteVideo) {
         startActivity(PlayerActivity.createIntent(this, video))
         overridePendingTransition(0, 0)
     }
 
-    override fun onIsRegisteredFavorite(isRegisteredFavorite: Boolean) {
-        isRegistered = isRegisteredFavorite
-        fab.setImageResource(if (isRegisteredFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
-    }
-
-    override fun onClickChannel(channelName: String, channelId: String, thumbnailUrl: String, vararg transitionViews: Pair<View, String>) {
+    private fun showChannelDetailScreen(channelName: String, channelId: String, thumbnailUrl: String, vararg transitionViews: Pair<View, String>) {
         val bundle = ActivityOptions.makeSceneTransitionAnimation(this, *transitionViews).toBundle()
         startActivity(ChannelDetailActivity.createIntent(this, channelName, channelId, thumbnailUrl), bundle)
     }

@@ -2,21 +2,21 @@ package com.numero.itube.presenter
 
 import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.response.VideoDetailResponse
-import com.numero.itube.contract.RelativeFavoriteContract
+import com.numero.itube.contract.PlayerContract
 import com.numero.itube.repository.IFavoriteVideoRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
-import com.numero.itube.viewmodel.RelativeFavoriteViewModel
+import com.numero.itube.viewmodel.PlayerViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
 
-class RelativeFavoritePresenter(
-        private val viewModel: RelativeFavoriteViewModel,
+class PlayerPresenter(
+        private val viewModel: PlayerViewModel,
         private val youtubeRepository: IYoutubeRepository,
         private val favoriteRepository: IFavoriteVideoRepository,
         private val videoId: String,
         private val channelId: String
-) : RelativeFavoriteContract.Presenter {
+) : PlayerContract.Presenter {
 
     override fun subscribe() {
     }
@@ -47,6 +47,7 @@ class RelativeFavoritePresenter(
                             viewModel.isShowError.postValue(false)
                             viewModel.videoDetail.postValue(it.videoDetailResponse.items[0])
                             viewModel.channel.postValue(it.channelResponse.items[0])
+                            viewModel.relativeVideoList.postValue(it.searchResponse.items)
                         },
                         onError = {
                             viewModel.progress.postValue(false)
@@ -72,7 +73,7 @@ class RelativeFavoritePresenter(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onSuccess = {
-                            viewModel.videoList.postValue(it)
+                            viewModel.favoriteVideoList.postValue(it)
                         },
                         onError = {
                         }
