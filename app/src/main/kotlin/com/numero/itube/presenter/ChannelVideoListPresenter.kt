@@ -22,6 +22,15 @@ class ChannelVideoListPresenter(
     override fun loadChannelVideo(key: String, nextPageToken: String?) {
         viewModel.progress.postValue(true)
         val request = ChannelVideoRequest(key, channelId, nextPageToken)
+        // FIXME
+        youtubeRepository.loadChannelDetail(key, channelId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                        onNext = {
+                            viewModel.channelDetail.postValue(it.items[0])
+                        },
+                        onError = {
+                        })
         youtubeRepository.loadChannelVideoResponse(request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(

@@ -42,7 +42,7 @@ class ChannelDetailActivity : AppCompatActivity(), ChannelVideoListFragment.Chan
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -50,7 +50,7 @@ class ChannelDetailActivity : AppCompatActivity(), ChannelVideoListFragment.Chan
     }
 
     override fun showChannelThumbnail(urlString: String) {
-
+        Glide.with(this).load(urlString).into(thumbnailImageView)
     }
 
     override fun showVideo(video: SearchResponse.Video) {

@@ -57,6 +57,9 @@ class ChannelVideoListFragment : Fragment() {
                 progressView.hide()
             }
         }
+        viewModel.channelDetail.observeNonNull(this) {
+            listener?.showChannelThumbnail(it.branding.image.bannerTvMediumImageUrl)
+        }
 
         presenter = ChannelVideoListPresenter(viewModel, channelId, youtubeApiRepository)
 

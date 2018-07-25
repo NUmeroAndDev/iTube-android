@@ -4,6 +4,7 @@ import com.numero.itube.api.YoutubeApi
 import com.numero.itube.api.request.ChannelVideoRequest
 import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.request.SearchVideoRequest
+import com.numero.itube.api.response.ChannelDetailResponse
 import com.numero.itube.api.response.RelativeResponse
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoResponse
@@ -62,5 +63,9 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
             }
             VideoResponse(it.nextPageToken, list, it.pageInfo.totalResults)
         }
+    }
+
+    override fun loadChannelDetail(key: String, channelId: String): Observable<ChannelDetailResponse> {
+        return youtubeApi.channelDetail(key, channelId)
     }
 }
