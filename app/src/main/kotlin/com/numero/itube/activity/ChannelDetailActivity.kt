@@ -5,23 +5,39 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isInvisible
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
-import com.numero.itube.api.response.SearchResponse
-import com.numero.itube.extension.findFragment
-import com.numero.itube.extension.replace
-import com.numero.itube.fragment.ChannelVideoListFragment
+import com.numero.itube.contract.ChannelVideoListContract
+import com.numero.itube.extension.component
+import com.numero.itube.extension.observeNonNull
+import com.numero.itube.presenter.ChannelVideoListPresenter
+import com.numero.itube.repository.YoutubeRepository
+import com.numero.itube.view.EndlessScrollListener
+import com.numero.itube.view.adapter.VideoListAdapter
+import com.numero.itube.viewmodel.ChannelVideoListViewModel
 import kotlinx.android.synthetic.main.activity_channel_detail.*
+import javax.inject.Inject
 
-class ChannelDetailActivity : AppCompatActivity(), ChannelVideoListFragment.ChannelVideoFragmentListener {
+class ChannelDetailActivity : AppCompatActivity() {
 
     private val channelName: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_NAME) }
     private val channelId: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_ID) }
     private val thumbnailUrl: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_THUMBNAIL_URL) }
 
+    @Inject
+    lateinit var youtubeApiRepository: YoutubeRepository
+    private lateinit var presenter: ChannelVideoListContract.Presenter
+    private lateinit var viewModel: ChannelVideoListViewModel
+
+    private val videoListAdapter: VideoListAdapter = VideoListAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        component?.inject(this)
         setContentView(R.layout.activity_channel_detail)
         setSupportActionBar(toolbar)
 
@@ -31,30 +47,60 @@ class ChannelDetailActivity : AppCompatActivity(), ChannelVideoListFragment.Chan
             setDisplayShowTitleEnabled(false)
         }
 
-        channelNameTextView.text = channelName
-        Glide.with(this).load(thumbnailUrl).apply(RequestOptions().circleCrop()).into(channelImageView)
+        initViews()
+        initViewModel()
 
-        if (findFragment(R.id.container) == null) {
-            replace(R.id.container, ChannelVideoListFragment.newInstance(channelId), false)
+        presenter = ChannelVideoListPresenter(viewModel, channelId, youtubeApiRepository)
+
+        if (savedInstanceState == null) {
+            // 画面回転時には以前のデータが復帰される
+            presenter.loadChannelVideo(getString(R.string.api_key))
         }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    override fun showChannelThumbnail(urlString: String) {
+    private fun initViews() {
+        channelNameTextView.text = channelName
+        Glide.with(this).load(thumbnailUrl).apply(RequestOptions().circleCrop()).into(channelImageView)
 
+        videoListAdapter.setOnItemClickListener {
+            startActivity(PlayerActivity.createIntent(this, it))
+        }
+        videoRecyclerView.apply {
+            val manager = LinearLayoutManager(context)
+            layoutManager = manager
+            addOnScrollListener(EndlessScrollListener(manager) {
+                val hasNextPage = viewModel.hasNextPage.value
+                if (hasNextPage != null && hasNextPage.not()) {
+                    return@EndlessScrollListener
+                }
+                presenter.loadMoreVideo(getString(R.string.api_key), viewModel.nextPageToken.value)
+            })
+            adapter = videoListAdapter
+        }
     }
 
-    override fun showVideo(video: SearchResponse.Video) {
-        startActivity(PlayerActivity.createIntent(this, video))
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this).get(ChannelVideoListViewModel::class.java)
+        viewModel.videoList.observeNonNull(this) {
+            videoListAdapter.submitList(it)
+        }
+        viewModel.isShowProgress.observeNonNull(this) {
+            progressBar.isInvisible = it.not()
+        }
+        viewModel.channelDetail.observeNonNull(this) {
+            val urlString = it.branding.image.bannerTvMediumImageUrl
+            Glide.with(this).load(urlString).into(thumbnailImageView)
+        }
     }
 
     companion object {

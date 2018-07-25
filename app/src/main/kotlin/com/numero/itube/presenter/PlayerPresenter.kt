@@ -43,14 +43,14 @@ class PlayerPresenter(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onNext = {
-                            viewModel.progress.postValue(false)
+                            viewModel.isShowProgress.postValue(false)
                             viewModel.isShowError.postValue(false)
                             viewModel.videoDetail.postValue(it.videoDetailResponse.items[0])
                             viewModel.channel.postValue(it.channelResponse.items[0])
                             viewModel.relativeVideoList.postValue(it.searchResponse.items)
                         },
                         onError = {
-                            viewModel.progress.postValue(false)
+                            viewModel.isShowProgress.postValue(false)
                             viewModel.isShowError.postValue(true)
 
                             viewModel.error.postValue(it)

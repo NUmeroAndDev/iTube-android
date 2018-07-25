@@ -18,18 +18,18 @@ class FavoriteVideoListPresenter(
     }
 
     override fun loadFavoriteVideoList() {
-        viewModel.progress.postValue(true)
+        viewModel.isShowProgress.postValue(true)
         favoriteRepository.loadFavoriteVideo()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onSuccess = {
                             viewModel.isShowEmptyMessage.postValue(it.isEmpty())
-                            viewModel.progress.postValue(false)
+                            viewModel.isShowProgress.postValue(false)
                             viewModel.videoList.postValue(it)
                         },
                         onError = {
                             viewModel.isShowEmptyMessage.postValue(false)
-                            viewModel.progress.postValue(false)
+                            viewModel.isShowProgress.postValue(false)
                             viewModel.error.postValue(it)
                         }
                 )
