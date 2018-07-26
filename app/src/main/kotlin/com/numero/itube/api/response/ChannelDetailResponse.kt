@@ -47,8 +47,7 @@ data class ChannelDetailResponse(
             @JsonSerializable
             data class Channel(
                     val title: String,
-                    val description: String,
-                    val keywords: String
+                    val description: String?
             ) : Serializable
 
             @JsonSerializable
