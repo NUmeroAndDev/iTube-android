@@ -5,11 +5,11 @@ import com.numero.itube.presenter.IPresenter
 class SearchVideoContract {
 
     interface Presenter : IPresenter {
-        fun search(key: String, searchWord: String)
+        fun search(searchWord: String)
 
-        fun requestMore(key: String)
+        fun requestMore()
 
-        fun retry(key: String)
+        fun retry()
 
         fun clear()
     }

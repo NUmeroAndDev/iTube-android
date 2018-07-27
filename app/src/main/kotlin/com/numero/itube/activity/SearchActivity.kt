@@ -13,6 +13,7 @@ import com.numero.itube.contract.SearchVideoContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
 import com.numero.itube.presenter.SearchVideoPresenter
+import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.SearchInputView
@@ -25,6 +26,8 @@ class SearchActivity : AppCompatActivity() {
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
+    @Inject
+    lateinit var configRepository: ConfigRepository
 
     private lateinit var presenter: SearchVideoContract.Presenter
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
@@ -48,7 +51,7 @@ class SearchActivity : AppCompatActivity() {
             errorView.isInvisible = isShow.not()
         }
 
-        presenter = SearchVideoPresenter(viewModel, youtubeRepository)
+        presenter = SearchVideoPresenter(viewModel, youtubeRepository, configRepository)
 
         initViews()
     }
@@ -65,11 +68,11 @@ class SearchActivity : AppCompatActivity() {
 
     private fun initViews() {
         errorView.setOnRetryListener {
-            presenter.retry(getString(R.string.api_key))
+            presenter.retry()
         }
         searchInputEditText.setOnQueryTextListener(object : SearchInputView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String) {
-                presenter.search(getString(R.string.api_key), query)
+                presenter.search(query)
             }
 
             override fun onQueryTextChange(newText: String) {
@@ -84,7 +87,7 @@ class SearchActivity : AppCompatActivity() {
             val manager = LinearLayoutManager(context)
             layoutManager = manager
             addOnScrollListener(EndlessScrollListener(manager) {
-                presenter.requestMore(getString(R.string.api_key))
+                presenter.requestMore()
             })
             setHasFixedSize(true)
             adapter = videoListAdapter
