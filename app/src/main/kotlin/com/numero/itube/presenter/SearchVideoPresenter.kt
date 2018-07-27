@@ -44,6 +44,8 @@ class SearchVideoPresenter(
 
     private fun executeSearch(request: SearchVideoRequest) {
         viewModel.isShowProgress.postValue(true)
+        viewModel.isShowError.postValue(false)
+
         youtubeRepository.loadSearchResponse(request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(

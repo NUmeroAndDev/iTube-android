@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
@@ -41,19 +41,11 @@ class SearchActivity : AppCompatActivity() {
         viewModel.videoList.observeNonNull(this) {
             videoListAdapter.submitList(it)
         }
-        viewModel.isShowProgress.observeNonNull(this) {
-            if (it) {
-                progressView.show()
-            } else {
-                progressView.hide()
-            }
+        viewModel.isShowProgress.observeNonNull(this) { isShow: Boolean ->
+            progressBar.isInvisible = isShow.not()
         }
-        viewModel.isShowError.observeNonNull(this) {
-            errorGroup.visibility = if (it) {
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
+        viewModel.isShowError.observeNonNull(this) { isShow: Boolean ->
+            errorView.isInvisible = isShow.not()
         }
 
         presenter = SearchVideoPresenter(viewModel, youtubeRepository)
@@ -72,7 +64,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        retryButton.setOnClickListener {
+        errorView.setOnRetryListener {
             presenter.retry(getString(R.string.api_key))
         }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
