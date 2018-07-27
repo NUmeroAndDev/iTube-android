@@ -88,6 +88,7 @@ class PlayerActivity : AppCompatActivity(),
 
         presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
         presenter.checkFavorite()
+        presenter.loadFavoriteVideo()
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {

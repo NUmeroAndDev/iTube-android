@@ -41,7 +41,6 @@ class PlayerPresenter(
         viewModel.isShowError.postValue(false)
 
         val request = RelativeRequest(key, videoId, channelId)
-        // FIXME zipに
         youtubeRepository.loadRelative(request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
@@ -59,19 +58,9 @@ class PlayerPresenter(
                             viewModel.error.postValue(it)
                         }
                 )
-        executeLoadDetail()
     }
 
-    override fun registerFavorite() {
-        val detail = viewModel.videoDetail.value ?: return
-        executeRegisterFavorite(detail)
-    }
-
-    override fun unregisterFavorite() {
-        executeUnregisterFavorite(videoId)
-    }
-
-    private fun executeLoadDetail() {
+    override fun loadFavoriteVideo() {
         favoriteRepository.loadFavoriteVideo()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
@@ -81,6 +70,15 @@ class PlayerPresenter(
                         onError = {
                         }
                 )
+    }
+
+    override fun registerFavorite() {
+        val detail = viewModel.videoDetail.value ?: return
+        executeRegisterFavorite(detail)
+    }
+
+    override fun unregisterFavorite() {
+        executeUnregisterFavorite(videoId)
     }
 
     private fun executeRegisterFavorite(video: VideoDetailResponse.VideoDetail) {
