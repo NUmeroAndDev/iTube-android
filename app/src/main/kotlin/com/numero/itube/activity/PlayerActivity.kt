@@ -94,7 +94,7 @@ class PlayerActivity : AppCompatActivity(),
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         item ?: return false
         when (item.itemId) {
-            R.id.action_settings -> {
+            R.id.action_player_option -> {
                 PlayerSettingsBottomSheetFragment.newInstance().show(supportFragmentManager)
             }
         }
