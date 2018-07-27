@@ -21,13 +21,10 @@
             android:gravity="center"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/searchView"
+            <com.numero.itube.view.SearchInputView
+                android:id="@+id/searchInputEditText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="-8dp"
-                app:iconifiedByDefault="false"
-                app:searchIcon="@null" />
+                android:layout_height="wrap_content" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -58,7 +55,7 @@
         android:id="@+id/errorView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible"
-        android:layout_marginTop="?attr/actionBarSize" />
+        android:layout_marginTop="?attr/actionBarSize"
+        android:visibility="invisible" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

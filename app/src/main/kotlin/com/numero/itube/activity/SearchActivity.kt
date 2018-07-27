@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +15,7 @@ import com.numero.itube.extension.observeNonNull
 import com.numero.itube.presenter.SearchVideoPresenter
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
+import com.numero.itube.view.SearchInputView
 import com.numero.itube.view.adapter.VideoListAdapter
 import com.numero.itube.viewmodel.SearchVideoViewModel
 import kotlinx.android.synthetic.main.activity_search.*
@@ -67,20 +67,14 @@ class SearchActivity : AppCompatActivity() {
         errorView.setOnRetryListener {
             presenter.retry(getString(R.string.api_key))
         }
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                query ?: return false
+        searchInputEditText.setOnQueryTextListener(object : SearchInputView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String) {
                 presenter.search(getString(R.string.api_key), query)
-                searchView.clearFocus()
-                return false
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText.isNullOrEmpty()) {
-                    // 初期化
-                    presenter.clear()
-                }
-                return false
+            override fun onQueryTextChange(newText: String) {
+                // 初期化
+                presenter.clear()
             }
         })
         videoListAdapter.setOnItemClickListener {
