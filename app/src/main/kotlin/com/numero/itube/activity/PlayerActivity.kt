@@ -54,7 +54,6 @@ class PlayerActivity : AppCompatActivity(),
     private val favoriteVideoAdapter: FavoriteVideoAdapter = FavoriteVideoAdapter()
     private val relativeVideoAdapter: RelativeVideoAdapter = RelativeVideoAdapter()
     private lateinit var presenter: PlayerContract.Presenter
-    private lateinit var viewModel: PlayerViewModel
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     @Inject
@@ -76,8 +75,9 @@ class PlayerActivity : AppCompatActivity(),
             title = this@PlayerActivity.title
         }
 
-        initViewModel()
         initViews()
+        val viewModel = initViewModel()
+
         presenter = PlayerPresenter(viewModel, youtubeRepository, favoriteVideoRepository, configRepository, videoId, channelId)
 
         val youTubePlayerFragment = YouTubePlayerFragment.newInstance().apply {
@@ -147,7 +147,7 @@ class PlayerActivity : AppCompatActivity(),
     }
 
     private fun initViewModel(): PlayerViewModel {
-        viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
+        val viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
         viewModel.favoriteVideoList.observeNonNull(this) {
             favoriteVideoAdapter.videoList = it
         }
@@ -191,12 +191,7 @@ class PlayerActivity : AppCompatActivity(),
             }
         }
         fab.setOnClickListener {
-            val isFavorite = viewModel.isFavorite.value ?: return@setOnClickListener
-            if (isFavorite) {
-                presenter.unregisterFavorite()
-            } else {
-                presenter.registerFavorite()
-            }
+            presenter.changeFavorite()
         }
         favoriteVideoAdapter.apply {
             setOnItemClickListener {
