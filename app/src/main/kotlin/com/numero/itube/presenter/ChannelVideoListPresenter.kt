@@ -2,6 +2,7 @@ package com.numero.itube.presenter
 
 import com.numero.itube.api.request.ChannelVideoRequest
 import com.numero.itube.contract.ChannelVideoListContract
+import com.numero.itube.repository.IConfigRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.viewmodel.ChannelVideoListViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -11,7 +12,8 @@ import io.reactivex.rxkotlin.subscribeBy
 class ChannelVideoListPresenter(
         private val viewModel: ChannelVideoListViewModel,
         private val channelId: String,
-        private val youtubeRepository: IYoutubeRepository
+        private val youtubeRepository: IYoutubeRepository,
+        private val configRepository: IConfigRepository
 ) : ChannelVideoListContract.Presenter {
 
     override fun subscribe() {
@@ -20,16 +22,16 @@ class ChannelVideoListPresenter(
     override fun unSubscribe() {
     }
 
-    override fun loadChannelVideo(key: String) {
+    override fun loadChannelVideo() {
         val isShownProgress = viewModel.isShowProgress.value
         if (isShownProgress != null && isShownProgress) {
             return
         }
 
         viewModel.isShowProgress.postValue(true)
-        val request = ChannelVideoRequest(key, channelId)
+        val request = ChannelVideoRequest(configRepository.apiKey, channelId)
         val stream = Observables.zip(
-                youtubeRepository.loadChannelDetail(key, channelId),
+                youtubeRepository.loadChannelDetail(configRepository.apiKey, channelId),
                 youtubeRepository.loadChannelVideoResponse(request)
         ) { channelDetailResponse, videoResponse ->
             channelDetailResponse to videoResponse
@@ -56,14 +58,14 @@ class ChannelVideoListPresenter(
                         })
     }
 
-    override fun loadMoreVideo(key: String, nextPageToken: String?) {
+    override fun loadMoreVideo(nextPageToken: String?) {
         val isShownProgress = viewModel.isShowProgress.value
         if (isShownProgress != null && isShownProgress) {
             return
         }
 
         viewModel.isShowProgress.postValue(true)
-        val request = ChannelVideoRequest(key, channelId, nextPageToken)
+        val request = ChannelVideoRequest(configRepository.apiKey, channelId, nextPageToken)
         youtubeRepository.loadChannelVideoResponse(request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
