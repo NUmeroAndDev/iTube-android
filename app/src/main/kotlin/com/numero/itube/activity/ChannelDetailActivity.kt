@@ -33,9 +33,8 @@ class ChannelDetailActivity : AppCompatActivity() {
     lateinit var youtubeApiRepository: YoutubeRepository
     @Inject
     lateinit var configRepository: ConfigRepository
-    private lateinit var presenter: ChannelVideoListContract.Presenter
-    private lateinit var viewModel: ChannelVideoListViewModel
 
+    private lateinit var presenter: ChannelVideoListContract.Presenter
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +50,7 @@ class ChannelDetailActivity : AppCompatActivity() {
         }
 
         initViews()
-        initViewModel()
+        val viewModel = initViewModel()
 
         presenter = ChannelVideoListPresenter(viewModel, channelId, youtubeApiRepository, configRepository)
 
@@ -82,18 +81,14 @@ class ChannelDetailActivity : AppCompatActivity() {
             val manager = LinearLayoutManager(context)
             layoutManager = manager
             addOnScrollListener(EndlessScrollListener(manager) {
-                val hasNextPage = viewModel.hasNextPage.value
-                if (hasNextPage != null && hasNextPage.not()) {
-                    return@EndlessScrollListener
-                }
-                presenter.loadMoreVideo(viewModel.nextPageToken.value)
+                presenter.loadMoreVideo()
             })
             adapter = videoListAdapter
         }
     }
 
-    private fun initViewModel() {
-        viewModel = ViewModelProviders.of(this).get(ChannelVideoListViewModel::class.java)
+    private fun initViewModel(): ChannelVideoListViewModel {
+        val viewModel = ViewModelProviders.of(this).get(ChannelVideoListViewModel::class.java)
         viewModel.videoList.observeNonNull(this) {
             videoListAdapter.submitList(it)
         }
@@ -104,6 +99,7 @@ class ChannelDetailActivity : AppCompatActivity() {
             val urlString = it.branding.image.bannerTvMediumImageUrl
             Glide.with(this).load(urlString).into(thumbnailImageView)
         }
+        return viewModel
     }
 
     companion object {

@@ -7,6 +7,6 @@ class ChannelVideoListContract {
     interface Presenter : IPresenter {
         fun loadChannelVideo()
 
-        fun loadMoreVideo(nextPageToken: String?)
+        fun loadMoreVideo()
     }
 }
