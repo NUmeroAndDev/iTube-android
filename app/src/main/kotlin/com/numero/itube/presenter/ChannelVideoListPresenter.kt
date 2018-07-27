@@ -57,7 +57,12 @@ class ChannelVideoListPresenter(
                         })
     }
 
-    override fun loadMoreVideo(nextPageToken: String?) {
+    override fun loadMoreVideo() {
+        val hasNextPage = viewModel.hasNextPage.value
+        if (hasNextPage != null && hasNextPage.not()) {
+            return
+        }
+        val nextPageToken = viewModel.nextPageToken.value
         if (viewModel.isProcessing) {
             return
         }

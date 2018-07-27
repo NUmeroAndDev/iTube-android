@@ -11,8 +11,6 @@ class PlayerContract {
 
         fun loadFavoriteVideo()
 
-        fun registerFavorite()
-
-        fun unregisterFavorite()
+        fun changeFavorite()
     }
 }

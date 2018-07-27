@@ -78,13 +78,14 @@ class PlayerPresenter(
                 )
     }
 
-    override fun registerFavorite() {
-        val detail = viewModel.videoDetail.value ?: return
-        executeRegisterFavorite(detail)
-    }
-
-    override fun unregisterFavorite() {
-        executeUnregisterFavorite(videoId)
+    override fun changeFavorite() {
+        val isFavorite = viewModel.isFavorite.value ?: return
+        if (isFavorite) {
+            executeUnregisterFavorite(videoId)
+        } else {
+            val detail = viewModel.videoDetail.value ?: return
+            executeRegisterFavorite(detail)
+        }
     }
 
     private fun executeRegisterFavorite(video: VideoDetailResponse.VideoDetail) {
