@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -87,6 +88,7 @@ class PlayerActivity : AppCompatActivity(),
 
         presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
         presenter.checkFavorite()
+        presenter.loadFavoriteVideo()
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -152,12 +154,10 @@ class PlayerActivity : AppCompatActivity(),
         viewModel.relativeVideoList.observeNonNull(this) {
             relativeVideoAdapter.videoList = it
         }
-        viewModel.isShowProgress.observeNonNull(this) {
-            //            if (it) {
-//                progressView.show()
-//            } else {
-//                progressView.hide()
-//            }
+        viewModel.isShowProgress.observeNonNull(this) { isShow: Boolean ->
+            // FIXME 型推論でエラーが出る
+            progressBar.isInvisible = isShow.not()
+            videoDetailLayout.isInvisible = isShow
         }
         viewModel.channel.observeNonNull(this) {
             showChannelDetail(it, channelId)
@@ -168,12 +168,8 @@ class PlayerActivity : AppCompatActivity(),
         viewModel.isFavorite.observeNonNull(this) {
             registeredFavorite(it)
         }
-        viewModel.isShowError.observeNonNull(this) {
-            //            errorGroup.visibility = if (it) {
-//                View.VISIBLE
-//            } else {
-//                View.GONE
-//            }
+        viewModel.isShowError.observeNonNull(this) { isShow: Boolean ->
+            errorView.isInvisible = isShow.not()
         }
         return viewModel
     }
@@ -231,10 +227,9 @@ class PlayerActivity : AppCompatActivity(),
                 detailMotionLayout.transitionToEnd()
             }
         }
-
-//        retryButton.setOnClickListener {
-//            presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
-//        }
+        errorView.setOnRetryListener {
+            presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
+        }
     }
 
     private fun showChannelDetail(channel: ChannelResponse.Channel, channelId: String) {

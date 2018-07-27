@@ -9,6 +9,8 @@ class PlayerContract {
 
         fun loadVideoAndChannelDetail(key: String)
 
+        fun loadFavoriteVideo()
+
         fun registerFavorite()
 
         fun unregisterFavorite()
