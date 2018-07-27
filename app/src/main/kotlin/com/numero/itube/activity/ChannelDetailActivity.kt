@@ -15,6 +15,7 @@ import com.numero.itube.contract.ChannelVideoListContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
 import com.numero.itube.presenter.ChannelVideoListPresenter
+import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.adapter.VideoListAdapter
@@ -30,6 +31,8 @@ class ChannelDetailActivity : AppCompatActivity() {
 
     @Inject
     lateinit var youtubeApiRepository: YoutubeRepository
+    @Inject
+    lateinit var configRepository: ConfigRepository
     private lateinit var presenter: ChannelVideoListContract.Presenter
     private lateinit var viewModel: ChannelVideoListViewModel
 
@@ -50,11 +53,11 @@ class ChannelDetailActivity : AppCompatActivity() {
         initViews()
         initViewModel()
 
-        presenter = ChannelVideoListPresenter(viewModel, channelId, youtubeApiRepository)
+        presenter = ChannelVideoListPresenter(viewModel, channelId, youtubeApiRepository, configRepository)
 
         if (savedInstanceState == null) {
             // 画面回転時には以前のデータが復帰される
-            presenter.loadChannelVideo(getString(R.string.api_key))
+            presenter.loadChannelVideo()
         }
     }
 
@@ -83,7 +86,7 @@ class ChannelDetailActivity : AppCompatActivity() {
                 if (hasNextPage != null && hasNextPage.not()) {
                     return@EndlessScrollListener
                 }
-                presenter.loadMoreVideo(getString(R.string.api_key), viewModel.nextPageToken.value)
+                presenter.loadMoreVideo(viewModel.nextPageToken.value)
             })
             adapter = videoListAdapter
         }
