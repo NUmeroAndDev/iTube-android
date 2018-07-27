@@ -39,6 +39,10 @@ class PlayerPresenter(
     }
 
     override fun loadVideoAndChannelDetail() {
+        if (viewModel.isProcessing) {
+            return
+        }
+
         viewModel.isShowProgress.postValue(true)
         viewModel.isShowError.postValue(false)
 

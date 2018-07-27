@@ -23,8 +23,7 @@ class ChannelVideoListPresenter(
     }
 
     override fun loadChannelVideo() {
-        val isShownProgress = viewModel.isShowProgress.value
-        if (isShownProgress != null && isShownProgress) {
+        if (viewModel.isProcessing) {
             return
         }
 
@@ -59,8 +58,7 @@ class ChannelVideoListPresenter(
     }
 
     override fun loadMoreVideo(nextPageToken: String?) {
-        val isShownProgress = viewModel.isShowProgress.value
-        if (isShownProgress != null && isShownProgress) {
+        if (viewModel.isProcessing) {
             return
         }
 
