@@ -3,6 +3,7 @@ package com.numero.itube.presenter
 import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.contract.PlayerContract
+import com.numero.itube.repository.IConfigRepository
 import com.numero.itube.repository.IFavoriteVideoRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
@@ -14,6 +15,7 @@ class PlayerPresenter(
         private val viewModel: PlayerViewModel,
         private val youtubeRepository: IYoutubeRepository,
         private val favoriteRepository: IFavoriteVideoRepository,
+        private val configRepository: IConfigRepository,
         private val videoId: String,
         private val channelId: String
 ) : PlayerContract.Presenter {
@@ -36,11 +38,11 @@ class PlayerPresenter(
                 )
     }
 
-    override fun loadVideoAndChannelDetail(key: String) {
+    override fun loadVideoAndChannelDetail() {
         viewModel.isShowProgress.postValue(true)
         viewModel.isShowError.postValue(false)
 
-        val request = RelativeRequest(key, videoId, channelId)
+        val request = RelativeRequest(configRepository.apiKey, videoId, channelId)
         youtubeRepository.loadRelative(request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(

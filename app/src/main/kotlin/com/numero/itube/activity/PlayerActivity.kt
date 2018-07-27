@@ -78,15 +78,15 @@ class PlayerActivity : AppCompatActivity(),
 
         initViewModel()
         initViews()
-        presenter = PlayerPresenter(viewModel, youtubeRepository, favoriteVideoRepository, videoId, channelId)
+        presenter = PlayerPresenter(viewModel, youtubeRepository, favoriteVideoRepository, configRepository, videoId, channelId)
 
         val youTubePlayerFragment = YouTubePlayerFragment.newInstance().apply {
             this@PlayerActivity.fragmentManager.beginTransaction().replace(R.id.playerContainer, this).commit()
 //            replace(R.id.playerContainer, this, false)
         }
-        youTubePlayerFragment.initialize(getString(R.string.api_key), this)
+        youTubePlayerFragment.initialize(configRepository.apiKey, this)
 
-        presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
+        presenter.loadVideoAndChannelDetail()
         presenter.checkFavorite()
         presenter.loadFavoriteVideo()
     }
@@ -228,7 +228,7 @@ class PlayerActivity : AppCompatActivity(),
             }
         }
         errorView.setOnRetryListener {
-            presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
+            presenter.loadVideoAndChannelDetail()
         }
     }
 

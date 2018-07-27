@@ -7,7 +7,7 @@ class PlayerContract {
     interface Presenter : IPresenter {
         fun checkFavorite()
 
-        fun loadVideoAndChannelDetail(key: String)
+        fun loadVideoAndChannelDetail()
 
         fun loadFavoriteVideo()
 
