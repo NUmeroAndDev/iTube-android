@@ -167,12 +167,8 @@ class PlayerActivity : AppCompatActivity(),
         viewModel.isFavorite.observeNonNull(this) {
             registeredFavorite(it)
         }
-        viewModel.isShowError.observeNonNull(this) {
-            //            errorGroup.visibility = if (it) {
-//                View.VISIBLE
-//            } else {
-//                View.GONE
-//            }
+        viewModel.isShowError.observeNonNull(this) { isShow: Boolean ->
+            errorView.isInvisible = isShow.not()
         }
         return viewModel
     }
@@ -230,10 +226,9 @@ class PlayerActivity : AppCompatActivity(),
                 detailMotionLayout.transitionToEnd()
             }
         }
-
-//        retryButton.setOnClickListener {
-//            presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
-//        }
+        errorView.setOnRetryListener {
+            presenter.loadVideoAndChannelDetail(getString(R.string.api_key))
+        }
     }
 
     private fun showChannelDetail(channel: ChannelResponse.Channel, channelId: String) {

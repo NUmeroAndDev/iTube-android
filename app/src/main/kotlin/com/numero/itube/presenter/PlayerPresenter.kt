@@ -38,6 +38,8 @@ class PlayerPresenter(
 
     override fun loadVideoAndChannelDetail(key: String) {
         viewModel.isShowProgress.postValue(true)
+        viewModel.isShowError.postValue(false)
+
         val request = RelativeRequest(key, videoId, channelId)
         // FIXME zipに
         youtubeRepository.loadRelative(request)
