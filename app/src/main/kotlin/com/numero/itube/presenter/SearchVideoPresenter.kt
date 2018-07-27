@@ -45,6 +45,10 @@ class SearchVideoPresenter(
     }
 
     private fun executeSearch(request: SearchVideoRequest) {
+        if (viewModel.isProcessing) {
+            return
+        }
+
         viewModel.isShowProgress.postValue(true)
         viewModel.isShowError.postValue(false)
 
