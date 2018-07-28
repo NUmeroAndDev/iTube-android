@@ -56,6 +56,11 @@ class SearchInputView @JvmOverloads constructor(context: Context, attrs: Attribu
                 listener?.onQueryTextChange(query)
             }
         })
+        clearButton.setOnClickListener {
+            editText.requestFocus()
+            editText.setText("")
+            editText.showKeyboard()
+        }
     }
 
     interface OnQueryTextListener {
