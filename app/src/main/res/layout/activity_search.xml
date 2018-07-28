@@ -24,7 +24,8 @@
             <com.numero.itube.view.SearchInputView
                 android:id="@+id/searchInputEditText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp" />
 
         </androidx.appcompat.widget.Toolbar>
 
