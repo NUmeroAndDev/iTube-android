@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
+import androidx.core.view.isVisible
 import com.numero.itube.R
 import com.numero.itube.extension.hideKeyboard
 import com.numero.itube.extension.showKeyboard
@@ -54,6 +55,7 @@ class SearchInputView @JvmOverloads constructor(context: Context, attrs: Attribu
                 val text = editText.text
                 val query = text?.toString() ?: ""
                 listener?.onQueryTextChange(query)
+                clearButton.isVisible = query.isEmpty().not()
             }
         })
         clearButton.setOnClickListener {
