@@ -5,4 +5,8 @@
         android:key="licenses"
         android:title="@string/licenses" />
 
+    <PreferenceScreen
+        android:key="version"
+        android:title="@string/app_version" />
+
 </PreferenceScreen>

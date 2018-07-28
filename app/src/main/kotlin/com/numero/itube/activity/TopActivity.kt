@@ -11,8 +11,6 @@ import com.numero.itube.R
 import com.numero.itube.contract.FavoriteVideoListContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
-import com.numero.itube.fragment.SettingsBottomSheetFragment
-import com.numero.itube.fragment.SettingsFragment
 import com.numero.itube.presenter.FavoriteVideoListPresenter
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.view.adapter.FavoriteVideoListAdapter
@@ -20,7 +18,7 @@ import com.numero.itube.viewmodel.FavoriteVideoListViewModel
 import kotlinx.android.synthetic.main.activity_top.*
 import javax.inject.Inject
 
-class TopActivity : AppCompatActivity(), SettingsFragment.SettingsFragmentListener {
+class TopActivity : AppCompatActivity() {
 
     @Inject
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
@@ -62,7 +60,7 @@ class TopActivity : AppCompatActivity(), SettingsFragment.SettingsFragmentListen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
-                SettingsBottomSheetFragment.newInstance().show(supportFragmentManager)
+                startActivity(SettingsActivity.createIntent(this))
                 true
             }
             R.id.action_search -> {
@@ -76,9 +74,5 @@ class TopActivity : AppCompatActivity(), SettingsFragment.SettingsFragmentListen
     override fun onResume() {
         super.onResume()
         presenter.loadFavoriteVideoList()
-    }
-
-    override fun showLicenses() {
-        startActivity(LicensesActivity.createIntent(this))
     }
 }

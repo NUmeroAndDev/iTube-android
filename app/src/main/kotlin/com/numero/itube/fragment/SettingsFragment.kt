@@ -3,6 +3,7 @@ package com.numero.itube.fragment
 import android.content.Context
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
+import com.numero.itube.BuildConfig
 import com.numero.itube.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
@@ -27,6 +28,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             listener?.showLicenses()
             false
         }
+        findPreference("version").summary = BuildConfig.VERSION_NAME
     }
 
     interface SettingsFragmentListener {
