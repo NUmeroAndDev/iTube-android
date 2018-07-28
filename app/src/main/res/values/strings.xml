@@ -8,6 +8,8 @@
 
     <string name="search_hint_text">検索</string>
 
+    <string name="play_list_title">お気に入り</string>
+
     <string name="no_favorite_message">お気に入りの動画がありません</string>
     <string name="error_connect_message">エラーが発生しました</string>
 

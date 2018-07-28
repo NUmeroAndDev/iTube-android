@@ -184,7 +184,7 @@ class PlayerActivity : AppCompatActivity(),
             setOnMenuItemClickListener(this@PlayerActivity)
 
             if (isShownFavoriteVideo) {
-                setNavigationIcon(R.drawable.ic_arrow_up)
+                setNavigationIcon(R.drawable.ic_playlist_play)
                 setNavigationOnClickListener {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                 }
