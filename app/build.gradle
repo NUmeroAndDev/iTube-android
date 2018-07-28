@@ -8,6 +8,38 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'com.cookpad.android.licensetools'
 
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+def versionBuild = 1
+
+def suffix = VersionSuffix.ALPHA
+
+enum VersionSuffix {
+    ALPHA(0, "alpha"), BETA(1, "beta"), PRODUCT(9, "")
+
+    private final int code
+    private final String name
+
+    VersionSuffix(int code, String name) {
+        this.code = code
+        this.name = name
+    }
+
+    int getCode() {
+        code
+    }
+
+    String getName() {
+        name
+    }
+}
+
+def appVersionCode = versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 1000 + suffix.code * 100 + versionBuild
+def appVersionName = suffix == VersionSuffix.PRODUCT ?
+        "${versionMajor}.${versionMinor}.${versionPatch}" :
+        "${versionMajor}.${versionMinor}.${versionPatch}-${suffix.name} ${versionBuild}"
+
 android {
 
     compileSdkVersion 28
@@ -17,13 +49,14 @@ android {
         applicationId "com.numero.itube"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode appVersionCode
+        versionName appVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
+            shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
