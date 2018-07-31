@@ -38,7 +38,10 @@ class SearchActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         component?.inject(this)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.apply {
+            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+            setDisplayHomeAsUpEnabled(true)
+        }
 
         val viewModel = ViewModelProviders.of(this).get(SearchVideoViewModel::class.java)
         viewModel.videoList.observeNonNull(this) {
