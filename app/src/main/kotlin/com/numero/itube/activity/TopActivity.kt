@@ -50,6 +50,9 @@ class TopActivity : AppCompatActivity() {
             setHasFixedSize(true)
             adapter = videoListAdapter
         }
+        addButton.setOnClickListener {
+            startActivity(SearchActivity.createIntent(this))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -61,10 +64,6 @@ class TopActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> {
                 startActivity(SettingsActivity.createIntent(this))
-                true
-            }
-            R.id.action_search -> {
-                startActivity(SearchActivity.createIntent(this))
                 true
             }
             else -> super.onOptionsItemSelected(item)
