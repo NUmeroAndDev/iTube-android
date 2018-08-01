@@ -8,10 +8,10 @@ import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
-import com.numero.itube.contract.FavoriteVideoListContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
 import com.numero.itube.presenter.FavoriteVideoListPresenter
+import com.numero.itube.presenter.IFavoriteVideoListPresenter
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.view.adapter.FavoriteVideoListAdapter
 import com.numero.itube.viewmodel.FavoriteVideoListViewModel
@@ -23,7 +23,7 @@ class TopActivity : AppCompatActivity() {
     @Inject
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
 
-    private lateinit var presenter: FavoriteVideoListContract.Presenter
+    private lateinit var presenter: IFavoriteVideoListPresenter
     private val videoListAdapter: FavoriteVideoListAdapter = FavoriteVideoListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {

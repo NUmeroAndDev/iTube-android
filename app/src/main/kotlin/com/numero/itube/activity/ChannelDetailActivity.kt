@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
-import com.numero.itube.contract.ChannelVideoListContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
 import com.numero.itube.presenter.ChannelVideoListPresenter
+import com.numero.itube.presenter.IChannelVideoListPresenter
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
@@ -34,7 +34,7 @@ class ChannelDetailActivity : AppCompatActivity() {
     @Inject
     lateinit var configRepository: ConfigRepository
 
-    private lateinit var presenter: ChannelVideoListContract.Presenter
+    private lateinit var presenter: IChannelVideoListPresenter
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {

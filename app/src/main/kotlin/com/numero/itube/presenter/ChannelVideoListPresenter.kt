@@ -1,7 +1,6 @@
 package com.numero.itube.presenter
 
 import com.numero.itube.api.request.ChannelVideoRequest
-import com.numero.itube.contract.ChannelVideoListContract
 import com.numero.itube.repository.IConfigRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.viewmodel.ChannelVideoListViewModel
@@ -14,7 +13,7 @@ class ChannelVideoListPresenter(
         private val channelId: String,
         private val youtubeRepository: IYoutubeRepository,
         private val configRepository: IConfigRepository
-) : ChannelVideoListContract.Presenter {
+) : IChannelVideoListPresenter {
 
     override fun subscribe() {
     }
