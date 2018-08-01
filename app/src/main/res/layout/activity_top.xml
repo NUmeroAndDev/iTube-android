@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay"
+        android:theme="@style/AppTheme.Dark.AppBarOverlay"
         app:liftOnScroll="true">
 
         <androidx.appcompat.widget.Toolbar
@@ -72,7 +72,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
-        android:tint="@color/secondary"
-        app:backgroundTint="@color/surface" />
+        android:tint="@color/surfaceDark"
+        app:backgroundTint="?attr/surface" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

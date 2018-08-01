@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="surface" format="reference" />
+    <attr name="onSurface" format="reference" />
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="dialogCornerRadius">16dp</item>
+        <item name="surface">?android:attr/windowBackground</item>
+        <item name="onSurface">?android:attr/textColor</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.Light">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryVariant</item>
+        <item name="colorAccent">@color/secondary</item>
+        <item name="android:textColorPrimary">@color/onPrimary</item>
+        <item name="android:textColorSecondary">@color/onSecondary</item>
+        <item name="surface">?android:attr/windowBackground</item>
+        <item name="onSurface">@color/onSurface</item>
+        <item name="android:windowBackground">@color/background</item>
+    </style>
+
+    <style name="AppTheme.Dark">
+        <item name="colorPrimary">@color/primaryDark</item>
+        <item name="colorPrimaryDark">@color/primaryVariantDark</item>
+        <item name="colorAccent">@color/secondaryDark</item>
+        <item name="android:textColorPrimary">@color/onPrimaryDark</item>
+        <item name="android:textColorSecondary">@color/onSecondaryDark</item>
+        <item name="onSurface">@color/onSurfaceDark</item>
+        <item name="android:windowBackground">@color/backgroundDark</item>
+        <item name="android:colorControlHighlight">@color/onBackgroundDark</item>
+    </style>
+
+</resources>

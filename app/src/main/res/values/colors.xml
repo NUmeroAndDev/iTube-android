@@ -21,4 +21,23 @@
     <color name="stroke">#1C000000</color>
 
     <color name="playing_background">#8A000000</color>
+
+    <!--DarkTheme-->
+    <color name="primaryDark">#1B2737</color>
+    <color name="primaryVariantDark">#1B2737</color>
+    <color name="secondaryDark">#1D8DEE</color>
+    <color name="backgroundDark">#1B2737</color>
+    <color name="surfaceDark">#151E29</color>
+    <color name="errorDark">#B00020</color>
+
+    <!--
+    tint
+    #1D8DEE
+    -->
+
+    <color name="onPrimaryDark">#DEFFFFFF</color>
+    <color name="onSecondaryDark">#99FFFFFF</color>
+    <color name="onBackgroundDark">#DEFFFFFF</color>
+    <color name="onSurfaceDark">#DEFFFFFF</color>
+    <color name="onErrorDark">#FFFFFF</color>
 </resources>
