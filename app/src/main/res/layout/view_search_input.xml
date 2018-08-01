@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:hint="Search Video"
+            android:hint="@string/search_hint_text"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:paddingStart="16dp"

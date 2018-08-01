@@ -4,6 +4,6 @@
     <SwitchPreference
         android:icon="@drawable/ic_repeat"
         android:key="key_is_play_loop"
-        android:title="ループ再生" />
+        android:title="@string/loop_play" />
 
 </PreferenceScreen>

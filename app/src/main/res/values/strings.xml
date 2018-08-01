@@ -1,18 +1,18 @@
 <resources>
     <string name="app_name">iTube</string>
 
-    <string name="search">検索</string>
     <string name="settings">設定</string>
     <string name="licenses">ライセンス</string>
     <string name="app_version">バージョン</string>
 
-    <string name="search_hint_text">検索</string>
+    <string name="search_hint_text">動画を検索</string>
 
     <string name="play_list_title">お気に入り</string>
 
+    <string name="loop_play">ループ再生</string>
+
     <string name="no_favorite_message">お気に入りの動画がありません</string>
     <string name="error_connect_message">エラーが発生しました</string>
-
     <string name="retry_button">再接続</string>
 
 </resources>
