@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
@@ -42,7 +43,7 @@ class VideoListAdapter : ListAdapter<SearchResponse.Video, VideoListAdapter.Vide
             val cornerRadius = itemView.context.resources.getDimensionPixelSize(R.dimen.thumbnail_corner_radius)
             Glide.with(itemView.context)
                     .load(video.snippet.thumbnails.high.url)
-                    .apply(RequestOptions().transform(RoundedCorners(cornerRadius)))
+                    .apply(RequestOptions().transforms(CenterCrop(), RoundedCorners(cornerRadius)))
                     .into(thumbnailImageView)
 //                    .diskCacheStrategy(DiskCacheStrategy.NONE)
         }
