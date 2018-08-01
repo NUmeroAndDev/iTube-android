@@ -1,7 +1,6 @@
 package com.numero.itube.presenter
 
 import com.numero.itube.api.request.SearchVideoRequest
-import com.numero.itube.contract.SearchVideoContract
 import com.numero.itube.repository.IConfigRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.viewmodel.SearchVideoViewModel
@@ -12,7 +11,7 @@ class SearchVideoPresenter(
         private val viewModel: SearchVideoViewModel,
         private val youtubeRepository: IYoutubeRepository,
         private val configRepository: IConfigRepository
-) : SearchVideoContract.Presenter {
+) : ISearchVideoPresenter {
 
     override fun subscribe() {
     }

@@ -23,10 +23,10 @@ import com.numero.itube.R
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoDetailResponse
-import com.numero.itube.contract.PlayerContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
+import com.numero.itube.presenter.IPlayerPresenter
 import com.numero.itube.presenter.PlayerPresenter
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.FavoriteVideoRepository
@@ -53,7 +53,7 @@ class PlayerActivity : AppCompatActivity(),
 
     private val favoriteVideoAdapter: FavoriteVideoAdapter = FavoriteVideoAdapter()
     private val relativeVideoAdapter: RelativeVideoAdapter = RelativeVideoAdapter()
-    private lateinit var presenter: PlayerContract.Presenter
+    private lateinit var presenter: IPlayerPresenter
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     @Inject

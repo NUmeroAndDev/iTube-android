@@ -2,7 +2,6 @@ package com.numero.itube.presenter
 
 import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.response.VideoDetailResponse
-import com.numero.itube.contract.PlayerContract
 import com.numero.itube.repository.IConfigRepository
 import com.numero.itube.repository.IFavoriteVideoRepository
 import com.numero.itube.repository.IYoutubeRepository
@@ -18,7 +17,7 @@ class PlayerPresenter(
         private val configRepository: IConfigRepository,
         private val videoId: String,
         private val channelId: String
-) : PlayerContract.Presenter {
+) : IPlayerPresenter {
 
     override fun subscribe() {
     }

@@ -9,9 +9,9 @@ import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
-import com.numero.itube.contract.SearchVideoContract
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
+import com.numero.itube.presenter.ISearchVideoPresenter
 import com.numero.itube.presenter.SearchVideoPresenter
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.YoutubeRepository
@@ -29,7 +29,7 @@ class SearchActivity : AppCompatActivity() {
     @Inject
     lateinit var configRepository: ConfigRepository
 
-    private lateinit var presenter: SearchVideoContract.Presenter
+    private lateinit var presenter: ISearchVideoPresenter
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
