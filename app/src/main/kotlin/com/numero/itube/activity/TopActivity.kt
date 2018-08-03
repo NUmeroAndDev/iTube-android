@@ -1,15 +1,18 @@
 package com.numero.itube.activity
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.forEach
 import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
+import com.numero.itube.extension.setTint
 import com.numero.itube.presenter.FavoriteVideoListPresenter
 import com.numero.itube.presenter.IFavoriteVideoListPresenter
 import com.numero.itube.repository.FavoriteVideoRepository
@@ -57,6 +60,13 @@ class TopActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        val onPrimary = with(TypedValue()) {
+            theme.resolveAttribute(android.R.attr.textColorPrimary, this, true)
+            this.data
+        }
+        menu.forEach {
+            it.setTint(onPrimary)
+        }
         return true
     }
 
