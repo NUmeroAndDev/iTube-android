@@ -4,6 +4,7 @@ import com.numero.itube.activity.ChannelDetailActivity
 import com.numero.itube.activity.PlayerActivity
 import com.numero.itube.activity.SearchActivity
 import com.numero.itube.activity.TopActivity
+import com.numero.itube.fragment.RoundedBottomSheetDialogFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -19,4 +20,6 @@ interface ApplicationComponent {
     fun inject(searchActivity: SearchActivity)
     fun inject(playerActivity: PlayerActivity)
     fun inject(channelDetailActivity: ChannelDetailActivity)
+
+    fun inject(roundedBottomSheetDialogFragment: RoundedBottomSheetDialogFragment)
 }

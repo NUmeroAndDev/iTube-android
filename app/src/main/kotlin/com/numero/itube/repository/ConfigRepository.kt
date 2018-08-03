@@ -15,7 +15,7 @@ class ConfigRepository(context: Context) : IConfigRepository {
     override val apiKey: String = context.getString(R.string.api_key)
 
     override val isUseDarkTheme: Boolean
-        get() = preferences.getBoolean(KEY_IS_LOOP, false)
+        get() = preferences.getBoolean(KEY_USE_DARK_THEME, false)
 
     override val theme: Int
         get() = if (isUseDarkTheme) {
