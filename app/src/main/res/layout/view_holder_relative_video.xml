@@ -10,9 +10,10 @@
     android:layout_marginBottom="8dp"
     android:clickable="true"
     android:focusable="true"
+    app:cardBackgroundColor="?attr/colorSurface"
     app:cardCornerRadius="@dimen/video_card_corner_radius"
     app:cardElevation="@dimen/video_card_elevation"
-    app:strokeColor="@color/stroke"
+    app:strokeColor="?attr/divider"
     app:strokeWidth="@dimen/video_card_stroke_width">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,7 +65,7 @@
             android:paddingEnd="8dp"
             android:paddingBottom="8dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
