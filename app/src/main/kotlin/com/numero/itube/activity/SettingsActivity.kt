@@ -3,14 +3,16 @@ package com.numero.itube.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.numero.itube.R
+import com.numero.itube.extension.getAttrColor
+import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.fragment.SettingsFragment
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity(),
-        SettingsFragment.SettingsFragmentListener{
+        SettingsFragment.SettingsFragmentListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +21,9 @@ class SettingsActivity : AppCompatActivity(),
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+            val colorOnPrimary = getAttrColor(R.attr.colorOnPrimary)
+            val drawable = getTintedDrawable(R.drawable.ic_arrow_back, colorOnPrimary) ?: return
+            setHomeAsUpIndicator(drawable)
         }
     }
 

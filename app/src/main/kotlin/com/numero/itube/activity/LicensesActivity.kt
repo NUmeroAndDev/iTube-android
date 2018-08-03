@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import com.numero.itube.R
+import com.numero.itube.extension.getAttrColor
+import com.numero.itube.extension.getTintedDrawable
 import kotlinx.android.synthetic.main.activity_licenses.*
 
 class LicensesActivity : AppCompatActivity() {
@@ -16,7 +18,9 @@ class LicensesActivity : AppCompatActivity() {
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+            val colorOnPrimary = getAttrColor(R.attr.colorOnPrimary)
+            val drawable = getTintedDrawable(R.drawable.ic_arrow_back, colorOnPrimary) ?: return
+            setHomeAsUpIndicator(drawable)
         }
 
         webView.apply {

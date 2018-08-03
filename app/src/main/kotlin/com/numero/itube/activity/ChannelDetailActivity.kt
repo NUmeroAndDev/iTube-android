@@ -12,6 +12,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
 import com.numero.itube.extension.component
+import com.numero.itube.extension.getAttrColor
+import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.extension.observeNonNull
 import com.numero.itube.presenter.ChannelVideoListPresenter
 import com.numero.itube.presenter.IChannelVideoListPresenter
@@ -45,7 +47,10 @@ class ChannelDetailActivity : AppCompatActivity() {
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+            val colorOnPrimary = getAttrColor(R.attr.colorOnPrimary)
+            val drawable = getTintedDrawable(R.drawable.ic_arrow_back, colorOnPrimary) ?: return
+            setHomeAsUpIndicator(drawable)
+
             setDisplayShowTitleEnabled(false)
         }
 

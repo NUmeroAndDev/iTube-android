@@ -1,7 +1,6 @@
 package com.numero.itube.activity
 
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
+import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.observeNonNull
 import com.numero.itube.extension.setTint
 import com.numero.itube.presenter.FavoriteVideoListPresenter
@@ -60,10 +60,7 @@ class TopActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        val colorOnPrimary = with(TypedValue()) {
-            theme.resolveAttribute(R.attr.colorOnPrimary, this, true)
-            this.data
-        }
+        val colorOnPrimary = getAttrColor(R.attr.colorOnPrimary)
         menu.forEach {
             it.setTint(colorOnPrimary)
         }
