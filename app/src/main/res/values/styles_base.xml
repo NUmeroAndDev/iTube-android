@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="surface" format="reference" />
-    <attr name="onSurface" format="reference" />
+    <!--FIXME MaterialComponentsのと入れ替える-->
+    <attr name="colorSurface" format="reference" />
+
+    <attr name="colorOnPrimary" format="reference" />
+    <attr name="colorOnSecondary" format="reference" />
+    <attr name="colorOnBackground" format="reference" />
+    <attr name="colorOnError" format="reference" />
+    <attr name="colorOnSurface" format="reference" />
+
     <attr name="divider" format="reference" />
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="dialogCornerRadius">16dp</item>
-        <item name="surface">?android:attr/windowBackground</item>
-        <item name="onSurface">?android:attr/textColor</item>
+
+        <item name="colorSurface">?android:attr/windowBackground</item>
+        <item name="colorOnSurface">?android:attr/textColor</item>
         <item name="divider">?android:attr/divider</item>
 
         <item name="windowActionBar">false</item>
@@ -19,10 +27,15 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryVariant</item>
         <item name="colorAccent">@color/secondary</item>
-        <item name="android:textColorPrimary">@color/onPrimary</item>
-        <item name="android:textColorSecondary">@color/onSecondary</item>
-        <item name="surface">?android:attr/windowBackground</item>
-        <item name="onSurface">@color/onSurface</item>
+
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+        <item name="android:textColorSecondary">?attr/colorOnSecondary</item>
+
+        <item name="colorOnPrimary">@color/onPrimary</item>
+        <item name="colorOnSecondary">@color/onSecondary</item>
+
+        <item name="colorSurface">?android:attr/windowBackground</item>
+        <item name="colorOnSurface">@color/onSurface</item>
         <item name="divider">@color/divider</item>
         <item name="android:windowBackground">@color/background</item>
     </style>
@@ -31,10 +44,16 @@
         <item name="colorPrimary">@color/primaryDark</item>
         <item name="colorPrimaryDark">@color/primaryVariantDark</item>
         <item name="colorAccent">@color/secondaryDark</item>
-        <item name="android:textColorPrimary">@color/onPrimaryDark</item>
-        <item name="android:textColorSecondary">@color/onSecondaryDark</item>
-        <item name="onSurface">@color/onSurfaceDark</item>
+
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+        <item name="android:textColorSecondary">?attr/colorOnSecondary</item>
+
+        <item name="colorOnPrimary">@color/onPrimaryDark</item>
+        <item name="colorOnSecondary">@color/onSecondaryDark</item>
+
+        <item name="colorOnSurface">@color/onSurfaceDark</item>
         <item name="divider">@color/dividerDark</item>
+
         <item name="android:windowBackground">@color/backgroundDark</item>
         <item name="android:colorControlHighlight">@color/onBackgroundDark</item>
     </style>

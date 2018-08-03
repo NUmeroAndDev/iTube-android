@@ -60,12 +60,12 @@ class TopActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        val onPrimary = with(TypedValue()) {
-            theme.resolveAttribute(android.R.attr.textColorPrimary, this, true)
+        val colorOnPrimary = with(TypedValue()) {
+            theme.resolveAttribute(R.attr.colorOnPrimary, this, true)
             this.data
         }
         menu.forEach {
-            it.setTint(onPrimary)
+            it.setTint(colorOnPrimary)
         }
         return true
     }

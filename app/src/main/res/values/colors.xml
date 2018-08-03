@@ -36,7 +36,7 @@
     #1D8DEE
     -->
 
-    <color name="onPrimaryDark">#DEFFFFFF</color>
+    <color name="onPrimaryDark">#FFFFFF</color>
     <color name="onSecondaryDark">#99FFFFFF</color>
     <color name="onBackgroundDark">#DEFFFFFF</color>
     <color name="onSurfaceDark">#DEFFFFFF</color>
