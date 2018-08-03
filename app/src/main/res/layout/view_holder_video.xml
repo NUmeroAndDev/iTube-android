@@ -13,7 +13,7 @@
     app:cardBackgroundColor="?attr/surface"
     app:cardCornerRadius="@dimen/video_card_corner_radius"
     app:cardElevation="@dimen/video_card_elevation"
-    app:strokeColor="@color/stroke"
+    app:strokeColor="?attr/divider"
     app:strokeWidth="@dimen/video_card_stroke_width">
 
     <androidx.constraintlayout.widget.ConstraintLayout

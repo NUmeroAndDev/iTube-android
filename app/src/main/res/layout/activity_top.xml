@@ -72,7 +72,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
-        android:tint="@color/surfaceDark"
-        app:backgroundTint="?attr/surface" />
+        android:tint="?attr/colorAccent"
+        app:backgroundTint="@color/surfaceDark" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
