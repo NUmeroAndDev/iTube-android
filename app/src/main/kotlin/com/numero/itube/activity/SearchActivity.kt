@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
+import com.numero.itube.extension.getAttrColor
+import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.extension.observeNonNull
 import com.numero.itube.presenter.ISearchVideoPresenter
 import com.numero.itube.presenter.SearchVideoPresenter
@@ -34,13 +36,16 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        component?.inject(this)
+        setTheme(configRepository.theme)
         setContentView(R.layout.activity_search)
         setSupportActionBar(toolbar)
-        component?.inject(this)
 
         supportActionBar?.apply {
-            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
             setDisplayHomeAsUpEnabled(true)
+            val colorOnPrimary = getAttrColor(R.attr.colorOnPrimary)
+            val drawable = getTintedDrawable(R.drawable.ic_arrow_back, colorOnPrimary) ?: return
+            setHomeAsUpIndicator(drawable)
         }
 
         val viewModel = ViewModelProviders.of(this).get(SearchVideoViewModel::class.java)

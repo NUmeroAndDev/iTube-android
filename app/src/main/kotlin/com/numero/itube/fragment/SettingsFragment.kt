@@ -3,14 +3,21 @@ package com.numero.itube.fragment
 import android.content.Context
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
 import com.numero.itube.BuildConfig
 import com.numero.itube.R
+import com.numero.itube.extension.component
+import com.numero.itube.repository.ConfigRepository
+import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
     private var listener: SettingsFragmentListener? = null
+    @Inject
+    lateinit var configRepository: ConfigRepository
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        component?.inject(this)
         setPreferencesFromResource(R.xml.settings, rootKey)
     }
 
@@ -29,10 +36,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
             false
         }
         findPreference("version").summary = BuildConfig.VERSION_NAME
+
+        findPreference("key_is_use_dark_theme").setOnPreferenceChangeListener { _, newValue ->
+            if (newValue is Boolean) {
+                listener?.onChangedTheme()
+            }
+            true
+        }
     }
 
     interface SettingsFragmentListener {
         fun showLicenses()
+
+        fun onChangedTheme()
     }
 
     companion object {

@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.forEach
 import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,8 +24,7 @@ import com.numero.itube.R
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoDetailResponse
-import com.numero.itube.extension.component
-import com.numero.itube.extension.observeNonNull
+import com.numero.itube.extension.*
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
 import com.numero.itube.presenter.IPlayerPresenter
 import com.numero.itube.presenter.PlayerPresenter
@@ -66,12 +66,16 @@ class PlayerActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component?.inject(this)
+        setTheme(configRepository.theme)
         setContentView(R.layout.activity_player)
         setSupportActionBar(toolbar)
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+            val colorOnPrimary = getAttrColor(R.attr.colorOnPrimary)
+            val drawable = getTintedDrawable(R.drawable.ic_arrow_back, colorOnPrimary) ?: return
+            setHomeAsUpIndicator(drawable)
+
             title = this@PlayerActivity.title
         }
 
@@ -181,10 +185,17 @@ class PlayerActivity : AppCompatActivity(),
 
         bottomAppBar.apply {
             replaceMenu(R.menu.menu_player)
+            val colorOnPrimary = getAttrColor(R.attr.colorOnPrimary)
+            menu.forEach {
+                it.setTint(colorOnPrimary)
+            }
+
             setOnMenuItemClickListener(this@PlayerActivity)
 
             if (isShownFavoriteVideo) {
-                setNavigationIcon(R.drawable.ic_playlist_play)
+                val drawable = getTintedDrawable(R.drawable.ic_playlist_play, colorOnPrimary)
+                navigationIcon = drawable
+
                 setNavigationOnClickListener {
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                 }

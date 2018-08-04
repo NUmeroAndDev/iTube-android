@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:cardBackgroundColor="?attr/colorBackground"
     app:cardCornerRadius="8dp"
     app:cardElevation="@dimen/video_card_elevation"
-    app:strokeColor="@color/stroke"
+    app:strokeColor="?attr/colorStroke"
     app:strokeWidth="@dimen/video_card_stroke_width">
 
     <androidx.constraintlayout.motion.widget.MotionLayout
@@ -24,7 +25,7 @@
             android:maxLines="2"
             android:padding="16dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?attr/colorOnBackground"
             app:layout_constraintBottom_toTopOf="@+id/channelImageView"
             app:layout_constraintEnd_toStartOf="@+id/arrowImageView"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +40,8 @@
             android:src="@drawable/ic_arrow_down"
             app:layout_constraintBottom_toBottomOf="@+id/titleTextView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/titleTextView" />
+            app:layout_constraintTop_toTopOf="@+id/titleTextView"
+            app:tint="?attr/colorOnBackground" />
 
         <View
             android:id="@+id/titleLayout"
@@ -57,7 +59,7 @@
             android:id="@+id/titleDivider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/divider"
+            android:background="?attr/colorStroke"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
@@ -84,7 +86,7 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?attr/colorOnBackground"
             app:layout_constraintBottom_toBottomOf="@+id/channelImageView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/channelImageView"
@@ -95,7 +97,7 @@
             android:id="@+id/channelNameBottomDivider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:background="@color/divider"
+            android:background="?attr/colorStroke"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/channelNameTextView" />
@@ -112,6 +114,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleDivider" />
 
+        <!--FIXME textColor-->
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/descriptionTextView"
             android:layout_width="0dp"

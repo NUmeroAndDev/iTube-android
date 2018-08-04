@@ -1,17 +1,23 @@
 package com.numero.itube.activity
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.forEach
 import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
+import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.observeNonNull
+import com.numero.itube.extension.setTint
 import com.numero.itube.presenter.FavoriteVideoListPresenter
 import com.numero.itube.presenter.IFavoriteVideoListPresenter
+import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.view.adapter.FavoriteVideoListAdapter
 import com.numero.itube.viewmodel.FavoriteVideoListViewModel
@@ -22,6 +28,8 @@ class TopActivity : AppCompatActivity() {
 
     @Inject
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
+    @Inject
+    lateinit var configRepository: ConfigRepository
 
     private lateinit var presenter: IFavoriteVideoListPresenter
     private val videoListAdapter: FavoriteVideoListAdapter = FavoriteVideoListAdapter()
@@ -29,6 +37,7 @@ class TopActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component?.inject(this)
+        setTheme(configRepository.theme)
         setContentView(R.layout.activity_top)
         setSupportActionBar(toolbar)
 
@@ -57,6 +66,10 @@ class TopActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        val colorOnPrimary = getAttrColor(R.attr.colorOnPrimary)
+        menu.forEach {
+            it.setTint(colorOnPrimary)
+        }
         return true
     }
 
@@ -73,5 +86,11 @@ class TopActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         presenter.loadFavoriteVideoList()
+    }
+
+    companion object {
+        fun createClearTopIntent(context: Context) = Intent(context, TopActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
     }
 }

@@ -3,20 +3,33 @@ package com.numero.itube.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.numero.itube.R
+import com.numero.itube.extension.component
+import com.numero.itube.extension.getAttrColor
+import com.numero.itube.extension.getTintedDrawable
+import com.numero.itube.repository.ConfigRepository
 import kotlinx.android.synthetic.main.activity_licenses.*
+import javax.inject.Inject
 
 class LicensesActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var configRepository: ConfigRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        component?.inject(this)
+        setTheme(configRepository.theme)
         setContentView(R.layout.activity_licenses)
         setSupportActionBar(toolbar)
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_arrow_back)
+            val colorOnPrimary = getAttrColor(R.attr.colorOnPrimary)
+            val drawable = getTintedDrawable(R.drawable.ic_arrow_back, colorOnPrimary) ?: return
+            setHomeAsUpIndicator(drawable)
         }
 
         webView.apply {
@@ -29,7 +42,7 @@ class LicensesActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)
