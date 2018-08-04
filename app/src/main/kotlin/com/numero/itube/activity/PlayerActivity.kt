@@ -66,6 +66,7 @@ class PlayerActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component?.inject(this)
+        setTheme(configRepository.theme)
         setContentView(R.layout.activity_player)
         setSupportActionBar(toolbar)
 

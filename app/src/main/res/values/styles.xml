@@ -1,8 +1,24 @@
 <resources>
 
-    <style name="AppTheme.Light" />
+    <style name="LightTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primaryVariant</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorBackground">@color/background</item>
+        <item name="colorSurface">?android:attr/windowBackground</item>
 
-    <style name="AppTheme.Dark">
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+        <item name="android:textColorSecondary">?attr/colorOnSecondary</item>
+
+        <item name="colorOnPrimary">@color/onPrimary</item>
+        <item name="colorOnSecondary">@color/onSecondary</item>
+        <item name="colorOnBackground">@color/onBackground</item>
+        <item name="colorOnSurface">@color/onSurface</item>
+
+        <item name="colorStroke">@color/divider</item>
+    </style>
+
+    <style name="DarkTheme" parent="AppTheme">
         <item name="colorPrimary">@color/primaryDark</item>
         <item name="colorPrimaryVariant">@color/primaryVariantDark</item>
         <item name="colorSecondary">@color/secondaryDark</item>
@@ -22,6 +38,10 @@
 
         <item name="android:colorControlHighlight">@color/onBackgroundDark</item>
     </style>
+
+    <style name="LightTheme.LightWindow" />
+
+    <style name="DarkTheme.DarkWindow" />
 
     <style name="BottomSheetStyle" parent="@style/Widget.MaterialComponents.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_bottom_sheet_dialog</item>

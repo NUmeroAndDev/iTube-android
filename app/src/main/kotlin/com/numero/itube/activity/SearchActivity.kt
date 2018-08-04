@@ -36,9 +36,10 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        component?.inject(this)
+        setTheme(configRepository.theme)
         setContentView(R.layout.activity_search)
         setSupportActionBar(toolbar)
-        component?.inject(this)
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)

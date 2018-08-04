@@ -3,6 +3,7 @@ package com.numero.itube.repository
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import androidx.core.content.edit
 import com.numero.itube.R
 
 class ConfigRepository(context: Context) : IConfigRepository {
@@ -14,14 +15,19 @@ class ConfigRepository(context: Context) : IConfigRepository {
 
     override val apiKey: String = context.getString(R.string.api_key)
 
-    override val isUseDarkTheme: Boolean
+    override var isUseDarkTheme: Boolean
         get() = preferences.getBoolean(KEY_USE_DARK_THEME, false)
+        set(value) {
+            preferences.edit {
+                putBoolean(KEY_USE_DARK_THEME, value)
+            }
+        }
 
     override val theme: Int
         get() = if (isUseDarkTheme) {
-            R.style.AppTheme_Dark
+            R.style.DarkTheme_DarkWindow
         } else {
-            R.style.AppTheme_Light
+            R.style.LightTheme_LightWindow
         }
 
     companion object {

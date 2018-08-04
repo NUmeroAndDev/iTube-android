@@ -6,7 +6,7 @@ interface IConfigRepository {
     val apiKey: String
     
 
-    val isUseDarkTheme: Boolean
+    var isUseDarkTheme: Boolean
 
     val theme: Int
 }

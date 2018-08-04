@@ -42,6 +42,7 @@ class ChannelDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component?.inject(this)
+        setTheme(configRepository.theme)
         setContentView(R.layout.activity_channel_detail)
         setSupportActionBar(toolbar)
 

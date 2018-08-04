@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme.Light" >
+    <style name="LightTheme.LightWindow" >
         <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="DarkTheme.DarkWindow">
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>
