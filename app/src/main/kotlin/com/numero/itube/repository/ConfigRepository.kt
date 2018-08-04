@@ -24,20 +24,6 @@ class ConfigRepository(context: Context) : IConfigRepository {
             R.style.AppTheme_Light
         }
 
-    override val appBarTheme: Int
-        get() = if (isUseDarkTheme) {
-            R.style.AppTheme_AppBarOverlay
-        } else {
-            R.style.AppTheme_AppBarOverlay
-        }
-
-    override val toolbarTheme: Int
-        get() = if (isUseDarkTheme) {
-            R.style.AppTheme_PopupOverlay
-        } else {
-            R.style.AppTheme_PopupOverlay
-        }
-
     companion object {
         private const val KEY_IS_LOOP = "key_is_play_loop"
 

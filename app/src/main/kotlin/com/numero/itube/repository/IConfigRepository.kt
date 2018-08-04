@@ -9,8 +9,4 @@ interface IConfigRepository {
     val isUseDarkTheme: Boolean
 
     val theme: Int
-
-    val appBarTheme: Int
-
-    val toolbarTheme: Int
 }

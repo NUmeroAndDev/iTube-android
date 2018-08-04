@@ -1,10 +1,27 @@
 <resources>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" />
+    <style name="AppTheme.Light" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+    <style name="AppTheme.Dark">
+        <item name="colorPrimary">@color/primaryDark</item>
+        <item name="colorPrimaryVariant">@color/primaryVariantDark</item>
+        <item name="colorSecondary">@color/secondaryDark</item>
+        <item name="colorBackground">@color/backgroundDark</item>
+        <item name="colorSurface">@color/surfaceDark</item>
 
-    <style name="AppTheme.Dark.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
+        <!--FIXME-->
+        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+        <item name="android:textColorSecondary">?attr/colorOnSecondary</item>
+
+        <item name="colorOnPrimary">@color/onPrimaryDark</item>
+        <item name="colorOnSecondary">@color/onSecondaryDark</item>
+        <item name="colorOnBackground">@color/onBackgroundDark</item>
+        <item name="colorOnSurface">@color/onSurfaceDark</item>
+
+        <item name="colorStroke">@color/dividerDark</item>
+
+        <item name="android:colorControlHighlight">@color/onBackgroundDark</item>
+    </style>
 
     <style name="BottomSheetStyle" parent="@style/Widget.MaterialComponents.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_bottom_sheet_dialog</item>
@@ -13,8 +30,7 @@
     <style name="BottomSheetDialogTheme" parent="@style/Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@color/navigation_bar</item>
-        <!--FIXME backgroundにする-->
-        <item name="colorSurface">@color/background</item>
+        <item name="colorBackground">@color/background</item>
     </style>
 
     <style name="BottomSheetDialogTheme.Rounded">

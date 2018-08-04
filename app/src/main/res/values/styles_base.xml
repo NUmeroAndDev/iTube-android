@@ -25,11 +25,6 @@
 
         <item name="android:windowBackground">?attr/colorBackground</item>
 
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.Light">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primaryVariant</item>
         <item name="colorSecondary">@color/secondary</item>
@@ -45,27 +40,9 @@
         <item name="colorOnSurface">@color/onSurface</item>
 
         <item name="colorStroke">@color/divider</item>
-    </style>
 
-    <style name="AppTheme.Dark">
-        <item name="colorPrimary">@color/primaryDark</item>
-        <item name="colorPrimaryVariant">@color/primaryVariantDark</item>
-        <item name="colorSecondary">@color/secondaryDark</item>
-        <item name="colorBackground">@color/backgroundDark</item>
-        <item name="colorSurface">@color/surfaceDark</item>
-
-        <!--FIXME-->
-        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
-        <item name="android:textColorSecondary">?attr/colorOnSecondary</item>
-
-        <item name="colorOnPrimary">@color/onPrimaryDark</item>
-        <item name="colorOnSecondary">@color/onSecondaryDark</item>
-        <item name="colorOnBackground">@color/onBackgroundDark</item>
-        <item name="colorOnSurface">@color/onSurfaceDark</item>
-
-        <item name="colorStroke">@color/dividerDark</item>
-
-        <item name="android:colorControlHighlight">@color/onBackgroundDark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>

@@ -11,15 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay"
         app:liftOnScroll="true">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:gravity="center"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:gravity="center">
 
             <com.numero.itube.view.SearchInputView
                 android:id="@+id/searchInputEditText"
