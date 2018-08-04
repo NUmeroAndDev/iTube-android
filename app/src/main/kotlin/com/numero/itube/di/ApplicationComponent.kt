@@ -19,6 +19,7 @@ interface ApplicationComponent {
     fun inject(playerActivity: PlayerActivity)
     fun inject(channelDetailActivity: ChannelDetailActivity)
     fun inject(settingsActivity: SettingsActivity)
+    fun inject(licensesActivity: LicensesActivity)
 
     fun inject(roundedBottomSheetDialogFragment: RoundedBottomSheetDialogFragment)
     fun inject(settingsFragment: SettingsFragment)
