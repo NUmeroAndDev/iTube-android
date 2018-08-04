@@ -7,8 +7,8 @@
         <item name="colorBackground">@color/background</item>
         <item name="colorSurface">?android:attr/windowBackground</item>
 
-        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
-        <item name="android:textColorSecondary">?attr/colorOnSecondary</item>
+        <item name="android:textColorPrimary">@color/highEmphasisText</item>
+        <item name="android:textColorSecondary">@color/mediumEmphasisText</item>
 
         <item name="colorOnPrimary">@color/onPrimary</item>
         <item name="colorOnSecondary">@color/onSecondary</item>
@@ -25,9 +25,8 @@
         <item name="colorBackground">@color/backgroundDark</item>
         <item name="colorSurface">@color/surfaceDark</item>
 
-        <!--FIXME-->
-        <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
-        <item name="android:textColorSecondary">?attr/colorOnSecondary</item>
+        <item name="android:textColorPrimary">@color/highEmphasisTextDark</item>
+        <item name="android:textColorSecondary">@color/mediumEmphasisTextDark</item>
 
         <item name="colorOnPrimary">@color/onPrimaryDark</item>
         <item name="colorOnSecondary">@color/onSecondaryDark</item>
