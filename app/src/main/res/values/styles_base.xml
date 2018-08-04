@@ -13,7 +13,6 @@
     <attr name="colorOnError" format="reference" />
     <attr name="colorOnSurface" format="reference" />
 
-    <attr name="divider" format="reference" />
     <attr name="colorStroke" format="reference" />
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
