@@ -30,23 +30,21 @@
     </style>
 
     <style name="AppTheme.Light">
-        <item name="colorPrimaryDark">?attr/colorPrimaryVariant</item>
-        <item name="colorAccent">?attr/colorSecondary</item>
-
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primaryVariant</item>
         <item name="colorSecondary">@color/secondary</item>
+        <item name="colorBackground">@color/background</item>
+        <item name="colorSurface">?android:attr/windowBackground</item>
 
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
         <item name="android:textColorSecondary">?attr/colorOnSecondary</item>
 
         <item name="colorOnPrimary">@color/onPrimary</item>
         <item name="colorOnSecondary">@color/onSecondary</item>
-
-        <item name="colorSurface">?android:attr/windowBackground</item>
+        <item name="colorOnBackground">@color/onBackground</item>
         <item name="colorOnSurface">@color/onSurface</item>
-        <item name="divider">@color/divider</item>
-        <item name="android:windowBackground">@color/background</item>
+
+        <item name="colorStroke">@color/divider</item>
     </style>
 
     <style name="AppTheme.Dark">
