@@ -49,7 +49,7 @@
 
     <style name="BottomSheetDialogTheme" parent="@style/Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@color/navigation_bar</item>
+        <item name="android:navigationBarColor">?attr/colorBackground</item>
         <item name="colorBackground">@color/background</item>
     </style>
 
