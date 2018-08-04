@@ -39,6 +39,6 @@
     </style>
 
     <style name="BottomSheetDialogTheme.Rounded.Dark">
-        <item name="colorSurface">@color/backgroundDark</item>
+        <item name="colorBackground">@color/backgroundDark</item>
     </style>
 </resources>
