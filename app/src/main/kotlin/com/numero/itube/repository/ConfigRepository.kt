@@ -15,13 +15,8 @@ class ConfigRepository(context: Context) : IConfigRepository {
 
     override val apiKey: String = context.getString(R.string.api_key)
 
-    override var isUseDarkTheme: Boolean
+    override val isUseDarkTheme: Boolean
         get() = preferences.getBoolean(KEY_USE_DARK_THEME, false)
-        set(value) {
-            preferences.edit {
-                putBoolean(KEY_USE_DARK_THEME, value)
-            }
-        }
 
     override val theme: Int
         get() = if (isUseDarkTheme) {
@@ -33,6 +28,6 @@ class ConfigRepository(context: Context) : IConfigRepository {
     companion object {
         private const val KEY_IS_LOOP = "key_is_play_loop"
 
-        private const val KEY_USE_DARK_THEME = "key_use_dark_theme"
+        private const val KEY_USE_DARK_THEME = "key_is_use_dark_theme"
     }
 }

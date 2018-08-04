@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SwitchPreference
-        android:key="useDarkTheme"
+        android:key="key_is_use_dark_theme"
         android:title="ダークテーマ" />
 
     <PreferenceScreen

@@ -4,9 +4,8 @@ interface IConfigRepository {
     val isLoop: Boolean
 
     val apiKey: String
-    
 
-    var isUseDarkTheme: Boolean
+    val isUseDarkTheme: Boolean
 
     val theme: Int
 }

@@ -3,6 +3,7 @@ package com.numero.itube.fragment
 import android.content.Context
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
 import com.numero.itube.BuildConfig
 import com.numero.itube.R
 import com.numero.itube.extension.component
@@ -35,9 +36,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
             false
         }
         findPreference("version").summary = BuildConfig.VERSION_NAME
-        findPreference("useDarkTheme").setOnPreferenceChangeListener { preference, newValue ->
+
+        findPreference("key_is_use_dark_theme").setOnPreferenceChangeListener { _, newValue ->
             if (newValue is Boolean) {
-                configRepository.isUseDarkTheme = newValue
                 listener?.onChangedTheme()
             }
             true
