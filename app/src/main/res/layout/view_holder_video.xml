@@ -10,10 +10,10 @@
     android:layout_marginBottom="8dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="?attr/colorSurface"
+    app:cardBackgroundColor="?attr/colorBackground"
     app:cardCornerRadius="@dimen/video_card_corner_radius"
     app:cardElevation="@dimen/video_card_elevation"
-    app:strokeColor="?attr/divider"
+    app:strokeColor="?attr/colorStroke"
     app:strokeWidth="@dimen/video_card_stroke_width">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,7 +31,8 @@
             app:layout_constraintEnd_toStartOf="@+id/titleTextView"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@mipmap/ic_launcher" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/titleTextView"
@@ -43,7 +44,7 @@
             android:gravity="center_vertical"
             android:maxLines="2"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:textColor="?attr/colorOnSurface"
+            android:textColor="?attr/colorOnBackground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="1"

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--FIXME MaterialComponentsのと入れ替える-->
+    <attr name="colorPrimaryVariant" format="reference" />
+    <attr name="colorSecondary" format="reference" />
+    <attr name="colorSecondaryVariant" format="reference" />
+    <attr name="colorBackground" format="reference" />
     <attr name="colorSurface" format="reference" />
 
     <attr name="colorOnPrimary" format="reference" />
@@ -10,6 +14,7 @@
     <attr name="colorOnSurface" format="reference" />
 
     <attr name="divider" format="reference" />
+    <attr name="colorStroke" format="reference" />
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
@@ -24,9 +29,12 @@
     </style>
 
     <style name="AppTheme.Light">
+        <item name="colorPrimaryDark">?attr/colorPrimaryVariant</item>
+        <item name="colorAccent">?attr/colorSecondary</item>
+
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primaryVariant</item>
-        <item name="colorAccent">@color/secondary</item>
+        <item name="colorPrimaryVariant">@color/primaryVariant</item>
+        <item name="colorSecondary">@color/secondary</item>
 
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
         <item name="android:textColorSecondary">?attr/colorOnSecondary</item>
@@ -41,20 +49,26 @@
     </style>
 
     <style name="AppTheme.Dark">
+        <item name="colorPrimaryDark">?attr/colorPrimaryVariant</item>
+        <item name="colorAccent">?attr/colorSecondary</item>
+
         <item name="colorPrimary">@color/primaryDark</item>
-        <item name="colorPrimaryDark">@color/primaryVariantDark</item>
-        <item name="colorAccent">@color/secondaryDark</item>
+        <item name="colorPrimaryVariant">@color/primaryVariantDark</item>
+        <item name="colorSecondary">@color/secondaryDark</item>
+        <item name="colorBackground">@color/backgroundDark</item>
 
         <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
         <item name="android:textColorSecondary">?attr/colorOnSecondary</item>
 
         <item name="colorOnPrimary">@color/onPrimaryDark</item>
         <item name="colorOnSecondary">@color/onSecondaryDark</item>
+        <item name="colorOnBackground">@color/onBackgroundDark</item>
 
         <item name="colorOnSurface">@color/onSurfaceDark</item>
         <item name="divider">@color/dividerDark</item>
+        <item name="colorStroke">@color/dividerDark</item>
 
-        <item name="android:windowBackground">@color/backgroundDark</item>
+        <item name="android:windowBackground">?attr/colorBackground</item>
         <item name="android:colorControlHighlight">@color/onBackgroundDark</item>
     </style>
 
