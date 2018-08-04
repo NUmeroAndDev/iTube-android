@@ -15,7 +15,7 @@
         <item name="colorOnBackground">@color/onBackground</item>
         <item name="colorOnSurface">@color/onSurface</item>
 
-        <item name="colorStroke">@color/divider</item>
+        <item name="colorStroke">@color/stroke</item>
     </style>
 
     <style name="DarkTheme" parent="AppTheme">
@@ -34,7 +34,7 @@
         <item name="colorOnBackground">@color/onBackgroundDark</item>
         <item name="colorOnSurface">@color/onSurfaceDark</item>
 
-        <item name="colorStroke">@color/dividerDark</item>
+        <item name="colorStroke">@color/strokeDark</item>
 
         <item name="android:colorControlHighlight">@color/onBackgroundDark</item>
     </style>
