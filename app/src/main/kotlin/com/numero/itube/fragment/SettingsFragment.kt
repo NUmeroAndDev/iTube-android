@@ -38,7 +38,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         findPreference("useDarkTheme").setOnPreferenceChangeListener { preference, newValue ->
             if (newValue is Boolean) {
                 configRepository.isUseDarkTheme = newValue
-                listener?.changedTheme()
+                listener?.onChangedTheme()
             }
             true
         }
@@ -47,7 +47,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     interface SettingsFragmentListener {
         fun showLicenses()
 
-        fun changedTheme()
+        fun onChangedTheme()
     }
 
     companion object {

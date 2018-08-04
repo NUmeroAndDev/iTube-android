@@ -40,7 +40,7 @@ class SettingsActivity : AppCompatActivity(),
         startActivity(LicensesActivity.createIntent(this))
     }
 
-    override fun changedTheme() {
+    override fun onChangedTheme() {
         startActivity(createClearTopIntent(this))
         overridePendingTransition(0, 0)
     }
