@@ -58,7 +58,7 @@ ext{
     def appMajor = 1
     def appMinor = 0
     def appPatch = 0
-    def appBuild = 2
+    def appBuild = 3
 
     def suffix = VersionSuffix.ALPHA
 
