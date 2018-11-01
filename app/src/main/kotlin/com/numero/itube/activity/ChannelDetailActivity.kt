@@ -8,8 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import com.numero.itube.GlideApp
 import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
@@ -78,7 +77,7 @@ class ChannelDetailActivity : AppCompatActivity() {
 
     private fun initViews() {
         channelNameTextView.text = channelName
-        Glide.with(this).load(thumbnailUrl).apply(RequestOptions().circleCrop()).into(channelImageView)
+        GlideApp.with(this).load(thumbnailUrl).centerCrop().into(channelImageView)
 
         videoListAdapter.setOnItemClickListener {
             startActivity(PlayerActivity.createIntent(this, it))
@@ -103,7 +102,7 @@ class ChannelDetailActivity : AppCompatActivity() {
         }
         viewModel.channelDetail.observeNonNull(this) {
             val urlString = it.branding.image.bannerTvMediumImageUrl
-            Glide.with(this).load(urlString).into(thumbnailImageView)
+            GlideApp.with(this).load(urlString).into(thumbnailImageView)
         }
         return viewModel
     }
