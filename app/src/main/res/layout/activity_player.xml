@@ -38,45 +38,4 @@
         app:backgroundTint="?attr/colorSurface"
         app:fabAlignmentMode="end" />
 
-    <LinearLayout
-        android:id="@+id/favoriteListBottomSheetLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_bottom_sheet_dialog"
-        android:clickable="true"
-        android:elevation="8dp"
-        android:focusable="true"
-        android:orientation="vertical"
-        app:behavior_hideable="true"
-        app:layout_behavior="@string/bottom_sheet_behavior">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/bottom_sheet_control_bar" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingTop="8dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="12dp"
-            android:text="@string/play_list_title"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            android:textColor="?attr/colorOnBackground" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/favoriteVideoRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:overScrollMode="never"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:scrollbars="none" />
-
-    </LinearLayout>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

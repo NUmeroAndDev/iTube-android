@@ -3,13 +3,15 @@ package com.numero.itube.view.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.numero.itube.GlideApp
 import com.numero.itube.R
 import com.numero.itube.repository.db.FavoriteVideo
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.view_holder_relative_video.*
+import kotlinx.android.synthetic.main.view_holder_video.*
 
 class FavoriteVideoAdapter : RecyclerView.Adapter<FavoriteVideoAdapter.VideoViewHolder>() {
 
@@ -44,7 +46,7 @@ class FavoriteVideoAdapter : RecyclerView.Adapter<FavoriteVideoAdapter.VideoView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
-        return VideoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_holder_relative_video, parent, false))
+        return VideoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_holder_video, parent, false))
     }
 
     override fun getItemCount(): Int = videoList.size
@@ -65,7 +67,7 @@ class FavoriteVideoAdapter : RecyclerView.Adapter<FavoriteVideoAdapter.VideoView
         var isCurrentVideo: Boolean = false
             set(value) {
                 field = value
-                playingViewGroup.visibility = if (field) View.VISIBLE else View.GONE
+                playingViewGroup.isVisible = field
             }
 
         fun setVideo(video: FavoriteVideo) {
@@ -74,9 +76,8 @@ class FavoriteVideoAdapter : RecyclerView.Adapter<FavoriteVideoAdapter.VideoView
             val cornerRadius = itemView.context.resources.getDimensionPixelSize(R.dimen.thumbnail_corner_radius)
             GlideApp.with(itemView.context)
                     .load(video.thumbnailUrl)
-                    .transform(RoundedCorners(cornerRadius))
+                    .transforms(CenterCrop(), RoundedCorners(cornerRadius))
                     .into(thumbnailImageView)
-            //.diskCacheStrategy(DiskCacheStrategy.NONE)
         }
     }
 }
