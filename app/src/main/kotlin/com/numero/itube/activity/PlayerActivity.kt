@@ -14,12 +14,11 @@ import androidx.core.view.forEach
 import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
+import com.numero.itube.GlideApp
 import com.numero.itube.R
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
@@ -242,7 +241,7 @@ class PlayerActivity : AppCompatActivity(),
         channelNameTextView.text = channel.snippet.title
 
         val url = channel.snippet.thumbnails.medium.url
-        Glide.with(this).load(url).apply(RequestOptions().circleCrop()).into(channelImageView)
+        GlideApp.with(this).load(url).circleCrop().into(channelImageView)
         channelLayout.setOnClickListener {
             val channelName = channelNameTextView.text.toString()
             showChannelDetailScreen(channelName, channelId, url, Pair(channelImageView, channelImageView.transitionName))
