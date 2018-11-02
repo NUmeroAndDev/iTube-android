@@ -17,11 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
-import com.numero.itube.GlideApp
 import com.numero.itube.R
-import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
-import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.extension.*
 import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
@@ -35,7 +32,6 @@ import com.numero.itube.view.adapter.RelativeVideoAdapter
 import com.numero.itube.viewmodel.PlayerViewModel
 import kotlinx.android.synthetic.main.activity_player.*
 import kotlinx.android.synthetic.main.container_player.*
-import kotlinx.android.synthetic.main.container_video_detail.*
 import javax.inject.Inject
 
 class PlayerActivity : AppCompatActivity(),
@@ -151,19 +147,12 @@ class PlayerActivity : AppCompatActivity(),
         viewModel.favoriteVideoList.observeNonNull(this) {
             //            favoriteVideoAdapter.videoList = it
         }
-        viewModel.relativeVideoList.observeNonNull(this) {
-            relativeVideoAdapter.videoList = it
+        viewModel.relativeResponse.observeNonNull(this) {
+            relativeVideoAdapter.relativeResponse = it
         }
         viewModel.isShowProgress.observeNonNull(this) { isShow: Boolean ->
             // FIXME 型推論でエラーが出る
             progressBar.isInvisible = isShow.not()
-            videoDetailLayout.isInvisible = isShow
-        }
-        viewModel.channel.observeNonNull(this) {
-            showChannelDetail(it, channelId)
-        }
-        viewModel.videoDetail.observeNonNull(this) {
-            showVideoDetail(it)
         }
         viewModel.isFavorite.observeNonNull(this) {
             registeredFavorite(it)
@@ -186,42 +175,24 @@ class PlayerActivity : AppCompatActivity(),
         fab.setOnClickListener {
             presenter.changeFavorite()
         }
-        relativeVideoAdapter.setOnItemClickListener {
-            // 再生画面へ遷移
-            showVideo(it)
+        relativeVideoAdapter.apply {
+            setOnItemClickListener {
+                // 再生画面へ遷移
+                showVideo(it)
+            }
+            setOnChannelClickListener { imageView, channel: String, url: String ->
+                showChannelDetailScreen(channel, channelId, url, Pair(imageView, imageView.transitionName))
+            }
         }
+
         relativeVideoRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
             adapter = relativeVideoAdapter
         }
-
-        titleLayout.setOnClickListener {
-            if (detailMotionLayout.progress > 0.5f) {
-                detailMotionLayout.transitionToStart()
-            } else {
-                detailMotionLayout.transitionToEnd()
-            }
-        }
         errorView.setOnRetryListener {
             presenter.loadVideoAndChannelDetail()
         }
-    }
-
-    private fun showChannelDetail(channel: ChannelResponse.Channel, channelId: String) {
-        channelNameTextView.text = channel.snippet.title
-
-        val url = channel.snippet.thumbnails.medium.url
-        GlideApp.with(this).load(url).circleCrop().into(channelImageView)
-        channelLayout.setOnClickListener {
-            val channelName = channelNameTextView.text.toString()
-            showChannelDetailScreen(channelName, channelId, url, Pair(channelImageView, channelImageView.transitionName))
-        }
-    }
-
-    private fun showVideoDetail(videoDetail: VideoDetailResponse.VideoDetail) {
-        titleTextView.text = videoDetail.snippet.title
-        descriptionTextView.text = videoDetail.snippet.description
     }
 
     private fun registeredFavorite(isRegistered: Boolean) {

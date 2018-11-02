@@ -42,7 +42,9 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
                 youtubeApi.channel(request.key, request.channelId),
                 youtubeApi.videoDetail(request.key, request.videoId)
         ) { relativeResponse, channelResponse, detailResponse ->
-            RelativeResponse(relativeResponse, channelResponse, detailResponse)
+            RelativeResponse(relativeResponse, channelResponse, detailResponse).apply {
+                checkResponse()
+            }
         }
     }
 
