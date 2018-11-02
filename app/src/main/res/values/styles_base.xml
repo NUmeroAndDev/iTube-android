@@ -9,7 +9,6 @@
         <item name="dialogCornerRadius">16dp</item>
 
         <item name="colorPrimaryDark">?attr/colorPrimaryVariant</item>
-        <item name="colorAccent">?attr/colorSecondary</item>
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

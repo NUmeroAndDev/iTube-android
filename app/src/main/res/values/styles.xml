@@ -58,6 +58,6 @@
     </style>
 
     <style name="BottomSheetDialogTheme.Rounded.Dark">
-        <item name="android:windowBackground">@color/backgroundDark</item>
+        <item name="colorBackground">@color/backgroundDark</item>
     </style>
 </resources>

@@ -28,7 +28,8 @@
         android:layout_height="wrap_content"
         app:backgroundTint="?attr/colorSurface"
         app:layout_anchor="@+id/bottomAppBar"
-        app:srcCompat="@drawable/ic_favorite_border" />
+        app:srcCompat="@drawable/ic_favorite_border"
+        app:tint="?attr/colorSecondary" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
