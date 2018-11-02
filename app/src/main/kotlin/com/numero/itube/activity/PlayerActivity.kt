@@ -7,14 +7,12 @@ import android.os.Bundle
 import android.util.Pair
 import android.view.MenuItem
 import android.view.View
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.forEach
 import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
@@ -24,6 +22,7 @@ import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.extension.*
+import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
 import com.numero.itube.presenter.IPlayerPresenter
 import com.numero.itube.presenter.PlayerPresenter
@@ -31,7 +30,6 @@ import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
-import com.numero.itube.view.adapter.FavoriteVideoAdapter
 import com.numero.itube.view.adapter.RelativeVideoAdapter
 import com.numero.itube.viewmodel.PlayerViewModel
 import kotlinx.android.synthetic.main.activity_player.*
@@ -50,10 +48,8 @@ class PlayerActivity : AppCompatActivity(),
     private val isShownFavoriteVideo: Boolean by lazy { intent.getBooleanExtra(BUNDLE_IS_FAVORITE_VIDEO, false) }
     private var player: YouTubePlayer? = null
 
-    private val favoriteVideoAdapter: FavoriteVideoAdapter = FavoriteVideoAdapter()
     private val relativeVideoAdapter: RelativeVideoAdapter = RelativeVideoAdapter()
     private lateinit var presenter: IPlayerPresenter
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
@@ -97,9 +93,8 @@ class PlayerActivity : AppCompatActivity(),
     override fun onMenuItemClick(item: MenuItem?): Boolean {
         item ?: return false
         when (item.itemId) {
-            R.id.action_player_option -> {
-                PlayerSettingsBottomSheetFragment.newInstance().show(supportFragmentManager)
-            }
+            R.id.action_favorite_list -> showFavoriteList()
+            R.id.action_player_option -> PlayerSettingsBottomSheetFragment.newInstance().show(supportFragmentManager)
         }
         return true
     }
@@ -143,7 +138,8 @@ class PlayerActivity : AppCompatActivity(),
             player?.play()
             return
         }
-        favoriteVideoAdapter.playNextVideo()
+        // FIXME 次の動画再生
+        // favoriteVideoAdapter.playNextVideo()
     }
 
     override fun onError(p0: YouTubePlayer.ErrorReason?) {
@@ -152,7 +148,7 @@ class PlayerActivity : AppCompatActivity(),
     private fun initViewModel(): PlayerViewModel {
         val viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
         viewModel.favoriteVideoList.observeNonNull(this) {
-            favoriteVideoAdapter.videoList = it
+//            favoriteVideoAdapter.videoList = it
         }
         viewModel.relativeVideoList.observeNonNull(this) {
             relativeVideoAdapter.videoList = it
@@ -178,42 +174,16 @@ class PlayerActivity : AppCompatActivity(),
     }
 
     private fun initViews() {
-        bottomSheetBehavior = BottomSheetBehavior.from(favoriteListBottomSheetLayout).apply {
-            state = BottomSheetBehavior.STATE_HIDDEN
-        }
-
         bottomAppBar.apply {
             replaceMenu(R.menu.menu_player)
             val colorOnPrimary = getAttrColor(R.attr.colorOnPrimary)
             menu.forEach {
                 it.setTint(colorOnPrimary)
             }
-
             setOnMenuItemClickListener(this@PlayerActivity)
-
-            if (isShownFavoriteVideo) {
-                val drawable = getTintedDrawable(R.drawable.ic_playlist_play, colorOnPrimary)
-                navigationIcon = drawable
-
-                setNavigationOnClickListener {
-                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                }
-            }
         }
         fab.setOnClickListener {
             presenter.changeFavorite()
-        }
-        favoriteVideoAdapter.apply {
-            setOnItemClickListener {
-                // 再生画面へ遷移
-                showVideo(it)
-            }
-            currentVideoId = videoId
-        }
-        favoriteVideoRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            setHasFixedSize(true)
-            adapter = favoriteVideoAdapter
         }
         relativeVideoAdapter.setOnItemClickListener {
             // 再生画面へ遷移
@@ -270,6 +240,10 @@ class PlayerActivity : AppCompatActivity(),
     private fun showChannelDetailScreen(channelName: String, channelId: String, thumbnailUrl: String, transitionView: Pair<View, String>) {
         val bundle = ActivityOptions.makeSceneTransitionAnimation(this, transitionView).toBundle()
         startActivity(ChannelDetailActivity.createIntent(this, channelName, channelId, thumbnailUrl), bundle)
+    }
+
+    private fun showFavoriteList() {
+        FavoriteListBottomSheetFragment.newInstance(videoId).show(supportFragmentManager)
     }
 
     companion object {

@@ -34,6 +34,28 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@mipmap/ic_launcher" />
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/playingBackground"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:cardBackgroundColor="@color/playing_background"
+            app:cardCornerRadius="@dimen/thumbnail_corner_radius"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/thumbnailImageView"
+            app:layout_constraintEnd_toEndOf="@+id/thumbnailImageView"
+            app:layout_constraintStart_toStartOf="@+id/thumbnailImageView"
+            app:layout_constraintTop_toTopOf="@+id/thumbnailImageView" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/playingImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_play"
+            app:layout_constraintBottom_toBottomOf="@+id/thumbnailImageView"
+            app:layout_constraintEnd_toEndOf="@+id/thumbnailImageView"
+            app:layout_constraintStart_toStartOf="@+id/thumbnailImageView"
+            app:layout_constraintTop_toTopOf="@+id/thumbnailImageView" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/titleTextView"
             android:layout_width="0dp"
@@ -51,6 +73,16 @@
             app:layout_constraintStart_toEndOf="@+id/thumbnailImageView"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Title" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/playingViewGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="playingBackground,playingImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
