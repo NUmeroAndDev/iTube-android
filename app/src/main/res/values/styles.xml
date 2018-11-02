@@ -35,7 +35,7 @@
 
         <item name="colorStroke">@color/strokeDark</item>
 
-        <item name="android:colorControlHighlight">@color/onBackgroundDark</item>
+        <item name="android:colorControlHighlight">@color/colorControlHighLightDark</item>
     </style>
 
     <style name="LightTheme.LightWindow" />

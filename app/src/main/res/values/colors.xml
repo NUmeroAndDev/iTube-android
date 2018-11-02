@@ -35,6 +35,8 @@
     <color name="onSurfaceDark">#DEFFFFFF</color>
     <color name="onErrorDark">#FFFFFF</color>
 
+    <color name="colorControlHighLightDark">#3DFFFFFF</color>
+
     <color name="highEmphasisTextDark">#DEFFFFFF</color>
     <color name="mediumEmphasisTextDark">#99FFFFFF</color>
     <color name="disabledTextDark">#5FFFFFFF</color>
