@@ -4,7 +4,7 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primaryVariant</item>
         <item name="colorSecondary">@color/secondary</item>
-        <item name="colorBackground">@color/background</item>
+        <item name="android:windowBackground">@color/background</item>
         <item name="colorSurface">?android:attr/windowBackground</item>
 
         <item name="android:textColorPrimary">@color/highEmphasisText</item>
@@ -22,7 +22,7 @@
         <item name="colorPrimary">@color/primaryDark</item>
         <item name="colorPrimaryVariant">@color/primaryVariantDark</item>
         <item name="colorSecondary">@color/secondaryDark</item>
-        <item name="colorBackground">@color/backgroundDark</item>
+        <item name="android:windowBackground">@color/backgroundDark</item>
         <item name="colorSurface">@color/surfaceDark</item>
 
         <item name="android:textColorPrimary">@color/highEmphasisTextDark</item>
@@ -58,6 +58,6 @@
     </style>
 
     <style name="BottomSheetDialogTheme.Rounded.Dark">
-        <item name="colorBackground">@color/backgroundDark</item>
+        <item name="android:windowBackground">@color/backgroundDark</item>
     </style>
 </resources>

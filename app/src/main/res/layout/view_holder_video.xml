@@ -10,7 +10,6 @@
     android:layout_marginBottom="8dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="?attr/colorBackground"
     app:cardCornerRadius="@dimen/video_card_corner_radius"
     app:cardElevation="@dimen/video_card_elevation"
     app:strokeColor="?attr/colorStroke"
