@@ -72,8 +72,8 @@ class RelativeVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     private fun updateVideoDetailViewHolder(holder: VideoDetailViewHolder, response: RelativeResponse) {
-        val videoDetail = response.videoDetailResponse.items[0]
-        val channelDetail = response.channelResponse.items[0]
+        val videoDetail = response.videoDetailResponse.items.firstOrNull() ?: return
+        val channelDetail = response.channelResponse.items.firstOrNull() ?: return
         holder.setVideoDetail(videoDetail)
         holder.setChannelDetail(channelDetail)
         holder.videoDetailView.setOnChannelClickListener {
