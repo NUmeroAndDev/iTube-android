@@ -33,18 +33,6 @@ class FavoriteVideoAdapter : RecyclerView.Adapter<FavoriteVideoAdapter.VideoView
         onItemClickListener = listener
     }
 
-    fun playNextVideo() {
-        val currentVideoPosition = videoList.indexOfFirst { it.id == currentVideoId }
-        if (currentVideoPosition == -1) {
-            return
-        }
-        if (currentVideoPosition == videoList.size - 1) {
-            onItemClickListener?.invoke(videoList[0])
-            return
-        }
-        onItemClickListener?.invoke(videoList[currentVideoPosition + 1])
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
         return VideoViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_holder_video, parent, false))
     }

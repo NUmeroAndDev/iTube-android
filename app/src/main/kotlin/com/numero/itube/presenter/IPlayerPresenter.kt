@@ -5,7 +5,7 @@ interface IPlayerPresenter : IPresenter {
 
     fun loadVideoAndChannelDetail()
 
-    fun loadFavoriteVideo()
+    fun loadNextFavoriteVideo(currentVideoId: String)
 
     fun changeFavorite()
 }
