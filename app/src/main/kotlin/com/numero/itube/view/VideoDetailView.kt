@@ -7,11 +7,11 @@ import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatImageView
 import com.numero.itube.GlideApp
 import com.numero.itube.R
-import kotlinx.android.synthetic.main.container_video_detail.view.*
+import kotlinx.android.synthetic.main.view_video_detail.view.*
 
 class VideoDetailView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
     init {
-        View.inflate(context, R.layout.container_video_detail, this)
+        View.inflate(context, R.layout.view_video_detail, this)
 
         titleLayout.setOnClickListener {
             if (detailMotionLayout.progress > 0.5f) {
