@@ -13,6 +13,7 @@ import androidx.core.view.forEach
 import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
@@ -148,7 +149,7 @@ class PlayerActivity : AppCompatActivity(),
     private fun initViewModel(): PlayerViewModel {
         val viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
         viewModel.favoriteVideoList.observeNonNull(this) {
-//            favoriteVideoAdapter.videoList = it
+            //            favoriteVideoAdapter.videoList = it
         }
         viewModel.relativeVideoList.observeNonNull(this) {
             relativeVideoAdapter.videoList = it
@@ -190,7 +191,7 @@ class PlayerActivity : AppCompatActivity(),
             showVideo(it)
         }
         relativeVideoRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
             adapter = relativeVideoAdapter
         }
