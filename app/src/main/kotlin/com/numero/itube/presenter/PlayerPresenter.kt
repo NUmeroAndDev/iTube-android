@@ -52,9 +52,7 @@ class PlayerPresenter(
                         onNext = {
                             viewModel.isShowProgress.postValue(false)
                             viewModel.isShowError.postValue(false)
-                            viewModel.videoDetail.postValue(it.videoDetailResponse.items[0])
-                            viewModel.channel.postValue(it.channelResponse.items[0])
-                            viewModel.relativeVideoList.postValue(it.searchResponse.items)
+                            viewModel.relativeResponse.postValue(it)
                         },
                         onError = {
                             viewModel.isShowProgress.postValue(false)
@@ -82,7 +80,8 @@ class PlayerPresenter(
         if (isFavorite) {
             executeUnregisterFavorite(videoId)
         } else {
-            val detail = viewModel.videoDetail.value ?: return
+            val response = viewModel.relativeResponse.value ?: return
+            val detail = response.videoDetailResponse.items[0]
             executeRegisterFavorite(detail)
         }
     }
