@@ -47,6 +47,7 @@ class PlayerActivity : AppCompatActivity(),
 
     private val relativeVideoAdapter: RelativeVideoAdapter = RelativeVideoAdapter()
     private lateinit var presenter: IPlayerPresenter
+    private lateinit var viewModel: PlayerViewModel
 
     @Inject
     lateinit var youtubeRepository: YoutubeRepository
@@ -72,8 +73,7 @@ class PlayerActivity : AppCompatActivity(),
         }
 
         initViews()
-        val viewModel = initViewModel()
-
+        viewModel = initViewModel()
         presenter = PlayerPresenter(viewModel, youtubeRepository, favoriteVideoRepository, configRepository, videoId, channelId)
 
         val youTubePlayerFragment = YouTubePlayerFragment.newInstance().apply {
@@ -84,7 +84,7 @@ class PlayerActivity : AppCompatActivity(),
 
         presenter.loadVideoAndChannelDetail()
         presenter.checkFavorite()
-        presenter.loadFavoriteVideo()
+        presenter.loadNextFavoriteVideo(videoId)
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -135,8 +135,11 @@ class PlayerActivity : AppCompatActivity(),
             player?.play()
             return
         }
-        // FIXME 次の動画再生
-        // favoriteVideoAdapter.playNextVideo()
+        if (isShownFavoriteVideo.not()) {
+            return
+        }
+        val nextVideo = viewModel.nextFavoriteVideo ?: return
+        showVideo(nextVideo)
     }
 
     override fun onError(p0: YouTubePlayer.ErrorReason?) {
@@ -144,9 +147,6 @@ class PlayerActivity : AppCompatActivity(),
 
     private fun initViewModel(): PlayerViewModel {
         val viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
-        viewModel.favoriteVideoList.observeNonNull(this) {
-            //            favoriteVideoAdapter.videoList = it
-        }
         viewModel.relativeResponse.observeNonNull(this) {
             relativeVideoAdapter.relativeResponse = it
         }

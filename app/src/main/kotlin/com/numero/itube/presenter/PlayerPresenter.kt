@@ -63,12 +63,20 @@ class PlayerPresenter(
                 )
     }
 
-    override fun loadFavoriteVideo() {
+    override fun loadNextFavoriteVideo(currentVideoId: String) {
         favoriteRepository.loadFavoriteVideo()
+                .map { list ->
+                    val position = list.indexOfFirst { it.id == currentVideoId }
+                    return@map if (position == list.lastIndex) {
+                        list.first()
+                    } else {
+                        list[position + 1]
+                    }
+                }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onSuccess = {
-                            viewModel.favoriteVideoList.postValue(it)
+                            viewModel.nextFavoriteVideo = it
                         },
                         onError = {
                         }

@@ -7,7 +7,7 @@ import com.numero.itube.repository.db.FavoriteVideo
 
 class PlayerViewModel : ViewModel(), IErrorViewModel, IProgressViewModel {
 
-    val favoriteVideoList: MutableLiveData<List<FavoriteVideo>> = MutableLiveData()
+    var nextFavoriteVideo: FavoriteVideo? = null
     val relativeResponse: MutableLiveData<RelativeResponse> = MutableLiveData()
     val isFavorite: MutableLiveData<Boolean> = MutableLiveData()
 
