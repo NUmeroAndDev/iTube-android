@@ -171,10 +171,6 @@ class PlayerActivity : AppCompatActivity(),
     private fun initViews() {
         bottomAppBar.apply {
             replaceMenu(R.menu.menu_player)
-            val colorOnPrimary = getAttrColor(R.attr.colorOnPrimary)
-            menu.forEach {
-                it.setTint(colorOnPrimary)
-            }
             setOnMenuItemClickListener(this@PlayerActivity)
         }
         fab.setOnClickListener {
