@@ -66,10 +66,6 @@ class TopActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        val colorOnPrimary = getAttrColor(R.attr.colorOnPrimary)
-        menu.forEach {
-            it.setTint(colorOnPrimary)
-        }
         return true
     }
 
