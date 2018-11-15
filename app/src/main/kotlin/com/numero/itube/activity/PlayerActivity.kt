@@ -37,6 +37,7 @@ import javax.inject.Inject
 class PlayerActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
         Toolbar.OnMenuItemClickListener,
+        FavoriteListBottomSheetFragment.IFavoriteListTransition,
         YouTubePlayer.PlayerStateChangeListener {
 
     private val title: String by lazy { intent.getStringExtra(BUNDLE_TITLE) }
@@ -143,6 +144,10 @@ class PlayerActivity : AppCompatActivity(),
     }
 
     override fun onError(p0: YouTubePlayer.ErrorReason?) {
+    }
+
+    override fun playFavoriteVideo(favoriteVideo: FavoriteVideo) {
+        showVideo(favoriteVideo)
     }
 
     private fun initViewModel(): PlayerViewModel {
