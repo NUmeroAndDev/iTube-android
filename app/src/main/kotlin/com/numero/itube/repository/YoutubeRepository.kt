@@ -34,7 +34,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         }.toResult()
     }
 
-    override fun loadRelative(request: RelativeRequest): Observable<RelativeResponse> {
+    override fun loadRelative(request: RelativeRequest): Observable<Result<RelativeResponse>> {
         return Observables.zip(
                 youtubeApi.searchRelative(request.key, request.videoId),
                 youtubeApi.channel(request.key, request.channelId),
@@ -43,7 +43,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
             RelativeResponse(relativeResponse, channelResponse, detailResponse).apply {
                 checkResponse()
             }
-        }
+        }.toResult()
     }
 
     override fun loadChannelVideoResponse(request: ChannelVideoRequest): Observable<VideoResponse> {

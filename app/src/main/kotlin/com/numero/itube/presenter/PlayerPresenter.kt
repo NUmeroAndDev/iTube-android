@@ -1,6 +1,7 @@
 package com.numero.itube.presenter
 
 import com.numero.itube.api.request.RelativeRequest
+import com.numero.itube.api.response.Result
 import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.repository.IConfigRepository
 import com.numero.itube.repository.IFavoriteVideoRepository
@@ -49,10 +50,18 @@ class PlayerPresenter(
         youtubeRepository.loadRelative(request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onNext = {
+                        onNext = { result ->
                             viewModel.isShowProgress.postValue(false)
-                            viewModel.isShowError.postValue(false)
-                            viewModel.relativeResponse.postValue(it)
+                            when (result) {
+                                is Result.Error -> {
+                                    viewModel.isShowError.postValue(true)
+                                    viewModel.error.postValue(result.throwable)
+                                }
+                                is Result.Success -> {
+                                    viewModel.isShowError.postValue(false)
+                                    viewModel.relativeResponse.postValue(result.response)
+                                }
+                            }
                         },
                         onError = {
                             viewModel.isShowProgress.postValue(false)

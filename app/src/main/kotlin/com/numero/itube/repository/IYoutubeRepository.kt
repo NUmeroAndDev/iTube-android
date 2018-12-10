@@ -11,7 +11,7 @@ import io.reactivex.Observable
 
 interface IYoutubeRepository {
 
-    fun loadRelative(request: RelativeRequest): Observable<RelativeResponse>
+    fun loadRelative(request: RelativeRequest): Observable<Result<RelativeResponse>>
 
     fun loadSearchResponse(request: SearchVideoRequest): Observable<Result<VideoResponse>>
 
