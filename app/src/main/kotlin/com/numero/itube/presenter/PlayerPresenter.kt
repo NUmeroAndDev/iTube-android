@@ -10,6 +10,10 @@ import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.viewmodel.PlayerViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.rxkotlin.subscribeBy
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class PlayerPresenter(
         private val viewModel: PlayerViewModel,
@@ -47,29 +51,19 @@ class PlayerPresenter(
         viewModel.isShowError.postValue(false)
 
         val request = RelativeRequest(configRepository.apiKey, videoId, channelId)
-        youtubeRepository.loadRelative(request)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onNext = { result ->
-                            viewModel.isShowProgress.postValue(false)
-                            when (result) {
-                                is Result.Error -> {
-                                    viewModel.isShowError.postValue(true)
-                                    viewModel.error.postValue(result.throwable)
-                                }
-                                is Result.Success -> {
-                                    viewModel.isShowError.postValue(false)
-                                    viewModel.relativeResponse.postValue(result.response)
-                                }
-                            }
-                        },
-                        onError = {
-                            viewModel.isShowProgress.postValue(false)
-                            viewModel.isShowError.postValue(true)
 
-                            viewModel.error.postValue(it)
-                        }
-                )
+        GlobalScope.launch(Dispatchers.Main) {
+            val result = async(Dispatchers.Default) { youtubeRepository.loadRelative(request) }.await()
+            viewModel.isShowProgress.postValue(false)
+            viewModel.isShowError.postValue(result is Result.Error)
+            when (result) {
+                is Result.Error -> viewModel.error.postValue(result.throwable)
+                is Result.Success -> {
+                    viewModel.isShowError.postValue(false)
+                    viewModel.relativeResponse.postValue(result.response)
+                }
+            }
+        }
     }
 
     override fun loadNextFavoriteVideo(currentVideoId: String) {

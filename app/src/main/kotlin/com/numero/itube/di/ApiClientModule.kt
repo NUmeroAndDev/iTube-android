@@ -38,7 +38,6 @@ class ApiClientModule {
         return Retrofit.Builder()
                 .baseUrl("https://www.googleapis.com/youtube/v3/")
                 .client(okHttpClient)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createAsync())
                 .addConverterFactory(MoshiConverterFactory.create(Moshi.Builder().add(ApplicationJsonAdapterFactory.INSTANCE).build()))
                 .build()
     }

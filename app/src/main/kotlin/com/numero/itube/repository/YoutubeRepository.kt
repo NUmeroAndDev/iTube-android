@@ -6,9 +6,6 @@ import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.*
 import com.numero.itube.extension.executeAsync
-import com.numero.itube.extension.toResult
-import io.reactivex.Observable
-import io.reactivex.rxkotlin.Observables
 
 class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository {
 
@@ -40,16 +37,20 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         }
     }
 
-    override fun loadRelative(request: RelativeRequest): Observable<Result<RelativeResponse>> {
-        return Observables.zip(
-                youtubeApi.searchRelative(request.key, request.videoId),
-                youtubeApi.channel(request.key, request.channelId),
-                youtubeApi.videoDetail(request.key, request.videoId)
-        ) { relativeResponse, channelResponse, detailResponse ->
-            RelativeResponse(relativeResponse, channelResponse, detailResponse).apply {
-                checkResponse()
+    override fun loadRelative(request: RelativeRequest): Result<RelativeResponse> {
+        val searchRelativeResult = youtubeApi.searchRelative(request.key, request.videoId).executeAsync()
+        val channelDetailResult = youtubeApi.channel(request.key, request.channelId).executeAsync()
+        val videoDetailResult = youtubeApi.videoDetail(request.key, request.videoId).executeAsync()
+        return if (searchRelativeResult is Result.Success && channelDetailResult is Result.Success && videoDetailResult is Result.Success) {
+            val response = RelativeResponse(searchRelativeResult.response, channelDetailResult.response, videoDetailResult.response)
+            return try {
+                Result.Success(response.checkResponse())
+            } catch (t: Throwable) {
+                Result.Error(t)
             }
-        }.toResult()
+        } else {
+            Result.Error(null)
+        }
     }
 
     override fun loadChannelVideo(request: ChannelVideoRequest): Result<VideoResponse> {
