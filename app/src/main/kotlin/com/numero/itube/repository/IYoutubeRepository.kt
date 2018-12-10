@@ -11,11 +11,11 @@ import io.reactivex.Observable
 
 interface IYoutubeRepository {
 
-    fun loadRelative(request: RelativeRequest): Result<RelativeResponse>
+    suspend fun loadRelative(request: RelativeRequest): Result<RelativeResponse>
 
-    fun loadSearch(request: SearchVideoRequest): Result<VideoResponse>
+    suspend fun loadSearch(request: SearchVideoRequest): Result<VideoResponse>
 
-    fun loadChannelVideo(request: ChannelVideoRequest): Result<VideoResponse>
+    suspend fun loadChannelVideo(request: ChannelVideoRequest): Result<VideoResponse>
 
-    fun loadChannelDetail(key: String, channelId: String): Result<ChannelDetailResponse>
+    suspend fun loadChannelDetail(key: String, channelId: String): Result<ChannelDetailResponse>
 }

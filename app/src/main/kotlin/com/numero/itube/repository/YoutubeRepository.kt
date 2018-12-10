@@ -13,7 +13,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
     private val cacheSearchVideoList: MutableList<SearchResponse.Video> = mutableListOf()
     private val cacheChannelVideoList: MutableList<SearchResponse.Video> = mutableListOf()
 
-    override fun loadSearch(request: SearchVideoRequest): Result<VideoResponse> {
+    override suspend fun loadSearch(request: SearchVideoRequest): Result<VideoResponse> {
         val call = if (request.hasNextPageToken) {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.search(request.key, request.searchWord, nextPageToken = token)
@@ -37,7 +37,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         }
     }
 
-    override fun loadRelative(request: RelativeRequest): Result<RelativeResponse> {
+    override suspend fun loadRelative(request: RelativeRequest): Result<RelativeResponse> {
         val searchRelativeResult = youtubeApi.searchRelative(request.key, request.videoId).executeSync()
         val channelDetailResult = youtubeApi.channel(request.key, request.channelId).executeSync()
         val videoDetailResult = youtubeApi.videoDetail(request.key, request.videoId).executeSync()
@@ -53,7 +53,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         }
     }
 
-    override fun loadChannelVideo(request: ChannelVideoRequest): Result<VideoResponse> {
+    override suspend fun loadChannelVideo(request: ChannelVideoRequest): Result<VideoResponse> {
         val call = if (request.hasNextPageToken) {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.searchChannelVideo(request.key, request.channelId, nextPageToken = token)
@@ -77,7 +77,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         }
     }
 
-    override fun loadChannelDetail(key: String, channelId: String): Result<ChannelDetailResponse> {
+    override suspend fun loadChannelDetail(key: String, channelId: String): Result<ChannelDetailResponse> {
         return youtubeApi.channelDetail(key, channelId).executeSync()
     }
 }
