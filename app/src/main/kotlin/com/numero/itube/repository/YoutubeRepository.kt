@@ -46,7 +46,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         }.toResult()
     }
 
-    override fun loadChannelVideoResponse(request: ChannelVideoRequest): Observable<VideoResponse> {
+    override fun loadChannelVideoResponse(request: ChannelVideoRequest): Observable<Result<VideoResponse>> {
         val stream = if (request.hasNextPageToken) {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.searchChannelVideo(request.key, request.channelId, nextPageToken = token)
@@ -62,10 +62,10 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
                 addAll(cacheChannelVideoList)
             }
             VideoResponse(it.nextPageToken, list, it.pageInfo.totalResults)
-        }
+        }.toResult()
     }
 
-    override fun loadChannelDetail(key: String, channelId: String): Observable<ChannelDetailResponse> {
-        return youtubeApi.channelDetail(key, channelId)
+    override fun loadChannelDetail(key: String, channelId: String): Observable<Result<ChannelDetailResponse>> {
+        return youtubeApi.channelDetail(key, channelId).toResult()
     }
 }

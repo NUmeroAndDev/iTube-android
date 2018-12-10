@@ -1,6 +1,7 @@
 package com.numero.itube.presenter
 
 import com.numero.itube.api.request.ChannelVideoRequest
+import com.numero.itube.api.response.Result
 import com.numero.itube.repository.IConfigRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.viewmodel.ChannelVideoListViewModel
@@ -38,15 +39,32 @@ class ChannelVideoListPresenter(
                 .subscribeBy(
                         onNext = {
                             viewModel.isShowProgress.postValue(false)
-                            viewModel.isShowError.postValue(false)
 
-                            val channelDetail = it.first
-                            viewModel.channelDetail.postValue(channelDetail.items[0])
+                            val channelDetailResult = it.first
+                            when (channelDetailResult) {
+                                is Result.Error -> {
+                                    viewModel.isShowError.postValue(true)
+                                    viewModel.error.postValue(channelDetailResult.throwable)
+                                }
+                                is Result.Success -> {
+                                    val response = channelDetailResult.response
+                                    viewModel.channelDetail.postValue(response.items[0])
+                                }
+                            }
 
-                            val videoResponse = it.second
-                            viewModel.nextPageToken.postValue(videoResponse.nextPageToken)
-                            viewModel.videoList.postValue(videoResponse.videoList)
-                            viewModel.hasNextPage.postValue(videoResponse.hasNextPage)
+                            val videoResult = it.second
+                            when (videoResult) {
+                                is Result.Error -> {
+                                    viewModel.isShowError.postValue(true)
+                                    viewModel.error.postValue(videoResult.throwable)
+                                }
+                                is Result.Success -> {
+                                    val response = videoResult.response
+                                    viewModel.nextPageToken.postValue(response.nextPageToken)
+                                    viewModel.videoList.postValue(response.videoList)
+                                    viewModel.hasNextPage.postValue(response.hasNextPage)
+                                }
+                            }
                         },
                         onError = {
                             viewModel.isShowProgress.postValue(false)
@@ -71,13 +89,22 @@ class ChannelVideoListPresenter(
         youtubeRepository.loadChannelVideoResponse(request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onNext = {
+                        onNext = { result ->
                             viewModel.isShowProgress.postValue(false)
-                            viewModel.isShowError.postValue(false)
 
-                            viewModel.nextPageToken.postValue(it.nextPageToken)
-                            viewModel.videoList.postValue(it.videoList)
-                            viewModel.hasNextPage.postValue(it.hasNextPage)
+                            when (result) {
+                                is Result.Error -> {
+                                    viewModel.isShowError.postValue(true)
+                                    viewModel.error.postValue(result.throwable)
+                                }
+                                is Result.Success -> {
+                                    viewModel.isShowError.postValue(false)
+                                    val response = result.response
+                                    viewModel.nextPageToken.postValue(response.nextPageToken)
+                                    viewModel.videoList.postValue(response.videoList)
+                                    viewModel.hasNextPage.postValue(response.hasNextPage)
+                                }
+                            }
                         },
                         onError = {
                             viewModel.isShowProgress.postValue(false)
