@@ -2,8 +2,10 @@ package com.numero.itube.presenter
 
 import com.numero.itube.repository.IFavoriteVideoRepository
 import com.numero.itube.viewmodel.FavoriteVideoListViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class FavoriteVideoListPresenter(
         private val viewModel: FavoriteVideoListViewModel,
@@ -18,19 +20,11 @@ class FavoriteVideoListPresenter(
 
     override fun loadFavoriteVideoList() {
         viewModel.isShowProgress.postValue(true)
-        favoriteRepository.loadFavoriteVideo()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onSuccess = {
-                            viewModel.isShowEmptyMessage.postValue(it.isEmpty())
-                            viewModel.isShowProgress.postValue(false)
-                            viewModel.videoList.postValue(it)
-                        },
-                        onError = {
-                            viewModel.isShowEmptyMessage.postValue(false)
-                            viewModel.isShowProgress.postValue(false)
-                            viewModel.error.postValue(it)
-                        }
-                )
+        GlobalScope.launch(Dispatchers.Main) {
+            val list = async(Dispatchers.Default) { favoriteRepository.loadFavoriteVideo() }.await()
+            viewModel.isShowProgress.postValue(false)
+            viewModel.videoList.postValue(list)
+            viewModel.isShowEmptyMessage.postValue(list.isEmpty())
+        }
     }
 }

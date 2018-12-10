@@ -5,13 +5,13 @@ import io.reactivex.Flowable
 import io.reactivex.Maybe
 
 interface IFavoriteVideoRepository {
-    fun createFavoriteVideo(favoriteVideo: FavoriteVideo): Flowable<FavoriteVideo>
+    suspend fun createFavoriteVideo(favoriteVideo: FavoriteVideo)
 
-    fun loadFavoriteVideo(): Maybe<List<FavoriteVideo>>
+    suspend fun loadFavoriteVideo(): List<FavoriteVideo>
 
-    fun updateFavoriteVideo(favoriteVideo: FavoriteVideo): Flowable<FavoriteVideo>
+    suspend fun updateFavoriteVideo(favoriteVideo: FavoriteVideo)
 
-    fun deleteFavoriteVideo(id: String): Flowable<String>
+    suspend fun deleteFavoriteVideo(id: String)
 
-    fun existFavoriteVideo(id: String): Flowable<Boolean>
+    suspend fun existFavoriteVideo(id: String): Boolean
 }

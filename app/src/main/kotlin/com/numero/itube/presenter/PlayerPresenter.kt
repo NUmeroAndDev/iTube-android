@@ -8,8 +8,6 @@ import com.numero.itube.repository.IFavoriteVideoRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.viewmodel.PlayerViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -31,15 +29,10 @@ class PlayerPresenter(
     }
 
     override fun checkFavorite() {
-        favoriteRepository.existFavoriteVideo(videoId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onNext = {
-                            viewModel.isFavorite.postValue(it)
-                        },
-                        onError = {
-                        }
-                )
+        GlobalScope.launch(Dispatchers.Main) {
+            val isFavorite = async(Dispatchers.Default) { favoriteRepository.existFavoriteVideo(videoId) }.await()
+            viewModel.isFavorite.postValue(isFavorite)
+        }
     }
 
     override fun loadVideoAndChannelDetail() {
@@ -67,23 +60,16 @@ class PlayerPresenter(
     }
 
     override fun loadNextFavoriteVideo(currentVideoId: String) {
-        favoriteRepository.loadFavoriteVideo()
-                .map { list ->
-                    val position = list.indexOfFirst { it.id == currentVideoId }
-                    return@map if (position == list.lastIndex) {
-                        list.first()
-                    } else {
-                        list[position + 1]
-                    }
-                }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onSuccess = {
-                            viewModel.nextFavoriteVideo = it
-                        },
-                        onError = {
-                        }
-                )
+        GlobalScope.launch(Dispatchers.Main) {
+            val list = async(Dispatchers.Default) { favoriteRepository.loadFavoriteVideo() }.await()
+            val position = list.indexOfFirst { it.id == currentVideoId }
+            val nextVideo = if (position == list.lastIndex) {
+                list.first()
+            } else {
+                list[position + 1]
+            }
+            viewModel.nextFavoriteVideo = nextVideo
+        }
     }
 
     override fun changeFavorite() {
@@ -105,24 +91,16 @@ class PlayerPresenter(
                 video.snippet.channelId,
                 video.snippet.channelTitle,
                 video.snippet.thumbnails.high.url)
-        favoriteRepository.createFavoriteVideo(favoriteVideo)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onNext = {
-                            viewModel.isFavorite.postValue(true)
-                        },
-                        onError = {
-                        })
+        GlobalScope.launch(Dispatchers.Main) {
+            async(Dispatchers.Default) { favoriteRepository.createFavoriteVideo(favoriteVideo) }.await()
+            viewModel.isFavorite.postValue(true)
+        }
     }
 
     private fun executeUnregisterFavorite(videoId: String) {
-        favoriteRepository.deleteFavoriteVideo(videoId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onNext = {
-                            viewModel.isFavorite.postValue(false)
-                        },
-                        onError = {
-                        })
+        GlobalScope.launch(Dispatchers.Main) {
+            async(Dispatchers.Default) { favoriteRepository.deleteFavoriteVideo(videoId) }.await()
+            viewModel.isFavorite.postValue(false)
+        }
     }
 }
