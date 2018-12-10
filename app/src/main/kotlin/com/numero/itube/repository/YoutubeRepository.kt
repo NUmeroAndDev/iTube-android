@@ -5,7 +5,7 @@ import com.numero.itube.api.request.ChannelVideoRequest
 import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.*
-import com.numero.itube.extension.executeAsync
+import com.numero.itube.extension.executeSync
 
 class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository {
 
@@ -20,7 +20,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         } else {
             youtubeApi.search(request.key, request.searchWord)
         }
-        val result = call.executeAsync()
+        val result = call.executeSync()
         return when (result) {
             is Result.Error -> Result.Error(result.throwable)
             is Result.Success -> {
@@ -38,9 +38,9 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
     }
 
     override fun loadRelative(request: RelativeRequest): Result<RelativeResponse> {
-        val searchRelativeResult = youtubeApi.searchRelative(request.key, request.videoId).executeAsync()
-        val channelDetailResult = youtubeApi.channel(request.key, request.channelId).executeAsync()
-        val videoDetailResult = youtubeApi.videoDetail(request.key, request.videoId).executeAsync()
+        val searchRelativeResult = youtubeApi.searchRelative(request.key, request.videoId).executeSync()
+        val channelDetailResult = youtubeApi.channel(request.key, request.channelId).executeSync()
+        val videoDetailResult = youtubeApi.videoDetail(request.key, request.videoId).executeSync()
         return if (searchRelativeResult is Result.Success && channelDetailResult is Result.Success && videoDetailResult is Result.Success) {
             val response = RelativeResponse(searchRelativeResult.response, channelDetailResult.response, videoDetailResult.response)
             return try {
@@ -60,7 +60,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         } else {
             youtubeApi.searchChannelVideo(request.key, request.channelId)
         }
-        val result = call.executeAsync()
+        val result = call.executeSync()
         return when (result) {
             is Result.Error -> Result.Error(result.throwable)
             is Result.Success -> {
@@ -78,6 +78,6 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
     }
 
     override fun loadChannelDetail(key: String, channelId: String): Result<ChannelDetailResponse> {
-        return youtubeApi.channelDetail(key, channelId).executeAsync()
+        return youtubeApi.channelDetail(key, channelId).executeSync()
     }
 }

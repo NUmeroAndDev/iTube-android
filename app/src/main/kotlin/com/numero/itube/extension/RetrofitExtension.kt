@@ -3,7 +3,7 @@ package com.numero.itube.extension
 import com.numero.itube.api.response.Result
 import retrofit2.Call
 
-fun <T> Call<T>.executeAsync(): Result<T> {
+fun <T> Call<T>.executeSync(): Result<T> {
     return try {
         val response = execute()
         return if (response.isSuccessful) {
