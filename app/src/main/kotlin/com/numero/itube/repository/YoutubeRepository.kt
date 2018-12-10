@@ -24,8 +24,8 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
             youtubeApi.search(request.key, request.searchWord)
         }
         val result = call.executeAsync()
-        return when(result) {
-            is Result.Error  -> Result.Error(result.throwable)
+        return when (result) {
+            is Result.Error -> Result.Error(result.throwable)
             is Result.Success -> {
                 val response = result.response
                 if (request.hasNextPageToken.not()) {
@@ -52,26 +52,31 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         }.toResult()
     }
 
-    override fun loadChannelVideo(request: ChannelVideoRequest): Observable<Result<VideoResponse>> {
-        val stream = if (request.hasNextPageToken) {
+    override fun loadChannelVideo(request: ChannelVideoRequest): Result<VideoResponse> {
+        val call = if (request.hasNextPageToken) {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.searchChannelVideo(request.key, request.channelId, nextPageToken = token)
         } else {
             youtubeApi.searchChannelVideo(request.key, request.channelId)
         }
-        return stream.map {
-            if (request.hasNextPageToken.not()) {
-                cacheChannelVideoList.clear()
+        val result = call.executeAsync()
+        return when (result) {
+            is Result.Error -> Result.Error(result.throwable)
+            is Result.Success -> {
+                val response = result.response
+                if (request.hasNextPageToken.not()) {
+                    cacheChannelVideoList.clear()
+                }
+                cacheChannelVideoList.addAll(response.items)
+                val list = mutableListOf<SearchResponse.Video>().apply {
+                    addAll(cacheChannelVideoList)
+                }
+                Result.Success(VideoResponse(response.nextPageToken, list, response.pageInfo.totalResults))
             }
-            cacheChannelVideoList.addAll(it.items)
-            val list = mutableListOf<SearchResponse.Video>().apply {
-                addAll(cacheChannelVideoList)
-            }
-            VideoResponse(it.nextPageToken, list, it.pageInfo.totalResults)
-        }.toResult()
+        }
     }
 
-    override fun loadChannelDetail(key: String, channelId: String): Observable<Result<ChannelDetailResponse>> {
-        return youtubeApi.channelDetail(key, channelId).toResult()
+    override fun loadChannelDetail(key: String, channelId: String): Result<ChannelDetailResponse> {
+        return youtubeApi.channelDetail(key, channelId).executeAsync()
     }
 }

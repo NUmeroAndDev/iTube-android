@@ -36,7 +36,7 @@ interface YoutubeApi {
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
-    ): Observable<SearchResponse>
+    ): Call<SearchResponse>
 
     @GET("search")
     fun searchChannelVideo(
@@ -46,7 +46,7 @@ interface YoutubeApi {
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
-    ): Observable<SearchResponse>
+    ): Call<SearchResponse>
 
     @GET("search")
     fun searchRelative(
@@ -76,5 +76,5 @@ interface YoutubeApi {
             @Query("key") key: String,
             @Query("id") id: String,
             @Query("part") part: String = "id,snippet,brandingSettings"
-    ): Observable<ChannelDetailResponse>
+    ): Call<ChannelDetailResponse>
 }
