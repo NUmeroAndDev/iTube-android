@@ -1,8 +1,6 @@
 package com.numero.itube.repository
 
 import com.numero.itube.repository.db.FavoriteVideo
-import io.reactivex.Flowable
-import io.reactivex.Maybe
 
 interface IFavoriteVideoRepository {
     suspend fun createFavoriteVideo(favoriteVideo: FavoriteVideo)

@@ -7,7 +7,6 @@ import com.numero.itube.api.response.ChannelDetailResponse
 import com.numero.itube.api.response.RelativeResponse
 import com.numero.itube.api.response.Result
 import com.numero.itube.api.response.VideoResponse
-import io.reactivex.Observable
 
 interface IYoutubeRepository {
 

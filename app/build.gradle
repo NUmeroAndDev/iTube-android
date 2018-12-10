@@ -60,10 +60,6 @@ dependencies {
 
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
 
-    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
-    implementation "io.reactivex.rxjava2:rxkotlin:$rxkotlin_version"
-
     implementation "se.ansman.kotshi:api:$kotshi_version"
     kapt "se.ansman.kotshi:compiler:$kotshi_version"
 
@@ -84,7 +80,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime:2.0.0"
     implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
     implementation 'androidx.room:room-runtime:2.1.0-alpha03'
-    implementation "androidx.room:room-rxjava2:2.1.0-alpha03"
     implementation "androidx.room:room-coroutines:2.1.0-alpha03"
     kapt 'androidx.room:room-compiler:2.1.0-alpha03'
 
