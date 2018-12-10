@@ -52,7 +52,7 @@ class SearchVideoPresenter(
         viewModel.isShowProgress.postValue(true)
         viewModel.isShowError.postValue(false)
 
-        youtubeRepository.loadSearchResponse(request)
+        youtubeRepository.loadSearch(request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onNext = { result ->

@@ -31,7 +31,7 @@ class ChannelVideoListPresenter(
         val request = ChannelVideoRequest(configRepository.apiKey, channelId)
         val stream = Observables.zip(
                 youtubeRepository.loadChannelDetail(configRepository.apiKey, channelId),
-                youtubeRepository.loadChannelVideoResponse(request)
+                youtubeRepository.loadChannelVideo(request)
         ) { channelDetailResponse, videoResponse ->
             channelDetailResponse to videoResponse
         }
@@ -86,7 +86,7 @@ class ChannelVideoListPresenter(
 
         viewModel.isShowProgress.postValue(true)
         val request = ChannelVideoRequest(configRepository.apiKey, channelId, nextPageToken)
-        youtubeRepository.loadChannelVideoResponse(request)
+        youtubeRepository.loadChannelVideo(request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onNext = { result ->

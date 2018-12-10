@@ -13,9 +13,9 @@ interface IYoutubeRepository {
 
     fun loadRelative(request: RelativeRequest): Observable<Result<RelativeResponse>>
 
-    fun loadSearchResponse(request: SearchVideoRequest): Observable<Result<VideoResponse>>
+    fun loadSearch(request: SearchVideoRequest): Observable<Result<VideoResponse>>
 
-    fun loadChannelVideoResponse(request: ChannelVideoRequest): Observable<Result<VideoResponse>>
+    fun loadChannelVideo(request: ChannelVideoRequest): Observable<Result<VideoResponse>>
 
     fun loadChannelDetail(key: String, channelId: String): Observable<Result<ChannelDetailResponse>>
 }
