@@ -1,6 +1,7 @@
 package com.numero.itube.presenter
 
 import com.numero.itube.api.request.SearchVideoRequest
+import com.numero.itube.api.response.Result
 import com.numero.itube.repository.IConfigRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.viewmodel.SearchVideoViewModel
@@ -54,12 +55,20 @@ class SearchVideoPresenter(
         youtubeRepository.loadSearchResponse(request)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
-                        onNext = {
+                        onNext = { result ->
                             viewModel.isShowProgress.postValue(false)
-
-                            viewModel.nextPageToken.postValue(it.nextPageToken)
-                            viewModel.videoList.postValue(it.videoList)
-                            viewModel.hasNextPage.postValue(it.hasNextPage)
+                            when (result) {
+                                is Result.Error -> {
+                                    viewModel.isShowError.postValue(true)
+                                    viewModel.error.postValue(result.throwable)
+                                }
+                                is Result.Success -> {
+                                    val response = result.response
+                                    viewModel.nextPageToken.postValue(response.nextPageToken)
+                                    viewModel.videoList.postValue(response.videoList)
+                                    viewModel.hasNextPage.postValue(response.hasNextPage)
+                                }
+                            }
                         },
                         onError = {
                             viewModel.isShowProgress.postValue(false)

@@ -4,10 +4,8 @@ import com.numero.itube.api.YoutubeApi
 import com.numero.itube.api.request.ChannelVideoRequest
 import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.request.SearchVideoRequest
-import com.numero.itube.api.response.ChannelDetailResponse
-import com.numero.itube.api.response.RelativeResponse
-import com.numero.itube.api.response.SearchResponse
-import com.numero.itube.api.response.VideoResponse
+import com.numero.itube.api.response.*
+import com.numero.itube.extension.toResult
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.Observables
 
@@ -17,7 +15,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
     private val cacheSearchVideoList: MutableList<SearchResponse.Video> = mutableListOf()
     private val cacheChannelVideoList: MutableList<SearchResponse.Video> = mutableListOf()
 
-    override fun loadSearchResponse(request: SearchVideoRequest): Observable<VideoResponse> {
+    override fun loadSearchResponse(request: SearchVideoRequest): Observable<Result<VideoResponse>> {
         val stream = if (request.hasNextPageToken) {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.search(request.key, request.searchWord, nextPageToken = token)
@@ -33,7 +31,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
                 addAll(cacheSearchVideoList)
             }
             VideoResponse(it.nextPageToken, list, it.pageInfo.totalResults)
-        }
+        }.toResult()
     }
 
     override fun loadRelative(request: RelativeRequest): Observable<RelativeResponse> {
