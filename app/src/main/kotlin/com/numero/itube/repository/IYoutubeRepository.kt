@@ -13,7 +13,7 @@ interface IYoutubeRepository {
 
     fun loadRelative(request: RelativeRequest): Observable<Result<RelativeResponse>>
 
-    fun loadSearch(request: SearchVideoRequest): Observable<Result<VideoResponse>>
+    fun loadSearch(request: SearchVideoRequest): Result<VideoResponse>
 
     fun loadChannelVideo(request: ChannelVideoRequest): Observable<Result<VideoResponse>>
 

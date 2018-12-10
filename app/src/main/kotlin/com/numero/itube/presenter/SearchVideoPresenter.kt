@@ -5,8 +5,10 @@ import com.numero.itube.api.response.Result
 import com.numero.itube.repository.IConfigRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.viewmodel.SearchVideoViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class SearchVideoPresenter(
         private val viewModel: SearchVideoViewModel,
@@ -52,30 +54,23 @@ class SearchVideoPresenter(
         viewModel.isShowProgress.postValue(true)
         viewModel.isShowError.postValue(false)
 
-        youtubeRepository.loadSearch(request)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onNext = { result ->
-                            viewModel.isShowProgress.postValue(false)
-                            when (result) {
-                                is Result.Error -> {
-                                    viewModel.isShowError.postValue(true)
-                                    viewModel.error.postValue(result.throwable)
-                                }
-                                is Result.Success -> {
-                                    val response = result.response
-                                    viewModel.nextPageToken.postValue(response.nextPageToken)
-                                    viewModel.videoList.postValue(response.videoList)
-                                    viewModel.hasNextPage.postValue(response.hasNextPage)
-                                }
-                            }
-                        },
-                        onError = {
-                            viewModel.isShowProgress.postValue(false)
-                            viewModel.isShowError.postValue(true)
+        GlobalScope.launch(Dispatchers.Main) {
+            val result = async(Dispatchers.Default) { youtubeRepository.loadSearch(request) }.await()
 
-                            viewModel.error.postValue(it)
-                        }
-                )
+            viewModel.isShowProgress.postValue(false)
+            viewModel.isShowError.postValue(result is Result.Error)
+
+            when (result) {
+                is Result.Error -> {
+                    viewModel.error.postValue(result.throwable)
+                }
+                is Result.Success -> {
+                    val response = result.response
+                    viewModel.nextPageToken.postValue(response.nextPageToken)
+                    viewModel.videoList.postValue(response.videoList)
+                    viewModel.hasNextPage.postValue(response.hasNextPage)
+                }
+            }
+        }
     }
 }
