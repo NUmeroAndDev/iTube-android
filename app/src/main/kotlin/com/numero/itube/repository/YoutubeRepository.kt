@@ -6,6 +6,9 @@ import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.*
 import com.numero.itube.extension.executeSync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 
 class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository {
 
@@ -37,16 +40,16 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         }
     }
 
-    override suspend fun loadRelative(request: RelativeRequest): Result<RelativeResponse> {
-        val searchRelativeResult = youtubeApi.searchRelative(request.key, request.videoId).executeSync()
-        val channelDetailResult = youtubeApi.channel(request.key, request.channelId).executeSync()
-        val videoDetailResult = youtubeApi.videoDetail(request.key, request.videoId).executeSync()
-        return if (searchRelativeResult is Result.Success && channelDetailResult is Result.Success && videoDetailResult is Result.Success) {
+    override suspend fun loadRelative(request: RelativeRequest): Result<RelativeResponse> = withContext(Dispatchers.Default) {
+        val searchRelativeResult = async { youtubeApi.searchRelative(request.key, request.videoId).executeSync() }.await()
+        val channelDetailResult = async { youtubeApi.channel(request.key, request.channelId).executeSync() }.await()
+        val videoDetailResult = async { youtubeApi.videoDetail(request.key, request.videoId).executeSync() }.await()
+        if (searchRelativeResult is Result.Success && channelDetailResult is Result.Success && videoDetailResult is Result.Success) {
             val response = RelativeResponse(searchRelativeResult.response, channelDetailResult.response, videoDetailResult.response)
-            return try {
+            try {
                 Result.Success(response.checkResponse())
             } catch (t: Throwable) {
-                Result.Error(t)
+                Result.Error<RelativeResponse>(t)
             }
         } else {
             Result.Error(null)
