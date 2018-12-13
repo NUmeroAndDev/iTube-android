@@ -1,26 +1,18 @@
 package com.numero.itube.extension
 
-import com.numero.itube.api.response.Response
+import com.numero.itube.api.response.Result
 import retrofit2.Call
-import retrofit2.Callback
 
-fun <T> Call<T>.execute(onResponse: ((response: Response<T>) -> Unit)) {
-    enqueue(object : Callback<T> {
-        override fun onFailure(call: Call<T>?, t: Throwable?) {
-            onResponse(Response.Error(t))
+fun <T> Call<T>.executeSync(): Result<T> {
+    return try {
+        val response = execute()
+        return if (response.isSuccessful) {
+            val body = response.body() ?: return Result.Error(Exception("No response"))
+            return Result.Success(body)
+        } else {
+            Result.Error(Exception("status code : ${response.code()}"))
         }
-
-        override fun onResponse(call: Call<T>?, response: retrofit2.Response<T>?) {
-            if (response == null) {
-                onResponse(Response.Error(null))
-                return
-            }
-            val body = response.body()
-            if (body == null) {
-                onResponse(Response.Error(null))
-                return
-            }
-            onResponse(Response.Success(body))
-        }
-    })
+    } catch (t: Throwable) {
+        Result.Error(t)
+    }
 }

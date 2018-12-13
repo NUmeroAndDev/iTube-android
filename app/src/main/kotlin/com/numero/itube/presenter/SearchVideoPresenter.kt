@@ -1,11 +1,14 @@
 package com.numero.itube.presenter
 
 import com.numero.itube.api.request.SearchVideoRequest
+import com.numero.itube.api.response.Result
 import com.numero.itube.repository.IConfigRepository
 import com.numero.itube.repository.IYoutubeRepository
 import com.numero.itube.viewmodel.SearchVideoViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.subscribeBy
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class SearchVideoPresenter(
         private val viewModel: SearchVideoViewModel,
@@ -51,22 +54,23 @@ class SearchVideoPresenter(
         viewModel.isShowProgress.postValue(true)
         viewModel.isShowError.postValue(false)
 
-        youtubeRepository.loadSearchResponse(request)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeBy(
-                        onNext = {
-                            viewModel.isShowProgress.postValue(false)
+        GlobalScope.launch(Dispatchers.Main) {
+            val result = async(Dispatchers.Default) { youtubeRepository.loadSearch(request) }.await()
 
-                            viewModel.nextPageToken.postValue(it.nextPageToken)
-                            viewModel.videoList.postValue(it.videoList)
-                            viewModel.hasNextPage.postValue(it.hasNextPage)
-                        },
-                        onError = {
-                            viewModel.isShowProgress.postValue(false)
-                            viewModel.isShowError.postValue(true)
+            viewModel.isShowProgress.postValue(false)
+            viewModel.isShowError.postValue(result is Result.Error)
 
-                            viewModel.error.postValue(it)
-                        }
-                )
+            when (result) {
+                is Result.Error -> {
+                    viewModel.error.postValue(result.throwable)
+                }
+                is Result.Success -> {
+                    val response = result.response
+                    viewModel.nextPageToken.postValue(response.nextPageToken)
+                    viewModel.videoList.postValue(response.videoList)
+                    viewModel.hasNextPage.postValue(response.hasNextPage)
+                }
+            }
+        }
     }
 }

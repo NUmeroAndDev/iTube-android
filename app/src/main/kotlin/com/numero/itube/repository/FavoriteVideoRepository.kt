@@ -2,50 +2,27 @@ package com.numero.itube.repository
 
 import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.repository.db.FavoriteVideoDao
-import io.reactivex.Flowable
-import io.reactivex.Maybe
-import io.reactivex.schedulers.Schedulers
 
 class FavoriteVideoRepository(private val favoriteVideoDao: FavoriteVideoDao) : IFavoriteVideoRepository {
 
-    override fun createFavoriteVideo(favoriteVideo: FavoriteVideo): Flowable<FavoriteVideo> {
-        return Flowable.just(favoriteVideo)
-                .doOnNext {
-                    favoriteVideoDao.create(favoriteVideo)
-                }
-                .subscribeOn(Schedulers.io())
+    override suspend fun createFavoriteVideo(favoriteVideo: FavoriteVideo) {
+        favoriteVideoDao.create(favoriteVideo)
     }
 
-    override fun loadFavoriteVideo(): Maybe<List<FavoriteVideo>> {
+    override suspend fun loadFavoriteVideo(): List<FavoriteVideo> {
         return favoriteVideoDao.findAll()
-                .subscribeOn(Schedulers.io())
     }
 
-    override fun updateFavoriteVideo(favoriteVideo: FavoriteVideo): Flowable<FavoriteVideo> {
-        return Flowable.just(favoriteVideo)
-                .doOnNext {
-                    favoriteVideoDao.update(favoriteVideo)
-                }
-                .subscribeOn(Schedulers.io())
+    override suspend fun updateFavoriteVideo(favoriteVideo: FavoriteVideo) {
+        return favoriteVideoDao.update(favoriteVideo)
     }
 
-    override fun deleteFavoriteVideo(id: String): Flowable<String> {
-        return Flowable.just(id)
-                .doOnNext {
-                    favoriteVideoDao.deleteVideo(id)
-                }
-                .subscribeOn(Schedulers.io())
+    override suspend fun deleteFavoriteVideo(id: String) {
+        return favoriteVideoDao.deleteVideo(id)
     }
 
-    override fun existFavoriteVideo(id: String): Flowable<Boolean> {
-        return Flowable.just(id)
-                .flatMap {
-                    favoriteVideoDao.findVideo(id)
-                }
-                .map {
-                    it.isNotEmpty()
-                }
-                .subscribeOn(Schedulers.io())
+    override suspend fun existFavoriteVideo(id: String): Boolean {
+        return favoriteVideoDao.findVideo(id).isNotEmpty()
     }
 
 }

@@ -4,7 +4,7 @@ import com.numero.itube.api.response.ChannelDetailResponse
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoDetailResponse
-import io.reactivex.Observable
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -17,7 +17,7 @@ interface YoutubeApi {
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
-    ): Observable<SearchResponse>
+    ): Call<SearchResponse>
 
     @GET("search")
     fun search(
@@ -26,7 +26,7 @@ interface YoutubeApi {
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
-    ): Observable<SearchResponse>
+    ): Call<SearchResponse>
 
     @GET("search")
     fun searchChannelVideo(
@@ -35,7 +35,7 @@ interface YoutubeApi {
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
-    ): Observable<SearchResponse>
+    ): Call<SearchResponse>
 
     @GET("search")
     fun searchChannelVideo(
@@ -45,7 +45,7 @@ interface YoutubeApi {
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
-    ): Observable<SearchResponse>
+    ): Call<SearchResponse>
 
     @GET("search")
     fun searchRelative(
@@ -54,26 +54,26 @@ interface YoutubeApi {
             @Query("type") type: String = "video",
             @Query("part") part: String = "id,snippet",
             @Query("maxResults") maxResult: Int = 30
-    ): Observable<SearchResponse>
+    ): Call<SearchResponse>
 
     @GET("videos")
     fun videoDetail(
             @Query("key") key: String,
             @Query("id") id: String,
             @Query("part") part: String = "id,snippet"
-    ): Observable<VideoDetailResponse>
+    ): Call<VideoDetailResponse>
 
     @GET("channels")
     fun channel(
             @Query("key") key: String,
             @Query("id") id: String,
             @Query("part") part: String = "id,snippet"
-    ): Observable<ChannelResponse>
+    ): Call<ChannelResponse>
 
     @GET("channels")
     fun channelDetail(
             @Query("key") key: String,
             @Query("id") id: String,
             @Query("part") part: String = "id,snippet,brandingSettings"
-    ): Observable<ChannelDetailResponse>
+    ): Call<ChannelDetailResponse>
 }

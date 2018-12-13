@@ -5,16 +5,16 @@ import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.ChannelDetailResponse
 import com.numero.itube.api.response.RelativeResponse
+import com.numero.itube.api.response.Result
 import com.numero.itube.api.response.VideoResponse
-import io.reactivex.Observable
 
 interface IYoutubeRepository {
 
-    fun loadRelative(request: RelativeRequest): Observable<RelativeResponse>
+    suspend fun loadRelative(request: RelativeRequest): Result<RelativeResponse>
 
-    fun loadSearchResponse(request: SearchVideoRequest): Observable<VideoResponse>
+    suspend fun loadSearch(request: SearchVideoRequest): Result<VideoResponse>
 
-    fun loadChannelVideoResponse(request: ChannelVideoRequest): Observable<VideoResponse>
+    suspend fun loadChannelVideo(request: ChannelVideoRequest): Result<VideoResponse>
 
-    fun loadChannelDetail(key: String, channelId: String): Observable<ChannelDetailResponse>
+    suspend fun loadChannelDetail(key: String, channelId: String): Result<ChannelDetailResponse>
 }
