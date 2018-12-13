@@ -16,6 +16,8 @@
         <item name="colorOnSurface">@color/onSurface</item>
 
         <item name="colorStroke">@color/stroke</item>
+
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme.Rounded</item>
     </style>
 
     <style name="DarkTheme" parent="AppTheme">
@@ -36,25 +38,26 @@
         <item name="colorStroke">@color/strokeDark</item>
 
         <item name="android:colorControlHighlight">@color/colorControlHighLightDark</item>
+
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme.Rounded.Dark</item>
     </style>
 
     <style name="LightTheme.LightWindow" />
 
     <style name="DarkTheme.DarkWindow" />
 
-    <style name="BottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+    <style name="BottomSheetStyle.Rounded" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="shapeAppearanceOverlay">@style/LargeShapeAppearance</item>
     </style>
 
-    <style name="BottomSheetDialogTheme" parent="Theme.MaterialComponents.BottomSheetDialog">
+    <style name="BottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">?attr/colorBackground</item>
         <item name="android:colorBackground">@color/background</item>
     </style>
 
     <style name="BottomSheetDialogTheme.Rounded">
         <item name="android:windowIsFloating">false</item>
-        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+        <item name="bottomSheetStyle">@style/BottomSheetStyle.Rounded</item>
     </style>
 
     <style name="BottomSheetDialogTheme.Rounded.Dark">
