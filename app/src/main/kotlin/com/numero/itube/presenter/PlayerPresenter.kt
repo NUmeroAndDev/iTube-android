@@ -63,12 +63,13 @@ class PlayerPresenter(
         GlobalScope.launch(Dispatchers.Main) {
             val list = async(Dispatchers.Default) { favoriteRepository.loadFavoriteVideo() }.await()
             val position = list.indexOfFirst { it.id == currentVideoId }
-            val nextVideo = if (position == list.lastIndex) {
-                list.first()
-            } else {
-                list[position + 1]
+            if (list.isNotEmpty()) {
+                viewModel.nextFavoriteVideo = if (position == list.lastIndex) {
+                    list.first()
+                } else {
+                    list[position + 1]
+                }
             }
-            viewModel.nextFavoriteVideo = nextVideo
         }
     }
 
