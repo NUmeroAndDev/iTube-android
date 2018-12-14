@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
@@ -21,7 +22,7 @@ import com.numero.itube.viewmodel.FavoriteVideoListViewModel
 import kotlinx.android.synthetic.main.fragment_favorite_list.view.*
 import javax.inject.Inject
 
-class FavoriteListBottomSheetFragment : RoundedBottomSheetDialogFragment() {
+class FavoriteListBottomSheetFragment : BottomSheetDialogFragment() {
 
     @Inject
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
