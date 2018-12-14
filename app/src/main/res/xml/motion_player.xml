@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@+id/end"
+        motion:constraintSetStart="@+id/start"
+        motion:duration="350"
+        motion:interpolator="linear">
+
+        <!--FIXME SwipeさせたいがRecyclerViewとのフォーカスがうまくいかない-->
+        <!--<OnSwipe-->
+        <!--motion:dragDirection="dragUp"-->
+        <!--motion:touchAnchorId="@+id/top_image_container"-->
+        <!--motion:touchAnchorSide="bottom" />-->
+
+        <ConstraintSet android:id="@id/start">
+
+            <Constraint
+                android:id="@id/videoRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="parent" />
+
+            <Constraint
+                android:id="@id/top_image_container"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                motion:layout_constraintDimensionRatio="h,16:9"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toTopOf="parent" />
+
+            <Constraint
+                android:id="@id/playerContainer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                motion:layout_constraintBottom_toBottomOf="@id/top_image_container"
+                motion:layout_constraintEnd_toEndOf="@id/top_image_container"
+                motion:layout_constraintStart_toStartOf="@id/top_image_container"
+                motion:layout_constraintTop_toTopOf="@id/top_image_container" />
+
+            <Constraint
+                android:id="@id/recyclerview_front"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="@id/top_image_container" />
+
+            <Constraint
+                android:id="@id/bottomContainerLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="parent" />
+
+        </ConstraintSet>
+
+        <ConstraintSet android:id="@id/end">
+
+            <Constraint
+                android:id="@id/videoRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="@id/top_image_container" />
+
+            <Constraint
+                android:id="@id/top_image_container"
+                android:layout_width="0dp"
+                android:layout_height="126dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                motion:layout_constraintBottom_toTopOf="@id/videoRecyclerView"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toTopOf="parent" />
+
+            <Constraint
+                android:id="@id/playerContainer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                motion:layout_constraintBottom_toBottomOf="@id/top_image_container"
+                motion:layout_constraintDimensionRatio="H,9:16"
+                motion:layout_constraintStart_toStartOf="@id/top_image_container"
+                motion:layout_constraintTop_toTopOf="@id/top_image_container" />
+
+            <Constraint
+                android:id="@id/recyclerview_front"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:alpha="0"
+                motion:layout_constraintBottom_toBottomOf="@id/top_image_container"
+                motion:layout_constraintEnd_toEndOf="@id/top_image_container"
+                motion:layout_constraintStart_toStartOf="@id/top_image_container"
+                motion:layout_constraintTop_toBottomOf="@id/top_image_container" />
+
+            <Constraint
+                android:id="@id/bottomContainerLayout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                motion:layout_constraintBottom_toBottomOf="parent"
+                motion:layout_constraintEnd_toEndOf="parent"
+                motion:layout_constraintStart_toStartOf="parent"
+                motion:layout_constraintTop_toBottomOf="@id/top_image_container" />
+
+        </ConstraintSet>
+
+        <KeyFrameSet>
+
+            <KeyPosition
+                motion:curveFit="spline"
+                motion:framePosition="80"
+                motion:keyPositionType="deltaRelative"
+                motion:pathMotionArc="startHorizontal"
+                motion:percentX="0.3"
+                motion:target="@id/playerContainer" />
+
+            <KeyAttribute
+                android:alpha="0"
+                motion:framePosition="75"
+                motion:target="@id/recyclerview_front" />
+        </KeyFrameSet>
+    </Transition>
+
+</MotionScene>

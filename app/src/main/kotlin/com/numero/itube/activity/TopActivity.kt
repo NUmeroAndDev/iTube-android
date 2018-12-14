@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayer
+import com.google.android.youtube.player.YouTubePlayerFragment
 import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
@@ -16,12 +19,13 @@ import com.numero.itube.presenter.FavoriteVideoListPresenter
 import com.numero.itube.presenter.IFavoriteVideoListPresenter
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.FavoriteVideoRepository
+import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.view.adapter.FavoriteVideoListAdapter
 import com.numero.itube.viewmodel.FavoriteVideoListViewModel
 import kotlinx.android.synthetic.main.activity_top.*
 import javax.inject.Inject
 
-class TopActivity : AppCompatActivity() {
+class TopActivity : AppCompatActivity(), YouTubePlayer.OnInitializedListener {
 
     @Inject
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
@@ -36,7 +40,7 @@ class TopActivity : AppCompatActivity() {
         component?.inject(this)
         setTheme(configRepository.theme)
         setContentView(R.layout.activity_top)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(bottomAppBar)
 
         val viewModel = ViewModelProviders.of(this).get(FavoriteVideoListViewModel::class.java)
         viewModel.videoList.observeNonNull(this) {
@@ -49,7 +53,8 @@ class TopActivity : AppCompatActivity() {
         presenter = FavoriteVideoListPresenter(viewModel, favoriteVideoRepository)
 
         videoListAdapter.setOnItemClickListener {
-            startActivity(PlayerActivity.createIntent(this, it))
+            play(it)
+//            startActivity(PlayerActivity.createIntent(this, it))
         }
         videoRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -58,6 +63,19 @@ class TopActivity : AppCompatActivity() {
         }
         addButton.setOnClickListener {
             startActivity(SearchActivity.createIntent(this))
+        }
+
+        val youTubePlayerFragment = YouTubePlayerFragment.newInstance().apply {
+            this@TopActivity.fragmentManager.beginTransaction().replace(R.id.playerContainer, this).commit()
+        }
+        youTubePlayerFragment.initialize(configRepository.apiKey, this)
+    }
+
+    override fun onBackPressed() {
+        if (playerLayout.progress > 0.5f) {
+            playerLayout.transitionToStart()
+        } else {
+            playerLayout.transitionToEnd()
         }
     }
 
@@ -79,6 +97,22 @@ class TopActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         presenter.loadFavoriteVideoList()
+    }
+
+    private var player: YouTubePlayer? = null
+
+    override fun onInitializationSuccess(p0: YouTubePlayer.Provider?, youTubePlayer: YouTubePlayer?, b: Boolean) {
+        player = youTubePlayer
+    }
+
+    override fun onInitializationFailure(p0: YouTubePlayer.Provider?, p1: YouTubeInitializationResult?) {
+    }
+
+    private fun play(favoriteVideo: FavoriteVideo) {
+        if (playerLayout.progress > 0.5f) {
+            playerLayout.transitionToStart()
+        }
+        player?.loadVideo(favoriteVideo.id)
     }
 
     companion object {
