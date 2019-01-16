@@ -77,7 +77,7 @@ class RelativeVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         holder.setVideoDetail(videoDetail)
         holder.setChannelDetail(channelDetail)
         holder.videoDetailView.setOnChannelClickListener {
-            onChannelClickListener?.invoke(it, videoDetail.snippet.title, channelDetail.snippet.thumbnails.medium.url)
+            onChannelClickListener?.invoke(it, videoDetail.snippet.channelTitle, channelDetail.snippet.thumbnails.medium.url)
         }
     }
 
