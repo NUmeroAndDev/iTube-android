@@ -32,7 +32,7 @@ class FavoriteListBottomSheetFragment : BottomSheetDialogFragment() {
     private val favoriteVideoAdapter: FavoriteVideoAdapter = FavoriteVideoAdapter()
     private var transition: IFavoriteListTransition? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is IFavoriteListTransition) {
             transition = context
@@ -53,10 +53,10 @@ class FavoriteListBottomSheetFragment : BottomSheetDialogFragment() {
         presenter.loadFavoriteVideoList()
     }
 
-    override fun setupDialog(dialog: Dialog?, style: Int) {
+    override fun setupDialog(dialog: Dialog, style: Int) {
         val view = View.inflate(context, R.layout.fragment_favorite_list, null)
         setupFavoriteVideoList(view)
-        dialog?.setContentView(view)
+        dialog.setContentView(view)
     }
 
     private fun initViewModel(): FavoriteVideoListViewModel {

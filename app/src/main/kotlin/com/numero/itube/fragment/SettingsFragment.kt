@@ -3,6 +3,7 @@ package com.numero.itube.fragment
 import android.content.Context
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreference
 import com.numero.itube.BuildConfig
 import com.numero.itube.R
@@ -21,7 +22,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         setPreferencesFromResource(R.xml.settings, rootKey)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is SettingsFragmentListener) {
             listener = context
@@ -30,14 +31,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val licensesScreen = findPreference("licenses")
+        val licensesScreen = findPreference<PreferenceScreen>("licenses")
         licensesScreen.setOnPreferenceClickListener {
             listener?.showLicenses()
             false
         }
-        findPreference("version").summary = BuildConfig.VERSION_NAME
+        findPreference<PreferenceScreen>("version").summary = BuildConfig.VERSION_NAME
 
-        findPreference("key_is_use_dark_theme").setOnPreferenceChangeListener { _, newValue ->
+        findPreference<SwitchPreference>("key_is_use_dark_theme").setOnPreferenceChangeListener { _, newValue ->
             if (newValue is Boolean) {
                 listener?.onChangedTheme()
             }
