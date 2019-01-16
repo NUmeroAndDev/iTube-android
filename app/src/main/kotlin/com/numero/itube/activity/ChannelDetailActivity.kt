@@ -77,7 +77,8 @@ class ChannelDetailActivity : AppCompatActivity() {
 
     private fun initViews() {
         channelNameTextView.text = channelName
-        GlideApp.with(this).load(thumbnailUrl).centerCrop().into(channelImageView)
+
+        GlideApp.with(this).load(thumbnailUrl).circleCrop().into(channelImageView)
 
         videoListAdapter.setOnItemClickListener {
             startActivity(PlayerActivity.createIntent(this, it))
