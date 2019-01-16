@@ -4,7 +4,9 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +31,7 @@ class FavoriteListBottomSheetFragment : BottomSheetDialogFragment() {
     private lateinit var presenter: IFavoriteVideoListPresenter
     private val videoId: String by lazy { arguments?.getString(ARG_VIDEO_ID) as String }
 
+    private lateinit var emptyMessageTextView: TextView
     private val favoriteVideoAdapter: FavoriteVideoAdapter = FavoriteVideoAdapter()
     private var transition: IFavoriteListTransition? = null
 
@@ -63,6 +66,7 @@ class FavoriteListBottomSheetFragment : BottomSheetDialogFragment() {
         val viewModel = ViewModelProviders.of(this).get(FavoriteVideoListViewModel::class.java)
         viewModel.videoList.observeNonNull(this) {
             favoriteVideoAdapter.videoList = it
+            emptyMessageTextView.isVisible = it.isEmpty()
         }
         return viewModel
     }
@@ -79,6 +83,7 @@ class FavoriteListBottomSheetFragment : BottomSheetDialogFragment() {
             setHasFixedSize(true)
             adapter = favoriteVideoAdapter
         }
+        emptyMessageTextView = view.emptyMessageTextView
     }
 
     fun show(manager: FragmentManager) {
