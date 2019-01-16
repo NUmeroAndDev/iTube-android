@@ -11,12 +11,12 @@ import com.numero.itube.extension.remove
 
 class PlayerSettingsBottomSheetFragment : BottomSheetDialogFragment() {
 
-    override fun setupDialog(dialog: Dialog?, style: Int) {
+    override fun setupDialog(dialog: Dialog, style: Int) {
         val view = View.inflate(context, R.layout.fragment_player_settings, null)
-        dialog?.setContentView(view)
+        dialog.setContentView(view)
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
+    override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         val fragment = findFragment(R.id.playerSettingsFragment)
         if (fragment != null) {
@@ -24,7 +24,7 @@ class PlayerSettingsBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    fun show(manager: FragmentManager?) {
+    fun show(manager: FragmentManager) {
         show(manager, TAG)
     }
 
