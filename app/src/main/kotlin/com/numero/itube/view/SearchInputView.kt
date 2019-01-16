@@ -1,13 +1,12 @@
 package com.numero.itube.view
 
 import android.content.Context
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import com.numero.itube.R
 import com.numero.itube.extension.hideKeyboard
 import com.numero.itube.extension.showKeyboard
@@ -44,20 +43,12 @@ class SearchInputView @JvmOverloads constructor(context: Context, attrs: Attribu
             }
             false
         }
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                val text = editText.text
-                val query = text?.toString() ?: ""
-                listener?.onQueryTextChange(query)
-                clearButton.isVisible = query.isEmpty().not()
-            }
-        })
+        editText.doOnTextChanged { _, _, _, _ ->
+            val text = editText.text
+            val query = text?.toString() ?: ""
+            listener?.onQueryTextChange(query)
+            clearButton.isVisible = query.isEmpty().not()
+        }
         clearButton.setOnClickListener {
             editText.requestFocus()
             editText.setText("")
