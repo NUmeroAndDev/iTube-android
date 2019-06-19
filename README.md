@@ -1,7 +1,7 @@
 # iTube-android
 
-![Android Studio](https://img.shields.io/badge/Android%20Studio-3.4%20Beta01-green.svg)
-![Kotlin](https://img.shields.io/badge/kotlin-1.3.11-yellow.svg)
+![Android Studio](https://img.shields.io/badge/Android%20Studio-3.5%20Beta04-green.svg)
+![Kotlin](https://img.shields.io/badge/kotlin-1.3.31-yellow.svg)
 
 ## About  
 Youtube クライアントアプリ  
