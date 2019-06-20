@@ -17,7 +17,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
     private val cacheSearchVideoList: MutableList<Video.Search> = mutableListOf()
     private val cacheChannelVideoList: MutableList<Video.Search> = mutableListOf()
 
-    override suspend fun loadSearch(request: SearchVideoRequest): Result<VideoResponse> {
+    override suspend fun loadSearch(request: SearchVideoRequest): Result<SearchVideoList> {
         val call = if (request.hasNextPageToken) {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.search(request.key, request.searchWord, nextPageToken = token)
@@ -36,7 +36,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
                 val list = mutableListOf<Video.Search>().apply {
                     addAll(cacheSearchVideoList)
                 }
-                Result.Success(VideoResponse(response.nextPageToken, list, response.pageInfo.totalResults))
+                Result.Success(SearchVideoList(response.nextPageToken, list, response.pageInfo.totalResults))
             }
         }
     }

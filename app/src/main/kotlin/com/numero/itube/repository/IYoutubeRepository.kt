@@ -7,12 +7,13 @@ import com.numero.itube.api.response.ChannelDetailResponse
 import com.numero.itube.api.response.RelativeResponse
 import com.numero.itube.api.response.Result
 import com.numero.itube.api.response.VideoResponse
+import com.numero.itube.model.SearchVideoList
 
 interface IYoutubeRepository {
 
     suspend fun loadRelative(request: RelativeRequest): Result<RelativeResponse>
 
-    suspend fun loadSearch(request: SearchVideoRequest): Result<VideoResponse>
+    suspend fun loadSearch(request: SearchVideoRequest): Result<SearchVideoList>
 
     suspend fun loadChannelVideo(request: ChannelVideoRequest): Result<VideoResponse>
 
