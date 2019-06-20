@@ -9,13 +9,13 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.numero.itube.GlideApp
 import com.numero.itube.R
-import com.numero.itube.repository.db.FavoriteVideo
+import com.numero.itube.model.Video
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.view_holder_video.*
 
 class FavoriteVideoAdapter : RecyclerView.Adapter<FavoriteVideoAdapter.VideoViewHolder>() {
 
-    var videoList: List<FavoriteVideo> = listOf()
+    var videoList: List<Video.Favorite> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -27,9 +27,9 @@ class FavoriteVideoAdapter : RecyclerView.Adapter<FavoriteVideoAdapter.VideoView
             notifyDataSetChanged()
         }
 
-    private var onItemClickListener: ((video: FavoriteVideo) -> Unit)? = null
+    private var onItemClickListener: ((video: Video.Favorite) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: ((video: FavoriteVideo) -> Unit)) {
+    fun setOnItemClickListener(listener: ((video: Video.Favorite) -> Unit)) {
         onItemClickListener = listener
     }
 
@@ -42,7 +42,7 @@ class FavoriteVideoAdapter : RecyclerView.Adapter<FavoriteVideoAdapter.VideoView
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         val video = videoList[position]
         holder.setVideo(video)
-        holder.isCurrentVideo = video.id == currentVideoId
+        holder.isCurrentVideo = video.id.value == currentVideoId
         holder.itemView.setOnClickListener {
             if (holder.isCurrentVideo.not()) {
                 onItemClickListener?.invoke(video)
@@ -58,12 +58,12 @@ class FavoriteVideoAdapter : RecyclerView.Adapter<FavoriteVideoAdapter.VideoView
                 playingViewGroup.isVisible = field
             }
 
-        fun setVideo(video: FavoriteVideo) {
+        fun setVideo(video: Video.Favorite) {
             titleTextView.text = video.title
 
             val cornerRadius = itemView.context.resources.getDimensionPixelSize(R.dimen.thumbnail_corner_radius)
             GlideApp.with(itemView.context)
-                    .load(video.thumbnailUrl)
+                    .load(video.thumbnailUrl.value)
                     .transforms(CenterCrop(), RoundedCorners(cornerRadius))
                     .into(thumbnailImageView)
         }

@@ -24,7 +24,7 @@ class FavoriteVideoListPresenter(
             val list = async(Dispatchers.Default) { favoriteRepository.loadFavoriteVideo() }.await()
             viewModel.isShowProgress.postValue(false)
             viewModel.videoList.postValue(list)
-            viewModel.isShowEmptyMessage.postValue(list.isEmpty())
+            viewModel.isShowEmptyMessage.postValue(list.value.isEmpty())
         }
     }
 }

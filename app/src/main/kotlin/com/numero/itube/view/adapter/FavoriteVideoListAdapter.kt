@@ -9,21 +9,21 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.numero.itube.R
-import com.numero.itube.repository.db.FavoriteVideo
+import com.numero.itube.model.Video
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.view_holder_video.*
 
 class FavoriteVideoListAdapter : RecyclerView.Adapter<FavoriteVideoListAdapter.VideoViewHolder>() {
 
-    var videoList: List<FavoriteVideo> = listOf()
+    var videoList: List<Video.Favorite> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
 
-    private var onItemClickListener: ((favoriteVideo: FavoriteVideo) -> Unit)? = null
+    private var onItemClickListener: ((favoriteVideo: Video.Favorite) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: ((favoriteVideo: FavoriteVideo) -> Unit)) {
+    fun setOnItemClickListener(listener: ((favoriteVideo: Video.Favorite) -> Unit)) {
         onItemClickListener = listener
     }
 
@@ -43,7 +43,7 @@ class FavoriteVideoListAdapter : RecyclerView.Adapter<FavoriteVideoListAdapter.V
 
     class VideoViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun setVideo(video: FavoriteVideo) {
+        fun setVideo(video: Video.Favorite) {
             titleTextView.text = video.title
 
             val cornerRadius = itemView.context.resources.getDimensionPixelSize(R.dimen.thumbnail_corner_radius)

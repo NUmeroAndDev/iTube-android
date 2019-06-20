@@ -3,11 +3,11 @@ package com.numero.itube.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.numero.itube.api.response.RelativeResponse
-import com.numero.itube.repository.db.FavoriteVideo
+import com.numero.itube.model.Video
 
 class PlayerViewModel : ViewModel(), IErrorViewModel, IProgressViewModel {
 
-    var nextFavoriteVideo: FavoriteVideo? = null
+    var nextFavoriteVideo: Video.Favorite? = null
     val relativeResponse: MutableLiveData<RelativeResponse> = MutableLiveData()
     val isFavorite: MutableLiveData<Boolean> = MutableLiveData()
 

@@ -15,10 +15,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.extension.observeNonNull
+import com.numero.itube.model.Video
 import com.numero.itube.presenter.FavoriteVideoListPresenter
 import com.numero.itube.presenter.IFavoriteVideoListPresenter
 import com.numero.itube.repository.FavoriteVideoRepository
-import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.view.adapter.FavoriteVideoAdapter
 import com.numero.itube.viewmodel.FavoriteVideoListViewModel
 import kotlinx.android.synthetic.main.fragment_favorite_list.view.*
@@ -65,8 +65,8 @@ class FavoriteListBottomSheetFragment : BottomSheetDialogFragment() {
     private fun initViewModel(): FavoriteVideoListViewModel {
         val viewModel = ViewModelProviders.of(this).get(FavoriteVideoListViewModel::class.java)
         viewModel.videoList.observeNonNull(this) {
-            favoriteVideoAdapter.videoList = it
-            emptyMessageTextView.isVisible = it.isEmpty()
+            favoriteVideoAdapter.videoList = it.value
+            emptyMessageTextView.isVisible = it.value.isEmpty()
         }
         return viewModel
     }
@@ -94,7 +94,7 @@ class FavoriteListBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     interface IFavoriteListTransition {
-        fun playFavoriteVideo(favoriteVideo: FavoriteVideo)
+        fun playFavoriteVideo(favoriteVideo: Video.Favorite)
     }
 
     companion object {

@@ -17,7 +17,10 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
 import com.numero.itube.R
-import com.numero.itube.extension.*
+import com.numero.itube.extension.component
+import com.numero.itube.extension.getAttrColor
+import com.numero.itube.extension.getTintedDrawable
+import com.numero.itube.extension.observeNonNull
 import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
 import com.numero.itube.model.Video
@@ -26,7 +29,6 @@ import com.numero.itube.presenter.PlayerPresenter
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.FavoriteVideoRepository
 import com.numero.itube.repository.YoutubeRepository
-import com.numero.itube.repository.db.FavoriteVideo
 import com.numero.itube.view.adapter.RelativeVideoAdapter
 import com.numero.itube.viewmodel.PlayerViewModel
 import kotlinx.android.synthetic.main.activity_player.*
@@ -145,7 +147,7 @@ class PlayerActivity : AppCompatActivity(),
     override fun onError(p0: YouTubePlayer.ErrorReason?) {
     }
 
-    override fun playFavoriteVideo(favoriteVideo: FavoriteVideo) {
+    override fun playFavoriteVideo(favoriteVideo: Video.Favorite) {
         showVideo(favoriteVideo)
     }
 
@@ -204,7 +206,7 @@ class PlayerActivity : AppCompatActivity(),
         overridePendingTransition(0, 0)
     }
 
-    private fun showVideo(video: FavoriteVideo) {
+    private fun showVideo(video: Video.Favorite) {
         startActivity(PlayerActivity.createIntent(this, video))
         overridePendingTransition(0, 0)
     }
@@ -232,10 +234,10 @@ class PlayerActivity : AppCompatActivity(),
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
 
-        fun createIntent(context: Context, favoriteVideo: FavoriteVideo): Intent = Intent(context, PlayerActivity::class.java).apply {
+        fun createIntent(context: Context, favoriteVideo: Video.Favorite): Intent = Intent(context, PlayerActivity::class.java).apply {
             putExtra(BUNDLE_TITLE, favoriteVideo.title)
-            putExtra(BUNDLE_VIDEO_ID, favoriteVideo.id)
-            putExtra(BUNDLE_CHANNEL_ID, favoriteVideo.channelId)
+            putExtra(BUNDLE_VIDEO_ID, favoriteVideo.id.value)
+            putExtra(BUNDLE_CHANNEL_ID, favoriteVideo.channel.id.value)
             putExtra(BUNDLE_IS_FAVORITE_VIDEO, true)
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
