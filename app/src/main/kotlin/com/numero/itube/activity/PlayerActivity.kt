@@ -230,7 +230,7 @@ class PlayerActivity : AppCompatActivity(),
         fun createIntent(context: Context, video: Video.Search): Intent = Intent(context, PlayerActivity::class.java).apply {
             putExtra(BUNDLE_TITLE, video.title)
             putExtra(BUNDLE_VIDEO_ID, video.id.value)
-            putExtra(BUNDLE_CHANNEL_ID, video.channelId)
+            putExtra(BUNDLE_CHANNEL_ID, video.channel.id.value)
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
 

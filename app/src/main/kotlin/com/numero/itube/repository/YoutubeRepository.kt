@@ -6,9 +6,7 @@ import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.*
 import com.numero.itube.extension.executeSync
-import com.numero.itube.model.ThumbnailUrl
-import com.numero.itube.model.Video
-import com.numero.itube.model.VideoId
+import com.numero.itube.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
@@ -93,7 +91,10 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
                     VideoId(it.id.videoId),
                     ThumbnailUrl(it.snippet.thumbnails.high.url),
                     it.snippet.title,
-                    it.snippet.channelId
+                    Channel(
+                            ChannelId(it.snippet.channelId),
+                            it.snippet.channelTitle
+                    )
             )
         }
     }

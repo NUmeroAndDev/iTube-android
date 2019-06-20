@@ -3,20 +3,22 @@ package com.numero.itube.model
 sealed class Video(
         val id: VideoId,
         val thumbnailUrl: ThumbnailUrl,
-        val title: String
+        val title: String,
+        val channel: Channel
 ) {
     class Favorite(
             id: VideoId,
             thumbnailUrl: ThumbnailUrl,
-            title: String
-    ) : Video(id, thumbnailUrl, title)
+            title: String,
+            channel: Channel
+    ) : Video(id, thumbnailUrl, title, channel)
 
     class Search(
             id: VideoId,
             thumbnailUrl: ThumbnailUrl,
             title: String,
-            val channelId: String // FIXME
-    ) : Video(id, thumbnailUrl, title)
+            channel: Channel
+    ) : Video(id, thumbnailUrl, title, channel)
 }
 
 inline class VideoId(val value: String)
