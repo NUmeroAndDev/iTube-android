@@ -1,4 +1,4 @@
-package com.numero.itube.model
+package com.numero.itube.api.response
 
 import se.ansman.kotshi.JsonSerializable
 import java.io.Serializable
