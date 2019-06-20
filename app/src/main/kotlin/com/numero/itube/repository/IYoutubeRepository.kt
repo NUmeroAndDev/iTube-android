@@ -13,8 +13,6 @@ interface IYoutubeRepository {
 
     suspend fun loadRelative(request: RelativeRequest): Result<RelativeResponse>
 
-    suspend fun loadSearch(request: SearchVideoRequest): Result<SearchVideoList>
-
     suspend fun loadChannelVideo(request: ChannelVideoRequest): Result<VideoResponse>
 
     suspend fun loadChannelDetail(key: String, channelId: String): Result<ChannelDetail>
