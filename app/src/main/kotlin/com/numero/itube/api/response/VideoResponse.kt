@@ -1,10 +1,11 @@
 package com.numero.itube.api.response
 
+import com.numero.itube.model.Video
 import java.io.Serializable
 
 data class VideoResponse(
         val nextPageToken: String?,
-        var videoList: List<SearchResponse.Video>,
+        var videoList: List<Video.Search>,
         private val totalResults: Int
 ) : Serializable {
 

@@ -22,6 +22,7 @@ import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.extension.*
 import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
+import com.numero.itube.model.Video
 import com.numero.itube.presenter.IPlayerPresenter
 import com.numero.itube.presenter.PlayerPresenter
 import com.numero.itube.repository.ConfigRepository
@@ -200,7 +201,7 @@ class PlayerActivity : AppCompatActivity(),
         fab.setImageResource(if (isRegistered) R.drawable.ic_favorite else R.drawable.ic_favorite_border)
     }
 
-    private fun showVideo(video: SearchResponse.Video) {
+    private fun showVideo(video: Video.Search) {
         startActivity(PlayerActivity.createIntent(this, video))
         overridePendingTransition(0, 0)
     }
@@ -226,10 +227,10 @@ class PlayerActivity : AppCompatActivity(),
         private const val BUNDLE_CHANNEL_ID = "BUNDLE_CHANNEL_ID"
         private const val BUNDLE_IS_FAVORITE_VIDEO = "BUNDLE_IS_FAVORITE_VIDEO"
 
-        fun createIntent(context: Context, video: SearchResponse.Video): Intent = Intent(context, PlayerActivity::class.java).apply {
-            putExtra(BUNDLE_TITLE, video.snippet.title)
-            putExtra(BUNDLE_VIDEO_ID, video.id.videoId)
-            putExtra(BUNDLE_CHANNEL_ID, video.snippet.channelId)
+        fun createIntent(context: Context, video: Video.Search): Intent = Intent(context, PlayerActivity::class.java).apply {
+            putExtra(BUNDLE_TITLE, video.title)
+            putExtra(BUNDLE_VIDEO_ID, video.id)
+            putExtra(BUNDLE_CHANNEL_ID, video.channelId)
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
 

@@ -6,6 +6,8 @@ import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.*
 import com.numero.itube.extension.executeSync
+import com.numero.itube.model.ThumbnailUrl
+import com.numero.itube.model.Video
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
@@ -13,8 +15,8 @@ import kotlinx.coroutines.withContext
 class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository {
 
     // ページング用
-    private val cacheSearchVideoList: MutableList<SearchResponse.Video> = mutableListOf()
-    private val cacheChannelVideoList: MutableList<SearchResponse.Video> = mutableListOf()
+    private val cacheSearchVideoList: MutableList<Video.Search> = mutableListOf()
+    private val cacheChannelVideoList: MutableList<Video.Search> = mutableListOf()
 
     override suspend fun loadSearch(request: SearchVideoRequest): Result<VideoResponse> {
         val call = if (request.hasNextPageToken) {
@@ -31,8 +33,8 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
                 if (request.hasNextPageToken.not()) {
                     cacheSearchVideoList.clear()
                 }
-                cacheSearchVideoList.addAll(response.items)
-                val list = mutableListOf<SearchResponse.Video>().apply {
+                cacheSearchVideoList.addAll(response.items.mapToVideoList())
+                val list = mutableListOf<Video.Search>().apply {
                     addAll(cacheSearchVideoList)
                 }
                 Result.Success(VideoResponse(response.nextPageToken, list, response.pageInfo.totalResults))
@@ -45,7 +47,7 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         val channelDetailResult = async { youtubeApi.channel(request.key, request.channelId).executeSync() }.await()
         val videoDetailResult = async { youtubeApi.videoDetail(request.key, request.videoId).executeSync() }.await()
         if (searchRelativeResult is Result.Success && channelDetailResult is Result.Success && videoDetailResult is Result.Success) {
-            val response = RelativeResponse(searchRelativeResult.response, channelDetailResult.response, videoDetailResult.response)
+            val response = RelativeResponse(searchRelativeResult.response.items.mapToVideoList(), channelDetailResult.response, videoDetailResult.response)
             try {
                 Result.Success(response.checkResponse())
             } catch (t: Throwable) {
@@ -71,8 +73,8 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
                 if (request.hasNextPageToken.not()) {
                     cacheChannelVideoList.clear()
                 }
-                cacheChannelVideoList.addAll(response.items)
-                val list = mutableListOf<SearchResponse.Video>().apply {
+                cacheChannelVideoList.addAll(response.items.mapToVideoList())
+                val list = mutableListOf<Video.Search>().apply {
                     addAll(cacheChannelVideoList)
                 }
                 Result.Success(VideoResponse(response.nextPageToken, list, response.pageInfo.totalResults))
@@ -82,5 +84,11 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
 
     override suspend fun loadChannelDetail(key: String, channelId: String): Result<ChannelDetailResponse> {
         return youtubeApi.channelDetail(key, channelId).executeSync()
+    }
+
+    private fun List<SearchResponse.Video>.mapToVideoList(): List<Video.Search> {
+        return map {
+            Video.Search(it.id.videoId, ThumbnailUrl(it.snippet.thumbnails.high.url), it.snippet.title, it.snippet.channelId)
+        }
     }
 }
