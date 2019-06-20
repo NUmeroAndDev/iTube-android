@@ -8,16 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.extension.observeNonNull
-import com.numero.itube.presenter.ISearchVideoPresenter
-import com.numero.itube.presenter.SearchVideoPresenter
 import com.numero.itube.repository.ConfigRepository
-import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.SearchInputView
 import com.numero.itube.view.adapter.VideoListAdapter
@@ -28,11 +26,14 @@ import javax.inject.Inject
 class SearchActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var youtubeRepository: YoutubeRepository
-    @Inject
     lateinit var configRepository: ConfigRepository
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var presenter: ISearchVideoPresenter
+    private val viewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(SearchVideoViewModel::class.java)
+    }
+
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,20 +50,8 @@ class SearchActivity : AppCompatActivity() {
             setHomeAsUpIndicator(drawable)
         }
 
-        val viewModel = ViewModelProviders.of(this).get(SearchVideoViewModel::class.java)
-        viewModel.videoList.observeNonNull(this) {
-            videoListAdapter.submitList(it)
-        }
-        viewModel.isShowProgress.observeNonNull(this) { isShow: Boolean ->
-            progressBar.isInvisible = isShow.not()
-        }
-        viewModel.isShowError.observeNonNull(this) { isShow: Boolean ->
-            errorView.isInvisible = isShow.not()
-        }
-
-        presenter = SearchVideoPresenter(viewModel, youtubeRepository, configRepository)
-
         initViews()
+        setupObserve()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -77,16 +66,16 @@ class SearchActivity : AppCompatActivity() {
 
     private fun initViews() {
         errorView.setOnRetryListener {
-            presenter.retry()
+            viewModel.retry()
         }
         searchInputEditText.setOnQueryTextListener(object : SearchInputView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String) {
-                presenter.search(query)
+                viewModel.executeSearch(query)
             }
 
             override fun onQueryTextChange(newText: String) {
                 // 初期化
-                presenter.clear()
+                //viewModel.clear()
             }
         })
         videoListAdapter.setOnItemClickListener {
@@ -96,10 +85,22 @@ class SearchActivity : AppCompatActivity() {
             val manager = LinearLayoutManager(context)
             layoutManager = manager
             addOnScrollListener(EndlessScrollListener(manager) {
-                presenter.requestMore()
+                viewModel.executeMoreLoad()
             })
             setHasFixedSize(true)
             adapter = videoListAdapter
+        }
+    }
+
+    private fun setupObserve() {
+        viewModel.searchVideoListLiveData.observe(this) {
+            videoListAdapter.submitList(it.videoList)
+        }
+        viewModel.isShowProgress.observeNonNull(this) { isShow: Boolean ->
+            progressBar.isInvisible = isShow.not()
+        }
+        viewModel.isShowError.observeNonNull(this) { isShow: Boolean ->
+            errorView.isInvisible = isShow.not()
         }
     }
 
