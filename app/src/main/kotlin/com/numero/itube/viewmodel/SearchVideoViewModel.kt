@@ -3,6 +3,7 @@ package com.numero.itube.viewmodel
 import androidx.lifecycle.*
 import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.Result
+import com.numero.itube.model.Action
 import com.numero.itube.model.SearchVideoList
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.VideoRepository
@@ -52,5 +53,3 @@ class SearchVideoViewModel @Inject constructor(
         // TODO
     }
 }
-
-data class Action<T>(val value: T)

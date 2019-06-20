@@ -6,18 +6,16 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.GlideApp
 import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
-import com.numero.itube.extension.observeNonNull
-import com.numero.itube.presenter.ChannelVideoListPresenter
-import com.numero.itube.presenter.IChannelVideoListPresenter
 import com.numero.itube.repository.ConfigRepository
-import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.adapter.VideoListAdapter
 import com.numero.itube.viewmodel.ChannelVideoListViewModel
@@ -31,11 +29,14 @@ class ChannelDetailActivity : AppCompatActivity() {
     private val thumbnailUrl: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_THUMBNAIL_URL) }
 
     @Inject
-    lateinit var youtubeApiRepository: YoutubeRepository
-    @Inject
     lateinit var configRepository: ConfigRepository
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var presenter: IChannelVideoListPresenter
+    private val viewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(ChannelVideoListViewModel::class.java)
+    }
+
     private val videoListAdapter: VideoListAdapter = VideoListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,13 +56,10 @@ class ChannelDetailActivity : AppCompatActivity() {
         }
 
         initViews()
-        val viewModel = initViewModel()
-
-        presenter = ChannelVideoListPresenter(viewModel, channelId, youtubeApiRepository, configRepository)
-
+        setupObserve()
         if (savedInstanceState == null) {
             // 画面回転時には以前のデータが復帰される
-            presenter.loadChannelVideo()
+            viewModel.executeLoadChannelVideo(channelId)
         }
     }
 
@@ -87,24 +85,22 @@ class ChannelDetailActivity : AppCompatActivity() {
             val manager = LinearLayoutManager(context)
             layoutManager = manager
             addOnScrollListener(EndlessScrollListener(manager) {
-                presenter.loadMoreVideo()
+                viewModel.executeMoreLoad()
             })
             adapter = videoListAdapter
         }
     }
 
-    private fun initViewModel(): ChannelVideoListViewModel {
-        val viewModel = ViewModelProviders.of(this).get(ChannelVideoListViewModel::class.java)
-        viewModel.videoList.observeNonNull(this) {
-            videoListAdapter.submitList(it)
+    private fun setupObserve() {
+        viewModel.channelVideoListLiveData.observe(this) {
+            videoListAdapter.submitList(it.videoList)
         }
-        viewModel.isShowProgress.observeNonNull(this) {
-            progressBar.isInvisible = it.not()
-        }
-        viewModel.channelDetail.observeNonNull(this) {
+        viewModel.channelDetail.observe(this) {
             GlideApp.with(this).load(it.bannerUrl.value).into(thumbnailImageView)
         }
-        return viewModel
+        viewModel.isShowProgress.observe(this) {
+            progressBar.isInvisible = it.not()
+        }
     }
 
     companion object {

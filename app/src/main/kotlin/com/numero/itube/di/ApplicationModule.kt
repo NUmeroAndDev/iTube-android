@@ -19,12 +19,3 @@ class ApplicationModule(private val application: Application) {
         return application.applicationContext
     }
 }
-
-@Module
-abstract class ViewModelModule {
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(SearchVideoViewModel::class)
-    abstract fun bindSearchVideoViewModel(viewModel: SearchVideoViewModel): ViewModel
-}
