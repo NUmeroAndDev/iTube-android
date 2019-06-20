@@ -25,6 +25,12 @@ class RepositoryModule {
 
     @Provides
     @Singleton
+    fun provideChannelRepository(youtubeApi: YoutubeApi): ChannelRepository {
+        return ChannelRepositoryImpl(youtubeApi)
+    }
+
+    @Provides
+    @Singleton
     fun provideFavoriteVideoRepository(favoriteVideoDao: FavoriteVideoDao): FavoriteVideoRepository {
         return FavoriteVideoRepository(favoriteVideoDao)
     }
