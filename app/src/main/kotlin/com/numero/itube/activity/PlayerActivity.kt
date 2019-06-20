@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.forEach
 import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +17,6 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
 import com.numero.itube.R
-import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.extension.*
 import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
