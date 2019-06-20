@@ -3,7 +3,6 @@ package com.numero.itube.repository
 import com.numero.itube.api.YoutubeApi
 import com.numero.itube.api.request.ChannelVideoRequest
 import com.numero.itube.api.request.RelativeRequest
-import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.RelativeResponse
 import com.numero.itube.api.response.Result
 import com.numero.itube.api.response.SearchResponse
@@ -17,32 +16,7 @@ import kotlinx.coroutines.withContext
 class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository {
 
     // ページング用
-    private val cacheSearchVideoList: MutableList<Video.Search> = mutableListOf()
     private val cacheChannelVideoList: MutableList<Video.Search> = mutableListOf()
-
-    override suspend fun loadSearch(request: SearchVideoRequest): Result<SearchVideoList> {
-        val call = if (request.hasNextPageToken) {
-            val token = checkNotNull(request.nextPageToken)
-            youtubeApi.search(request.key, request.searchWord, nextPageToken = token)
-        } else {
-            youtubeApi.search(request.key, request.searchWord)
-        }
-        val result = call.executeSync()
-        return when (result) {
-            is Result.Error -> Result.Error(result.throwable)
-            is Result.Success -> {
-                val response = result.response
-                if (request.hasNextPageToken.not()) {
-                    cacheSearchVideoList.clear()
-                }
-                cacheSearchVideoList.addAll(response.items.mapToVideoList())
-                val list = mutableListOf<Video.Search>().apply {
-                    addAll(cacheSearchVideoList)
-                }
-                Result.Success(SearchVideoList(response.nextPageToken, list, response.pageInfo.totalResults))
-            }
-        }
-    }
 
     override suspend fun loadRelative(request: RelativeRequest): Result<RelativeResponse> = withContext(Dispatchers.Default) {
         val searchRelativeResult = async { youtubeApi.searchRelative(request.key, request.videoId).executeSync() }.await()
