@@ -8,6 +8,7 @@ import com.numero.itube.api.response.*
 import com.numero.itube.extension.executeSync
 import com.numero.itube.model.ThumbnailUrl
 import com.numero.itube.model.Video
+import com.numero.itube.model.VideoId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
@@ -88,7 +89,12 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
 
     private fun List<SearchResponse.Video>.mapToVideoList(): List<Video.Search> {
         return map {
-            Video.Search(it.id.videoId, ThumbnailUrl(it.snippet.thumbnails.high.url), it.snippet.title, it.snippet.channelId)
+            Video.Search(
+                    VideoId(it.id.videoId),
+                    ThumbnailUrl(it.snippet.thumbnails.high.url),
+                    it.snippet.title,
+                    it.snippet.channelId
+            )
         }
     }
 }
