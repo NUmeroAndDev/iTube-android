@@ -4,7 +4,10 @@ import com.numero.itube.api.YoutubeApi
 import com.numero.itube.api.request.ChannelVideoRequest
 import com.numero.itube.api.request.RelativeRequest
 import com.numero.itube.api.request.SearchVideoRequest
-import com.numero.itube.api.response.*
+import com.numero.itube.api.response.RelativeResponse
+import com.numero.itube.api.response.Result
+import com.numero.itube.api.response.SearchResponse
+import com.numero.itube.api.response.VideoResponse
 import com.numero.itube.extension.executeSync
 import com.numero.itube.model.*
 import kotlinx.coroutines.Dispatchers
@@ -81,8 +84,21 @@ class YoutubeRepository(private val youtubeApi: YoutubeApi) : IYoutubeRepository
         }
     }
 
-    override suspend fun loadChannelDetail(key: String, channelId: String): Result<ChannelDetailResponse> {
-        return youtubeApi.channelDetail(key, channelId).executeSync()
+    override suspend fun loadChannelDetail(key: String, channelId: String): Result<ChannelDetail> {
+        val result = youtubeApi.channelDetail(key, channelId).executeSync()
+        return when (result) {
+            is Result.Error -> Result.Error(result.throwable)
+            is Result.Success -> {
+                val response = result.response
+                val detail = response.items[0]
+                Result.Success(ChannelDetail(
+                        ChannelId(detail.id),
+                        detail.snippet.title,
+                        ThumbnailUrl(detail.snippet.thumbnails.high.url),
+                        BannerUrl(detail.branding.image.bannerTvMediumImageUrl)
+                ))
+            }
+        }
     }
 
     private fun List<SearchResponse.Video>.mapToVideoList(): List<Video.Search> {
