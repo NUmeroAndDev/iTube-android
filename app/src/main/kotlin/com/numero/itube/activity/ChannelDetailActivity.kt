@@ -102,8 +102,7 @@ class ChannelDetailActivity : AppCompatActivity() {
             progressBar.isInvisible = it.not()
         }
         viewModel.channelDetail.observeNonNull(this) {
-            val urlString = it.branding.image.bannerTvMediumImageUrl
-            GlideApp.with(this).load(urlString).into(thumbnailImageView)
+            GlideApp.with(this).load(it.bannerUrl.value).into(thumbnailImageView)
         }
         return viewModel
     }

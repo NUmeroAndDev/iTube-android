@@ -64,7 +64,7 @@ enum VersionSuffix {
     }
 }
 
-ext{
+ext {
     def appMajor = 1
     def appMinor = 0
     def appPatch = 0

@@ -1,11 +1,12 @@
 package com.numero.itube.repository
 
+import com.numero.itube.model.FavoriteVideoList
 import com.numero.itube.repository.db.FavoriteVideo
 
 interface IFavoriteVideoRepository {
     suspend fun createFavoriteVideo(favoriteVideo: FavoriteVideo)
 
-    suspend fun loadFavoriteVideo(): List<FavoriteVideo>
+    suspend fun loadFavoriteVideo(): FavoriteVideoList
 
     suspend fun updateFavoriteVideo(favoriteVideo: FavoriteVideo)
 

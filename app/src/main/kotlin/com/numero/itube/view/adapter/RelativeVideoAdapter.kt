@@ -11,8 +11,8 @@ import com.numero.itube.GlideApp
 import com.numero.itube.R
 import com.numero.itube.api.response.ChannelResponse
 import com.numero.itube.api.response.RelativeResponse
-import com.numero.itube.api.response.SearchResponse
 import com.numero.itube.api.response.VideoDetailResponse
+import com.numero.itube.model.Video
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.view_holder_video.*
 import kotlinx.android.synthetic.main.view_holder_video_detail.*
@@ -25,10 +25,10 @@ class RelativeVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             notifyDataSetChanged()
         }
 
-    private var onItemClickListener: ((video: SearchResponse.Video) -> Unit)? = null
+    private var onItemClickListener: ((video: Video.Search) -> Unit)? = null
     private var onChannelClickListener: ((imageView: AppCompatImageView, channelName: String, imageUrl: String) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: ((video: SearchResponse.Video) -> Unit)) {
+    fun setOnItemClickListener(listener: ((video: Video.Search) -> Unit)) {
         onItemClickListener = listener
     }
 
@@ -46,7 +46,7 @@ class RelativeVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount(): Int {
         val response = relativeResponse ?: return 0
-        val videoList = response.searchResponse.items
+        val videoList = response.searchVideoList
         return videoList.size + 1
     }
 
@@ -55,7 +55,7 @@ class RelativeVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         if (holder is VideoDetailViewHolder) {
             updateVideoDetailViewHolder(holder, response)
         } else if (holder is VideoViewHolder) {
-            val video = response.searchResponse.items[position - 1]
+            val video = response.searchVideoList[position - 1]
             holder.setVideo(video)
             holder.itemView.setOnClickListener {
                 onItemClickListener?.invoke(video)
@@ -95,12 +95,12 @@ class RelativeVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class VideoViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun setVideo(video: SearchResponse.Video) {
-            titleTextView.text = video.snippet.title
+        fun setVideo(video: Video.Search) {
+            titleTextView.text = video.title
 
             val cornerRadius = itemView.context.resources.getDimensionPixelSize(R.dimen.thumbnail_corner_radius)
             GlideApp.with(itemView.context)
-                    .load(video.snippet.thumbnails.high.url)
+                    .load(video.thumbnailUrl.value)
                     .transforms(CenterCrop(), RoundedCorners(cornerRadius))
                     .into(thumbnailImageView)
             //.diskCacheStrategy(DiskCacheStrategy.NONE)

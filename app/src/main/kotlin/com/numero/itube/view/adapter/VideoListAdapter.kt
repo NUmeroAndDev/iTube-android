@@ -10,15 +10,15 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.numero.itube.GlideApp
 import com.numero.itube.R
-import com.numero.itube.api.response.SearchResponse
+import com.numero.itube.model.Video
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.view_holder_video.*
 
-class VideoListAdapter : ListAdapter<SearchResponse.Video, VideoListAdapter.VideoViewHolder>(diffCallback) {
+class VideoListAdapter : ListAdapter<Video.Search, VideoListAdapter.VideoViewHolder>(diffCallback) {
 
-    private var onItemClickListener: ((video: SearchResponse.Video) -> Unit)? = null
+    private var onItemClickListener: ((video: Video.Search) -> Unit)? = null
 
-    fun setOnItemClickListener(listener: ((video: SearchResponse.Video) -> Unit)) {
+    fun setOnItemClickListener(listener: ((video: Video.Search) -> Unit)) {
         onItemClickListener = listener
     }
 
@@ -36,12 +36,12 @@ class VideoListAdapter : ListAdapter<SearchResponse.Video, VideoListAdapter.Vide
 
     class VideoViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun setVideo(video: SearchResponse.Video) {
-            titleTextView.text = video.snippet.title
+        fun setVideo(video: Video) {
+            titleTextView.text = video.title
 
             val cornerRadius = itemView.context.resources.getDimensionPixelSize(R.dimen.thumbnail_corner_radius)
             GlideApp.with(itemView.context)
-                    .load(video.snippet.thumbnails.high.url)
+                    .load(video.thumbnailUrl.value)
                     .transforms(CenterCrop(), RoundedCorners(cornerRadius))
                     .into(thumbnailImageView)
 //                    .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -49,13 +49,13 @@ class VideoListAdapter : ListAdapter<SearchResponse.Video, VideoListAdapter.Vide
     }
 
     companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<SearchResponse.Video>() {
-            override fun areItemsTheSame(oldItem: SearchResponse.Video, newItem: SearchResponse.Video): Boolean {
-                return oldItem.id.videoId == newItem.id.videoId
+        val diffCallback = object : DiffUtil.ItemCallback<Video.Search>() {
+            override fun areItemsTheSame(oldItem: Video.Search, newItem: Video.Search): Boolean {
+                return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: SearchResponse.Video, newItem: SearchResponse.Video): Boolean {
-                return oldItem == newItem
+            override fun areContentsTheSame(oldItem: Video.Search, newItem: Video.Search): Boolean {
+                return oldItem.equals(newItem)
             }
         }
     }

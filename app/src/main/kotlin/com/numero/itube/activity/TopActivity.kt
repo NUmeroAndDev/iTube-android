@@ -40,7 +40,7 @@ class TopActivity : AppCompatActivity() {
 
         val viewModel = ViewModelProviders.of(this).get(FavoriteVideoListViewModel::class.java)
         viewModel.videoList.observeNonNull(this) {
-            videoListAdapter.videoList = it
+            videoListAdapter.videoList = it.value
         }
         viewModel.isShowEmptyMessage.observeNonNull(this) {
             noFavoriteVideoTextView.isInvisible = it.not()

@@ -38,7 +38,7 @@ class ChannelVideoListPresenter(
             viewModel.isShowProgress.postValue(false)
             if (channelDetailResult is Result.Success && channelVideoResult is Result.Success) {
                 val channelDetail = channelDetailResult.response
-                viewModel.channelDetail.postValue(channelDetail.items[0])
+                viewModel.channelDetail.postValue(channelDetail)
 
                 val response = channelVideoResult.response
                 viewModel.nextPageToken.postValue(response.nextPageToken)

@@ -1,9 +1,8 @@
-package com.numero.itube.api.response
+package com.numero.itube.model
 
-import com.numero.itube.model.Video
 import java.io.Serializable
 
-data class VideoResponse(
+data class SearchVideoList(
         val nextPageToken: String?,
         var videoList: List<Video.Search>,
         private val totalResults: Int

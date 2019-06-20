@@ -1,12 +1,14 @@
 package com.numero.itube.api.response
 
+import com.numero.itube.model.Video
+
 data class RelativeResponse(
-        val searchResponse: SearchResponse,
+        val searchVideoList: List<Video.Search>,
         val channelResponse: ChannelResponse,
         val videoDetailResponse: VideoDetailResponse) {
 
     fun checkResponse(): RelativeResponse {
-        if (searchResponse.items.isEmpty() or videoDetailResponse.items.isEmpty()) {
+        if (searchVideoList.isEmpty() or videoDetailResponse.items.isEmpty()) {
             throw Exception()
         }
         return this

@@ -2,12 +2,12 @@ package com.numero.itube.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.numero.itube.api.response.SearchResponse
+import com.numero.itube.model.Video
 
 class SearchVideoViewModel : ViewModel(), IErrorViewModel, IProgressViewModel {
 
     var searchWord: String? = null
-    val videoList: MutableLiveData<List<SearchResponse.Video>> = MutableLiveData()
+    val videoList: MutableLiveData<List<Video.Search>> = MutableLiveData()
     val nextPageToken: MutableLiveData<String> = MutableLiveData()
     val hasNextPage: MutableLiveData<Boolean> = MutableLiveData()
 

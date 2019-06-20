@@ -1,7 +1,5 @@
 package com.numero.itube.api.response
 
-import com.numero.itube.model.PageInfo
-import com.numero.itube.model.Thumbnail
 import com.squareup.moshi.Json
 import se.ansman.kotshi.JsonSerializable
 import java.io.Serializable

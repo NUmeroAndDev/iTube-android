@@ -2,11 +2,11 @@ package com.numero.itube.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.numero.itube.repository.db.FavoriteVideo
+import com.numero.itube.model.FavoriteVideoList
 
 class FavoriteVideoListViewModel : ViewModel(), IErrorViewModel, IProgressViewModel {
 
-    val videoList: MutableLiveData<List<FavoriteVideo>> = MutableLiveData()
+    val videoList: MutableLiveData<FavoriteVideoList> = MutableLiveData()
     val isShowEmptyMessage: MutableLiveData<Boolean> = MutableLiveData()
 
     override val error: MutableLiveData<Throwable> = MutableLiveData()

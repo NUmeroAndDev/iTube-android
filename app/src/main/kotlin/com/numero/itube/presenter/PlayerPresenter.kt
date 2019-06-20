@@ -62,12 +62,12 @@ class PlayerPresenter(
     override fun loadNextFavoriteVideo(currentVideoId: String) {
         GlobalScope.launch(Dispatchers.Main) {
             val list = async(Dispatchers.Default) { favoriteRepository.loadFavoriteVideo() }.await()
-            val position = list.indexOfFirst { it.id == currentVideoId }
-            if (list.isNotEmpty()) {
-                viewModel.nextFavoriteVideo = if (position == list.lastIndex) {
-                    list.first()
+            val position = list.value.indexOfFirst { it.id.value == currentVideoId }
+            if (list.value.isNotEmpty()) {
+                viewModel.nextFavoriteVideo = if (position == list.value.lastIndex) {
+                    list.value.first()
                 } else {
-                    list[position + 1]
+                    list.value[position + 1]
                 }
             }
         }
