@@ -7,6 +7,6 @@ import com.numero.itube.model.SearchVideoList
 
 interface VideoRepository {
 
-    fun searchVideoList(request: SearchVideoRequest): LiveData<Result<SearchVideoList>>
+    fun fetchVideoList(request: SearchVideoRequest): LiveData<Result<SearchVideoList>>
 
 }

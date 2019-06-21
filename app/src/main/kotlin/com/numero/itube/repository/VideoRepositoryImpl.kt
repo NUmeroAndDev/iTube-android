@@ -16,7 +16,7 @@ class VideoRepositoryImpl(
 
     private val cacheSearchVideoList: MutableList<Video.Search> = mutableListOf()
 
-    override fun searchVideoList(request: SearchVideoRequest): LiveData<Result<SearchVideoList>> = liveData(Dispatchers.IO) {
+    override fun fetchVideoList(request: SearchVideoRequest): LiveData<Result<SearchVideoList>> = liveData(Dispatchers.IO) {
         val call = if (request.hasNextPageToken) {
             val token = checkNotNull(request.nextPageToken)
             youtubeApi.search(request.key, request.searchWord, nextPageToken = token)
