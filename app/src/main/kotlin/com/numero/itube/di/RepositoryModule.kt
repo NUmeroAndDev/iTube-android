@@ -2,6 +2,7 @@ package com.numero.itube.di
 
 import android.content.Context
 import com.numero.itube.api.YoutubeApi
+import com.numero.itube.data.VideoDataSource
 import com.numero.itube.repository.*
 import com.numero.itube.repository.db.FavoriteVideoDao
 import dagger.Module
@@ -19,8 +20,8 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideVideoRepository(youtubeApi: YoutubeApi): VideoRepository {
-        return VideoRepositoryImpl(youtubeApi)
+    fun provideVideoRepository(videoDataSource: VideoDataSource): VideoRepository {
+        return VideoRepositoryImpl(videoDataSource)
     }
 
     @Provides

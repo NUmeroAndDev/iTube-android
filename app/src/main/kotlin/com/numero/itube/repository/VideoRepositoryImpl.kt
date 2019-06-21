@@ -2,28 +2,21 @@ package com.numero.itube.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.numero.itube.api.YoutubeApi
 import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.Result
 import com.numero.itube.api.response.SearchResponse
-import com.numero.itube.extension.executeSync
+import com.numero.itube.data.VideoDataSource
 import com.numero.itube.model.*
 import kotlinx.coroutines.Dispatchers
 
 class VideoRepositoryImpl(
-        private val youtubeApi: YoutubeApi
+        private val videoDataSource: VideoDataSource
 ) : VideoRepository {
 
     private val cacheSearchVideoList: MutableList<Video.Search> = mutableListOf()
 
     override fun fetchVideoList(request: SearchVideoRequest): LiveData<Result<SearchVideoList>> = liveData(Dispatchers.IO) {
-        val call = if (request.hasNextPageToken) {
-            val token = checkNotNull(request.nextPageToken)
-            youtubeApi.search(request.key, request.searchWord, nextPageToken = token)
-        } else {
-            youtubeApi.search(request.key, request.searchWord)
-        }
-        val result = call.executeSync()
+        val result = videoDataSource.getVideos(request.searchWord, request.nextPageToken)
         when (result) {
             is Result.Error -> emit(Result.Error(result.throwable))
             is Result.Success -> {
