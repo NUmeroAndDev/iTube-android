@@ -1,10 +1,8 @@
 package com.numero.itube.di
 
-import android.content.Context
-import com.numero.itube.R
 import com.numero.itube.api.YoutubeApi
-import com.numero.itube.data.VideoDataSource
-import com.numero.itube.data.VideoDataSourceImpl
+import com.numero.itube.data.YoutubeDataSource
+import com.numero.itube.data.YoutubeDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -16,7 +14,7 @@ class DataSourceModule(
 
     @Provides
     @Singleton
-    fun provideVideoDataSource(youtubeApi: YoutubeApi): VideoDataSource {
-        return VideoDataSourceImpl(youtubeApi, apiKey)
+    fun provideVideoDataSource(youtubeApi: YoutubeApi): YoutubeDataSource {
+        return YoutubeDataSourceImpl(youtubeApi, apiKey)
     }
 }

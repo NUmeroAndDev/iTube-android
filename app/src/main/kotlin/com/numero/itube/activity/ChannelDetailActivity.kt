@@ -15,6 +15,7 @@ import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
+import com.numero.itube.model.ChannelId
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.adapter.VideoListAdapter
@@ -25,7 +26,10 @@ import javax.inject.Inject
 class ChannelDetailActivity : AppCompatActivity() {
 
     private val channelName: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_NAME) }
-    private val channelId: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_ID) }
+    private val channelId: ChannelId by lazy {
+        val id = intent.getStringExtra(BUNDLE_CHANNEL_ID)
+        ChannelId(id)
+    }
     private val thumbnailUrl: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_THUMBNAIL_URL) }
 
     @Inject
