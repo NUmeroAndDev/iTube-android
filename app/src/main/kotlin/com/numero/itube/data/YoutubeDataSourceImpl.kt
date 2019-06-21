@@ -4,8 +4,10 @@ import com.numero.itube.api.YoutubeApi
 import com.numero.itube.api.response.ChannelDetailResponse
 import com.numero.itube.api.response.Result
 import com.numero.itube.api.response.SearchResponse
+import com.numero.itube.api.response.VideoDetailResponse
 import com.numero.itube.extension.executeSync
 import com.numero.itube.model.ChannelId
+import com.numero.itube.model.VideoId
 
 class YoutubeDataSourceImpl(
         private val youtubeApi: YoutubeApi,
@@ -28,6 +30,14 @@ class YoutubeDataSourceImpl(
             youtubeApi.searchChannelVideo(apiKey, channelId.value)
         }
         return call.executeSync()
+    }
+
+    override suspend fun getVideos(videoId: VideoId): Result<SearchResponse> {
+        return youtubeApi.searchRelative(apiKey, videoId.value).executeSync()
+    }
+
+    override suspend fun getVideoDetail(videoId: VideoId): Result<VideoDetailResponse> {
+        return youtubeApi.videoDetail(apiKey, videoId.value).executeSync()
     }
 
     override suspend fun getChannelDetail(channelId: ChannelId): Result<ChannelDetailResponse> {

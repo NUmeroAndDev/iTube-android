@@ -5,12 +5,10 @@ import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.Result
 import com.numero.itube.model.Action
 import com.numero.itube.model.SearchVideoList
-import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.VideoRepository
 import javax.inject.Inject
 
 class SearchVideoViewModel @Inject constructor(
-        private val configRepository: ConfigRepository,// FIXME
         private val videoRepository: VideoRepository
 ) : ViewModel(), IErrorViewModel, IProgressViewModel {
 
@@ -35,17 +33,14 @@ class SearchVideoViewModel @Inject constructor(
     }
 
     fun executeSearch(searchWord: String) {
-        val request = SearchVideoRequest(configRepository.apiKey, searchWord)
+        val request = SearchVideoRequest(searchWord)
         actionLiveData.value = Action(request)
     }
 
     fun executeMoreLoad() {
         val nextPageToken = searchVideoListLiveData.value?.nextPageToken ?: return
         val action = actionLiveData.value ?: return
-        val request = SearchVideoRequest(
-                configRepository.apiKey,
-                action.value.searchWord,
-                nextPageToken)
+        val request = SearchVideoRequest(action.value.searchWord, nextPageToken)
         actionLiveData.value = Action(request)
     }
 

@@ -17,6 +17,27 @@ class VideoRepositoryImpl(
     private val cacheSearchVideoList: MutableList<Video.Search> = mutableListOf()
     private val cacheChannelVideoList: MutableList<Video.Search> = mutableListOf()
 
+    override fun fetchVideoDetail(videoId: VideoId): LiveData<Result<VideoDetail>> = liveData(Dispatchers.IO) {
+        val result = videoDataSource.getVideoDetail(videoId)
+        val relative = videoDataSource.getVideos(videoId)
+        if (result is Result.Success && relative is Result.Success) {
+            val response = result.response
+            val info = response.items[0]
+            val videoDetail = VideoDetail(
+                    VideoId(info.id),
+                    info.snippet.title,
+                    info.snippet.description,
+                    relative.response.items.mapToVideoList(),
+                    Channel(
+                            ChannelId(info.snippet.channelId),
+                            info.snippet.channelTitle
+                    ))
+            emit(Result.Success(videoDetail))
+        } else {
+            emit(Result.Error<VideoDetail>(Exception()))
+        }
+    }
+
     override fun fetchVideoList(request: SearchVideoRequest): LiveData<Result<SearchVideoList>> = liveData(Dispatchers.IO) {
         val result = videoDataSource.getVideos(request.searchWord, request.nextPageToken)
         when (result) {
