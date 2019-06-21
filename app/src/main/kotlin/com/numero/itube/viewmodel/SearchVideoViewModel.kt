@@ -16,7 +16,7 @@ class SearchVideoViewModel @Inject constructor(
 
     private val actionLiveData: MutableLiveData<Action<SearchVideoRequest>> = MutableLiveData()
     private val stateLiveData: LiveData<Result<SearchVideoList>> = actionLiveData.switchMap {
-        videoRepository.searchVideoList(it.value)
+        videoRepository.fetchVideoList(it.value)
     }
     private val _searchVideoListLiveData: MediatorLiveData<SearchVideoList> = MediatorLiveData()
 

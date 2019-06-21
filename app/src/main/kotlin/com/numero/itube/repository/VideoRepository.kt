@@ -1,12 +1,16 @@
 package com.numero.itube.repository
 
 import androidx.lifecycle.LiveData
+import com.numero.itube.api.request.ChannelVideoRequest
 import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.Result
+import com.numero.itube.model.ChannelVideoList
 import com.numero.itube.model.SearchVideoList
 
 interface VideoRepository {
 
-    fun searchVideoList(request: SearchVideoRequest): LiveData<Result<SearchVideoList>>
+    fun fetchVideoList(request: SearchVideoRequest): LiveData<Result<SearchVideoList>>
+
+    fun fetchChannelVideoList(request: ChannelVideoRequest): LiveData<Result<ChannelVideoList>>
 
 }

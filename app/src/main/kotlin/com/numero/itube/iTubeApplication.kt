@@ -1,9 +1,12 @@
 package com.numero.itube
 
 import android.app.Application
-import com.numero.itube.di.*
+import com.numero.itube.di.ApplicationComponent
+import com.numero.itube.di.ApplicationModule
+import com.numero.itube.di.DaggerApplicationComponent
+import com.numero.itube.di.DataSourceModule
 
-class iTubeApplication : Application(){
+class iTubeApplication : Application() {
 
     lateinit var applicationComponent: ApplicationComponent
 
@@ -12,9 +15,7 @@ class iTubeApplication : Application(){
 
         applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(ApplicationModule(this))
-                .repositoryModule(RepositoryModule())
-                .apiClientModule(ApiClientModule())
-                .dBModule(DBModule())
+                .dataSourceModule(DataSourceModule(getString(R.string.api_key)))
                 .build()
     }
 }

@@ -1,10 +1,11 @@
 package com.numero.itube.api.request
 
+import com.numero.itube.model.ChannelId
+
 data class ChannelVideoRequest(
-        override val key: String,
-        val channelId: String,
+        val channelId: ChannelId,
         val nextPageToken: String? = null
-) : YoutubeApiRequest {
+) {
 
     val hasNextPageToken: Boolean
         get() = nextPageToken.isNullOrEmpty().not()

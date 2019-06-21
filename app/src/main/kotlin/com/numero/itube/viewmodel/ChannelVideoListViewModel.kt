@@ -6,21 +6,22 @@ import com.numero.itube.api.response.Result
 import com.numero.itube.extension.zipLiveData
 import com.numero.itube.model.Action
 import com.numero.itube.model.ChannelDetail
+import com.numero.itube.model.ChannelId
 import com.numero.itube.model.ChannelVideoList
 import com.numero.itube.repository.ChannelRepository
-import com.numero.itube.repository.ConfigRepository
+import com.numero.itube.repository.VideoRepository
 import javax.inject.Inject
 
 class ChannelVideoListViewModel @Inject constructor(
-        private val configRepository: ConfigRepository,// FIXME
-        private val channelRepository: ChannelRepository
+        private val channelRepository: ChannelRepository,
+        private val videoRepository: VideoRepository
 ) : ViewModel(), IErrorViewModel, IProgressViewModel {
 
     private val actionLiveData: MutableLiveData<Action<ChannelVideoRequest>> = MutableLiveData()
     private val stateLiveData: LiveData<Pair<Result<ChannelDetail>, Result<ChannelVideoList>>> = actionLiveData.switchMap {
         zipLiveData(
-                channelRepository.fetchChannelDetail(it.value.key, it.value.channelId),
-                channelRepository.fetchChannelVideoList(it.value)
+                channelRepository.fetchChannelDetail(it.value.channelId),
+                videoRepository.fetchChannelVideoList(it.value)
         )
     }
     private val _channelVideoListLiveData: MediatorLiveData<ChannelVideoList> = MediatorLiveData()
@@ -48,18 +49,15 @@ class ChannelVideoListViewModel @Inject constructor(
         }
     }
 
-    fun executeLoadChannelVideo(channelId: String) {
-        val request = ChannelVideoRequest(configRepository.apiKey, channelId)
+    fun executeLoadChannelVideo(channelId: ChannelId) {
+        val request = ChannelVideoRequest(channelId)
         actionLiveData.value = Action(request)
     }
 
     fun executeMoreLoad() {
         val nextPageToken = channelVideoListLiveData.value?.nextPageToken ?: return
         val action = actionLiveData.value ?: return
-        val request = ChannelVideoRequest(
-                configRepository.apiKey,
-                action.value.channelId,
-                nextPageToken)
+        val request = ChannelVideoRequest(action.value.channelId, nextPageToken)
         actionLiveData.value = Action(request)
     }
 }

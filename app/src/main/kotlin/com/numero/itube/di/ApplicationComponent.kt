@@ -11,6 +11,7 @@ import javax.inject.Singleton
     ApplicationModule::class,
     ApiClientModule::class,
     DBModule::class,
+    DataSourceModule::class,
     RepositoryModule::class,
     ViewModelModule::class,
     ViewModelFactoryModule::class
