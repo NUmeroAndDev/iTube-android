@@ -5,5 +5,5 @@ data class VideoDetail(
         val title: String,
         val description: String,
         val relativeVideoList: List<Video>,
-        val channel: Channel
+        val channelDetail: ChannelDetail
 )

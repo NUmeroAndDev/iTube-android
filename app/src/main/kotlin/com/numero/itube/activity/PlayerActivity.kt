@@ -10,7 +10,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.isInvisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.youtube.player.YouTubeInitializationResult
@@ -20,15 +22,13 @@ import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
-import com.numero.itube.extension.observeNonNull
 import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.fragment.PlayerSettingsBottomSheetFragment
+import com.numero.itube.model.ChannelId
 import com.numero.itube.model.Video
-import com.numero.itube.presenter.IPlayerPresenter
-import com.numero.itube.presenter.PlayerPresenter
+import com.numero.itube.model.VideoId
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.FavoriteVideoRepository
-import com.numero.itube.repository.YoutubeRepository
 import com.numero.itube.view.adapter.RelativeVideoAdapter
 import com.numero.itube.viewmodel.PlayerViewModel
 import kotlinx.android.synthetic.main.activity_player.*
@@ -42,21 +42,30 @@ class PlayerActivity : AppCompatActivity(),
         YouTubePlayer.PlayerStateChangeListener {
 
     private val title: String by lazy { intent.getStringExtra(BUNDLE_TITLE) }
-    private val videoId: String by lazy { intent.getStringExtra(BUNDLE_VIDEO_ID) }
-    private val channelId: String by lazy { intent.getStringExtra(BUNDLE_CHANNEL_ID) }
+    private val videoId: VideoId by lazy {
+        val id = intent.getStringExtra(BUNDLE_VIDEO_ID)
+        VideoId(id)
+    }
+    private val channelId: ChannelId by lazy {
+        val id = intent.getStringExtra(BUNDLE_CHANNEL_ID)
+        ChannelId(id)
+    }
     private val isShownFavoriteVideo: Boolean by lazy { intent.getBooleanExtra(BUNDLE_IS_FAVORITE_VIDEO, false) }
     private var player: YouTubePlayer? = null
 
     private val relativeVideoAdapter: RelativeVideoAdapter = RelativeVideoAdapter()
-    private lateinit var presenter: IPlayerPresenter
-    private lateinit var viewModel: PlayerViewModel
 
-    @Inject
-    lateinit var youtubeRepository: YoutubeRepository
     @Inject
     lateinit var favoriteVideoRepository: FavoriteVideoRepository
     @Inject
     lateinit var configRepository: ConfigRepository
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val viewModel by lazy {
+        ViewModelProviders.of(this, viewModelFactory).get(PlayerViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,8 +84,7 @@ class PlayerActivity : AppCompatActivity(),
         }
 
         initViews()
-        viewModel = initViewModel()
-        presenter = PlayerPresenter(viewModel, youtubeRepository, favoriteVideoRepository, configRepository, videoId, channelId)
+        setupObserve()
 
         val youTubePlayerFragment = YouTubePlayerFragment.newInstance().apply {
             this@PlayerActivity.fragmentManager.beginTransaction().replace(R.id.playerContainer, this).commit()
@@ -84,9 +92,10 @@ class PlayerActivity : AppCompatActivity(),
         }
         youTubePlayerFragment.initialize(configRepository.apiKey, this)
 
-        presenter.loadVideoAndChannelDetail()
-        presenter.checkFavorite()
-        presenter.loadNextFavoriteVideo(videoId)
+        viewModel.executeLoadVideoDetail(videoId, channelId)
+//        presenter.loadVideoAndChannelDetail()
+//        presenter.checkFavorite()
+//        presenter.loadNextFavoriteVideo(videoId)
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -113,7 +122,7 @@ class PlayerActivity : AppCompatActivity(),
             setPlayerStateChangeListener(this@PlayerActivity)
         }
         if (b.not()) {
-            player?.loadVideo(videoId)
+            player?.loadVideo(videoId.value)
         }
     }
 
@@ -151,22 +160,19 @@ class PlayerActivity : AppCompatActivity(),
         showVideo(favoriteVideo)
     }
 
-    private fun initViewModel(): PlayerViewModel {
-        val viewModel = ViewModelProviders.of(this).get(PlayerViewModel::class.java)
-        viewModel.relativeResponse.observeNonNull(this) {
-            relativeVideoAdapter.relativeResponse = it
+    private fun setupObserve() {
+        viewModel.videoDetailLiveData.observe(this) {
+            relativeVideoAdapter.videoDetail = it
         }
-        viewModel.isShowProgress.observeNonNull(this) { isShow: Boolean ->
-            // FIXME 型推論でエラーが出る
+        viewModel.isShowProgress.observe(this) { isShow: Boolean ->
             progressBar.isInvisible = isShow.not()
         }
-        viewModel.isFavorite.observeNonNull(this) {
+        viewModel.isFavorite.observe(this) {
             registeredFavorite(it)
         }
-        viewModel.isShowError.observeNonNull(this) { isShow: Boolean ->
+        viewModel.isShowError.observe(this) { isShow: Boolean ->
             errorView.isInvisible = isShow.not()
         }
-        return viewModel
     }
 
     private fun initViews() {
@@ -175,7 +181,7 @@ class PlayerActivity : AppCompatActivity(),
             setOnMenuItemClickListener(this@PlayerActivity)
         }
         fab.setOnClickListener {
-            presenter.changeFavorite()
+            //presenter.changeFavorite()
         }
         relativeVideoAdapter.apply {
             setOnItemClickListener {
@@ -183,7 +189,7 @@ class PlayerActivity : AppCompatActivity(),
                 showVideo(it)
             }
             setOnChannelClickListener { imageView, channel: String, url: String ->
-                showChannelDetailScreen(channel, channelId, url, Pair(imageView, imageView.transitionName))
+                showChannelDetailScreen(channel, channelId.value, url, Pair(imageView, imageView.transitionName))
             }
         }
 
@@ -193,7 +199,7 @@ class PlayerActivity : AppCompatActivity(),
             adapter = relativeVideoAdapter
         }
         errorView.setOnRetryListener {
-            presenter.loadVideoAndChannelDetail()
+            //presenter.loadVideoAndChannelDetail()
         }
     }
 
@@ -217,7 +223,7 @@ class PlayerActivity : AppCompatActivity(),
     }
 
     private fun showFavoriteList() {
-        FavoriteListBottomSheetFragment.newInstance(videoId).show(supportFragmentManager)
+        FavoriteListBottomSheetFragment.newInstance(videoId.value).show(supportFragmentManager)
     }
 
     companion object {

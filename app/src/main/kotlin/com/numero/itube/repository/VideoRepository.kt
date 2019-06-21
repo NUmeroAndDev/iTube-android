@@ -8,7 +8,7 @@ import com.numero.itube.model.*
 
 interface VideoRepository {
 
-    fun fetchVideoDetail(videoId: VideoId): LiveData<Result<VideoDetail>>
+    fun fetchVideoDetail(videoId: VideoId, channelId: ChannelId): LiveData<Result<VideoDetail>>
 
     fun fetchVideoList(request: SearchVideoRequest): LiveData<Result<SearchVideoList>>
 

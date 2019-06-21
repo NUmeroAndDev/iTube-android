@@ -45,18 +45,18 @@ class PlayerPresenter(
 
         val request = RelativeRequest(configRepository.apiKey, videoId, channelId)
 
-        GlobalScope.launch(Dispatchers.Main) {
-            val result = async(Dispatchers.Default) { youtubeRepository.loadRelative(request) }.await()
-            viewModel.isShowProgress.postValue(false)
-            viewModel.isShowError.postValue(result is Result.Error)
-            when (result) {
-                is Result.Error -> viewModel.error.postValue(result.throwable)
-                is Result.Success -> {
-                    viewModel.isShowError.postValue(false)
-                    viewModel.relativeResponse.postValue(result.response)
-                }
-            }
-        }
+//        GlobalScope.launch(Dispatchers.Main) {
+//            val result = async(Dispatchers.Default) { youtubeRepository.loadRelative(request) }.await()
+//            viewModel.isShowProgress.postValue(false)
+//            viewModel.isShowError.postValue(result is Result.Error)
+//            when (result) {
+//                is Result.Error -> viewModel.error.postValue(result.throwable)
+//                is Result.Success -> {
+//                    viewModel.isShowError.postValue(false)
+//                    viewModel.relativeResponse.postValue(result.response)
+//                }
+//            }
+//        }
     }
 
     override fun loadNextFavoriteVideo(currentVideoId: String) {
@@ -78,9 +78,9 @@ class PlayerPresenter(
         if (isFavorite) {
             executeUnregisterFavorite(videoId)
         } else {
-            val response = viewModel.relativeResponse.value ?: return
-            val detail = response.videoDetailResponse.items[0]
-            executeRegisterFavorite(detail)
+//            val response = viewModel.relativeResponse.value ?: return
+//            val detail = response.videoDetailResponse.items[0]
+//            executeRegisterFavorite(detail)
         }
     }
 
