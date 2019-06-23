@@ -9,17 +9,16 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.numero.itube.GlideApp
 import com.numero.itube.R
-import com.numero.itube.api.response.ChannelResponse
-import com.numero.itube.api.response.RelativeResponse
-import com.numero.itube.api.response.VideoDetailResponse
+import com.numero.itube.model.ChannelDetail
 import com.numero.itube.model.Video
+import com.numero.itube.model.VideoDetail
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.view_holder_video.*
 import kotlinx.android.synthetic.main.view_holder_video_detail.*
 
 class RelativeVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var relativeResponse: RelativeResponse? = null
+    var videoDetail: VideoDetail? = null
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -45,20 +44,22 @@ class RelativeVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        val response = relativeResponse ?: return 0
-        val videoList = response.searchVideoList
+        val videoDetail = videoDetail ?: return 0
+        val videoList = videoDetail.relativeVideoList
         return videoList.size + 1
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val response = relativeResponse ?: return
+        val videoDetail = videoDetail ?: return
         if (holder is VideoDetailViewHolder) {
-            updateVideoDetailViewHolder(holder, response)
+            updateVideoDetailViewHolder(holder, videoDetail)
         } else if (holder is VideoViewHolder) {
-            val video = response.searchVideoList[position - 1]
+            val video = videoDetail.relativeVideoList[position - 1]
             holder.setVideo(video)
             holder.itemView.setOnClickListener {
-                onItemClickListener?.invoke(video)
+                if (video is Video.Search) {
+                    onItemClickListener?.invoke(video)
+                }
             }
         }
     }
@@ -71,31 +72,30 @@ class RelativeVideoAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
     }
 
-    private fun updateVideoDetailViewHolder(holder: VideoDetailViewHolder, response: RelativeResponse) {
-        val videoDetail = response.videoDetailResponse.items.firstOrNull() ?: return
-        val channelDetail = response.channelResponse.items.firstOrNull() ?: return
+    private fun updateVideoDetailViewHolder(holder: VideoDetailViewHolder, videoDetail: VideoDetail) {
+        val channelDetail = videoDetail.channelDetail
         holder.setVideoDetail(videoDetail)
         holder.setChannelDetail(channelDetail)
         holder.videoDetailView.setOnChannelClickListener {
-            onChannelClickListener?.invoke(it, videoDetail.snippet.channelTitle, channelDetail.snippet.thumbnails.medium.url)
+            onChannelClickListener?.invoke(it, channelDetail.title, channelDetail.thumbnailUrl.value)
         }
     }
 
     class VideoDetailViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-        fun setVideoDetail(videoDetail: VideoDetailResponse.VideoDetail) {
-            videoDetailView.setTitle(videoDetail.snippet.title)
-            videoDetailView.setDescription(videoDetail.snippet.description)
+        fun setVideoDetail(videoDetail: VideoDetail) {
+            videoDetailView.setTitle(videoDetail.title)
+            videoDetailView.setDescription(videoDetail.description)
         }
 
-        fun setChannelDetail(channel: ChannelResponse.Channel) {
-            videoDetailView.setChannelName(channel.snippet.title)
-            videoDetailView.setChannelImageUrl(channel.snippet.thumbnails.medium.url)
+        fun setChannelDetail(channel: ChannelDetail) {
+            videoDetailView.setChannelName(channel.title)
+            videoDetailView.setChannelImageUrl(channel.thumbnailUrl.value)
         }
     }
 
     class VideoViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun setVideo(video: Video.Search) {
+        fun setVideo(video: Video) {
             titleTextView.text = video.title
 
             val cornerRadius = itemView.context.resources.getDimensionPixelSize(R.dimen.thumbnail_corner_radius)
