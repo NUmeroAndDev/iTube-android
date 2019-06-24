@@ -15,7 +15,6 @@ import com.numero.itube.activity.PlayerActivity
 import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
-import com.numero.itube.extension.observeNonNull
 import com.numero.itube.model.SearchVideoList
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.item.SearchVideoItem
@@ -104,11 +103,11 @@ class SearchActivity : AppCompatActivity() {
             groupieAdapter.clear()
             groupieAdapter.add(it.toSection())
         }
-        viewModel.isShowProgress.observeNonNull(this) { isShow: Boolean ->
-            progressBar.isInvisible = isShow.not()
+        viewModel.progressLiveData.observe(this) {
+            progressBar.isInvisible = it.not()
         }
-        viewModel.isShowError.observeNonNull(this) { isShow: Boolean ->
-            errorView.isInvisible = isShow.not()
+        viewModel.errorLiveData.observe(this) {
+            errorView.isInvisible = it.not()
         }
     }
 

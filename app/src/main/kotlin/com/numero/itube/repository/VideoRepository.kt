@@ -10,7 +10,7 @@ interface VideoRepository {
 
     fun fetchVideoDetail(videoId: VideoId, channelId: ChannelId): LiveData<Result<VideoDetail>>
 
-    fun fetchVideoList(request: SearchVideoRequest): LiveData<Result<SearchVideoList>>
+    fun fetchVideoList(request: SearchVideoRequest): LiveData<State<SearchVideoList>>
 
     fun fetchChannelVideoList(request: ChannelVideoRequest): LiveData<Result<ChannelVideoList>>
 

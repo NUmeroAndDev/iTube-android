@@ -43,10 +43,11 @@ class VideoRepositoryImpl(
         }
     }
 
-    override fun fetchVideoList(request: SearchVideoRequest): LiveData<Result<SearchVideoList>> = liveData(Dispatchers.IO) {
+    override fun fetchVideoList(request: SearchVideoRequest): LiveData<State<SearchVideoList>> = liveData(Dispatchers.IO) {
+        emit(State.progress<SearchVideoList>())
         val result = videoDataSource.getVideos(request.searchWord, request.nextPageToken)
         when (result) {
-            is Result.Error -> emit(Result.Error<SearchVideoList>(result.throwable))
+            is Result.Error -> emit(State.error<SearchVideoList>(result.throwable))
             is Result.Success -> {
                 val response = result.response
                 if (request.hasNextPageToken.not()) {
@@ -56,7 +57,7 @@ class VideoRepositoryImpl(
                 val list = mutableListOf<Video.Search>().apply {
                     addAll(cacheSearchVideoList)
                 }
-                emit(Result.Success(SearchVideoList(response.nextPageToken, list, response.pageInfo.totalResults)))
+                emit(State.success(SearchVideoList(response.nextPageToken, list, response.pageInfo.totalResults)))
             }
         }
     }
