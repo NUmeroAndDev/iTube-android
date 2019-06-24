@@ -3,6 +3,7 @@ package com.numero.itube.di
 import com.numero.itube.activity.*
 import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.fragment.SettingsFragment
+import com.numero.itube.ui.SearchActivity
 import dagger.Component
 import javax.inject.Singleton
 

@@ -1,4 +1,4 @@
-package com.numero.itube.activity
+package com.numero.itube.ui
 
 import android.content.Context
 import android.content.Intent
@@ -11,15 +11,20 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
+import com.numero.itube.activity.PlayerActivity
 import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.extension.observeNonNull
+import com.numero.itube.model.SearchVideoList
 import com.numero.itube.repository.ConfigRepository
+import com.numero.itube.ui.item.SearchVideoItem
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.SearchInputView
-import com.numero.itube.view.adapter.VideoListAdapter
 import com.numero.itube.viewmodel.SearchVideoViewModel
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_search.*
 import javax.inject.Inject
 
@@ -30,11 +35,11 @@ class SearchActivity : AppCompatActivity() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    private val groupieAdapter = GroupAdapter<ViewHolder>()
+
     private val viewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(SearchVideoViewModel::class.java)
     }
-
-    private val videoListAdapter: VideoListAdapter = VideoListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,8 +83,10 @@ class SearchActivity : AppCompatActivity() {
                 //viewModel.clear()
             }
         })
-        videoListAdapter.setOnItemClickListener {
-            startActivity(PlayerActivity.createIntent(this, it))
+        groupieAdapter.setOnItemClickListener { item, _ ->
+            if (item is SearchVideoItem) {
+                startActivity(PlayerActivity.createIntent(this, item.video))
+            }
         }
         videoRecyclerView.apply {
             val manager = LinearLayoutManager(context)
@@ -88,19 +95,26 @@ class SearchActivity : AppCompatActivity() {
                 viewModel.executeMoreLoad()
             })
             setHasFixedSize(true)
-            adapter = videoListAdapter
+            adapter = groupieAdapter
         }
     }
 
     private fun setupObserve() {
         viewModel.searchVideoListLiveData.observe(this) {
-            videoListAdapter.submitList(it.videoList)
+            groupieAdapter.clear()
+            groupieAdapter.add(it.toSection())
         }
         viewModel.isShowProgress.observeNonNull(this) { isShow: Boolean ->
             progressBar.isInvisible = isShow.not()
         }
         viewModel.isShowError.observeNonNull(this) { isShow: Boolean ->
             errorView.isInvisible = isShow.not()
+        }
+    }
+
+    private fun SearchVideoList.toSection(): Section {
+        return Section().apply {
+            addAll(videoList.map { SearchVideoItem(it) })
         }
     }
 
