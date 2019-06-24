@@ -1,4 +1,4 @@
-package com.numero.itube.activity
+package com.numero.itube.ui
 
 import android.content.Context
 import android.content.Intent
@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
+import com.numero.itube.activity.PlayerActivity
 import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
