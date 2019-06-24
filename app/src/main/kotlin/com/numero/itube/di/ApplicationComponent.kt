@@ -8,10 +8,13 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [
-    (ApplicationModule::class),
-    (ApiClientModule::class),
-    (DBModule::class),
-    (RepositoryModule::class)
+    ApplicationModule::class,
+    ApiClientModule::class,
+    DBModule::class,
+    DataSourceModule::class,
+    RepositoryModule::class,
+    ViewModelModule::class,
+    ViewModelFactoryModule::class
 ])
 interface ApplicationComponent {
     fun inject(topActivity: TopActivity)
