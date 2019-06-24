@@ -77,6 +77,9 @@ dependencies {
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
+    implementation "com.xwray:groupie:2.3.0"
+    implementation "com.xwray:groupie-kotlin-android-extensions:2.3.0"
+
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
