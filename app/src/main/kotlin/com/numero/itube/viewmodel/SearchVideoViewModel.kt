@@ -5,29 +5,33 @@ import com.numero.itube.api.request.SearchVideoRequest
 import com.numero.itube.api.response.Result
 import com.numero.itube.model.Action
 import com.numero.itube.model.SearchVideoList
+import com.numero.itube.model.State
 import com.numero.itube.repository.VideoRepository
 import javax.inject.Inject
 
 class SearchVideoViewModel @Inject constructor(
         private val videoRepository: VideoRepository
-) : ViewModel(), IErrorViewModel, IProgressViewModel {
+) : ViewModel() {
 
     private val actionLiveData: MutableLiveData<Action<SearchVideoRequest>> = MutableLiveData()
-    private val stateLiveData: LiveData<Result<SearchVideoList>> = actionLiveData.switchMap {
+    private val stateLiveData: LiveData<State<SearchVideoList>> = actionLiveData.switchMap {
         videoRepository.fetchVideoList(it.value)
     }
     private val _searchVideoListLiveData: MediatorLiveData<SearchVideoList> = MediatorLiveData()
 
     val searchVideoListLiveData: LiveData<SearchVideoList> = _searchVideoListLiveData
 
-    override val error: MutableLiveData<Throwable> = MutableLiveData()
-    override val isShowError: MutableLiveData<Boolean> = MutableLiveData()
-    override val isShowProgress: MutableLiveData<Boolean> = MutableLiveData()
+    val errorLiveData: LiveData<Boolean> = stateLiveData.map {
+        it is State.Error
+    }
+    val progressLiveData: LiveData<Boolean> = stateLiveData.map {
+        it is State.Progress
+    }
 
     init {
         _searchVideoListLiveData.addSource(stateLiveData) {
-            if (it is Result.Success) {
-                _searchVideoListLiveData.postValue(it.response)
+            if (it is State.Success) {
+                _searchVideoListLiveData.postValue(it.value)
             }
         }
     }
