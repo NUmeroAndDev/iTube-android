@@ -2,6 +2,7 @@ package com.numero.itube.data
 
 import androidx.room.*
 import com.numero.itube.data.entity.PlaylistEntity
+import com.numero.itube.data.entity.PlaylistVideo
 import com.numero.itube.data.entity.VideoEntity
 import com.numero.itube.data.entity.VideoLinkingPlaylistEntity
 
@@ -11,11 +12,11 @@ interface PlaylistDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertVideo(video: VideoEntity)
 
-    @Query("SELECT Video.* FROM VideoLinkingPlaylist LEFT JOIN Video ON VideoLinkingPlaylist.videoId = Video.id LEFT JOIN Playlist ON VideoLinkingPlaylist.playlistId = Playlist.id")
-    fun findAllVideo(): List<VideoEntity>
+    @Query("SELECT Video.*, Playlist.id AS playlistId, Playlist.title AS playlistTitle FROM VideoLinkingPlaylist LEFT JOIN Video ON VideoLinkingPlaylist.videoId = Video.id LEFT JOIN Playlist ON VideoLinkingPlaylist.playlistId = Playlist.id")
+    fun findAllVideo(): List<PlaylistVideo>
 
-    @Query("SELECT Video.* FROM VideoLinkingPlaylist LEFT JOIN Video ON VideoLinkingPlaylist.videoId = Video.id LEFT JOIN Playlist ON VideoLinkingPlaylist.playlistId = Playlist.id WHERE VideoLinkingPlaylist.playlistId = :playlistId")
-    fun findVideoWherePlaylistId(playlistId: Long): List<VideoEntity>
+    @Query("SELECT Video.*, Playlist.id AS playlistId, Playlist.title AS playlistTitle FROM VideoLinkingPlaylist LEFT JOIN Video ON VideoLinkingPlaylist.videoId = Video.id LEFT JOIN Playlist ON VideoLinkingPlaylist.playlistId = Playlist.id WHERE VideoLinkingPlaylist.playlistId = :playlistId")
+    fun findVideo(playlistId: Long): List<PlaylistVideo>
 
     @Query("DELETE FROM Video WHERE id = :id")
     fun deleteVideo(id: String)

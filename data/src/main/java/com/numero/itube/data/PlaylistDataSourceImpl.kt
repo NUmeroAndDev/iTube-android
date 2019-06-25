@@ -3,6 +3,7 @@ package com.numero.itube.data
 import android.content.Context
 import androidx.room.Room
 import com.numero.itube.data.entity.PlaylistEntity
+import com.numero.itube.data.entity.PlaylistVideo
 import com.numero.itube.data.entity.VideoEntity
 import com.numero.itube.data.entity.VideoLinkingPlaylistEntity
 
@@ -13,6 +14,14 @@ class PlaylistDataSourceImpl(
     private val playlistDao: PlaylistDao = Room.databaseBuilder(context, PlaylistDatabase::class.java, PLAYLIST_DB_FILE_NAME)
             .build()
             .playlistDao()
+
+    override fun readAllPlaylistVideo(): List<PlaylistVideo> {
+        return playlistDao.findAllVideo()
+    }
+
+    override fun findPlaylistVideo(playlistEntity: PlaylistEntity): List<PlaylistVideo> {
+        return playlistDao.findVideo(playlistEntity.id)
+    }
 
     override fun registerVideo(videoEntity: VideoEntity, playlistEntity: PlaylistEntity) {
         val link = VideoLinkingPlaylistEntity(
