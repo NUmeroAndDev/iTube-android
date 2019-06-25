@@ -1,4 +1,4 @@
-package com.numero.itube.ui
+package com.numero.itube.ui.search
 
 import android.content.Context
 import android.content.Intent
@@ -17,7 +17,7 @@ import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.model.SearchVideoList
 import com.numero.itube.repository.ConfigRepository
-import com.numero.itube.ui.item.SearchVideoItem
+import com.numero.itube.ui.search.item.SearchVideoItem
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.SearchInputView
 import com.numero.itube.viewmodel.SearchVideoViewModel

@@ -16,7 +16,7 @@ import com.numero.itube.presenter.FavoriteVideoListPresenter
 import com.numero.itube.presenter.IFavoriteVideoListPresenter
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.repository.FavoriteVideoRepository
-import com.numero.itube.ui.SearchActivity
+import com.numero.itube.ui.search.SearchActivity
 import com.numero.itube.view.adapter.FavoriteVideoListAdapter
 import com.numero.itube.viewmodel.FavoriteVideoListViewModel
 import kotlinx.android.synthetic.main.activity_top.*

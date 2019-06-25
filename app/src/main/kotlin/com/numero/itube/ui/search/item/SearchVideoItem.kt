@@ -1,4 +1,4 @@
-package com.numero.itube.ui.item
+package com.numero.itube.ui.search.item
 
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
