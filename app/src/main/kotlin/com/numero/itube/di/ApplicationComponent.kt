@@ -29,6 +29,7 @@ interface ApplicationComponent {
     fun inject(settingsActivity: SettingsActivity)
     fun inject(licensesActivity: LicensesActivity)
     fun inject(playlistListActivity: PlaylistListActivity)
+    fun inject(topActivity: com.numero.itube.ui.top.TopActivity)
 
     fun inject(favoriteListBottomSheetFragment: FavoriteListBottomSheetFragment)
     fun inject(settingsFragment: SettingsFragment)

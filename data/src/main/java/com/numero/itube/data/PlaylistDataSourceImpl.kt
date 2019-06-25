@@ -33,6 +33,7 @@ class PlaylistDataSourceImpl(
                 playlistId = playlistEntity.id
         )
         playlistDao.insertVideoLinkingPlaylist(link)
+        playlistDao.insertVideo(videoEntity)
     }
 
     override fun unregisterVideo(videoEntity: VideoEntity, playlistEntity: PlaylistEntity) {
