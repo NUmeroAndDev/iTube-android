@@ -19,6 +19,14 @@ sealed class Video(
             title: String,
             channel: Channel
     ) : Video(id, thumbnailUrl, title, channel)
+
+    class InPlaylist(
+            id: VideoId,
+            thumbnailUrl: ThumbnailUrl,
+            title: String,
+            channel: Channel,
+            val playlistId: PlaylistId
+    ) : Video(id, thumbnailUrl, title, channel)
 }
 
 inline class VideoId(val value: String)
