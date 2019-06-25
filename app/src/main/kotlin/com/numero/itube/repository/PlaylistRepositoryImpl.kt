@@ -25,16 +25,15 @@ class PlaylistRepositoryImpl(
                     val list = it.value
                     Playlist(
                             PlaylistId(id),
-                            list.first().playlistTitle,
-                            list.toVideo()
+                            list.first().playlistTitle
                     )
                 }
         emit(PlaylistList(list))
     }
 
-    override fun readPlaylist(playlistId: PlaylistId): LiveData<Playlist> = liveData(Dispatchers.IO) {
+    override fun readPlaylistDetail(playlistId: PlaylistId): LiveData<PlaylistDetail> = liveData(Dispatchers.IO) {
         val videoList = playlistDataSource.findPlaylistVideo(PlaylistEntity(playlistId.value, ""))
-        val playlist = Playlist(
+        val playlist = PlaylistDetail(
                 playlistId,
                 videoList.first().playlistTitle,
                 videoList.toVideo()
