@@ -5,6 +5,7 @@ import androidx.lifecycle.liveData
 import com.numero.itube.data.PlaylistDataSource
 import com.numero.itube.data.entity.PlaylistEntity
 import com.numero.itube.data.entity.PlaylistVideo
+import com.numero.itube.data.entity.VideoEntity
 import com.numero.itube.model.*
 import kotlinx.coroutines.Dispatchers
 
@@ -43,6 +44,11 @@ class PlaylistRepositoryImpl(
         emit(playlist)
     }
 
+    override fun addVideoToPlaylist(playlist: Playlist, videoDetail: VideoDetail): LiveData<Playlist> = liveData(Dispatchers.IO) {
+        playlistDataSource.registerVideo(videoDetail.toEntity(), playlist.toEntity())
+        emit(playlist)
+    }
+
     private fun Playlist.toEntity(): PlaylistEntity {
         return PlaylistEntity(id.value, title)
     }
@@ -69,5 +75,15 @@ class PlaylistRepositoryImpl(
                     PlaylistId(it.playlistId)
             )
         }
+    }
+
+    private fun VideoDetail.toEntity(): VideoEntity {
+        return VideoEntity(
+                videoId.value,
+                title,
+                channelDetail.id.value,
+                channelDetail.title,
+                thumbnailUrl.value
+        )
     }
 }

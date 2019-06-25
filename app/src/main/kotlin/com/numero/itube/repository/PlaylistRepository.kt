@@ -1,10 +1,7 @@
 package com.numero.itube.repository
 
 import androidx.lifecycle.LiveData
-import com.numero.itube.model.Playlist
-import com.numero.itube.model.PlaylistDetail
-import com.numero.itube.model.PlaylistId
-import com.numero.itube.model.PlaylistList
+import com.numero.itube.model.*
 
 interface PlaylistRepository {
 
@@ -17,5 +14,7 @@ interface PlaylistRepository {
     fun updatePlaylist(playlist: Playlist): LiveData<Playlist>
 
     fun deletePlaylist(playlist: Playlist): LiveData<Playlist>
+
+    fun addVideoToPlaylist(playlist: Playlist, videoDetail: VideoDetail): LiveData<Playlist>
 
 }

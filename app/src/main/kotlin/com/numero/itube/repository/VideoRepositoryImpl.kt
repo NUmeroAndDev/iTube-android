@@ -29,6 +29,7 @@ class VideoRepositoryImpl(
                     VideoId(info.id),
                     info.snippet.title,
                     info.snippet.description,
+                    ThumbnailUrl(info.snippet.thumbnails.high.url),
                     relativeVideoResult.response.items.mapToVideoList(),
                     ChannelDetail(
                             ChannelId(channelDetail.id),

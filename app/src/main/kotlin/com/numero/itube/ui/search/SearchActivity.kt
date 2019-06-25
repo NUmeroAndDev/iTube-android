@@ -11,13 +11,13 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
-import com.numero.itube.activity.PlayerActivity
 import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.model.SearchVideoList
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.search.item.SearchVideoItem
+import com.numero.itube.ui.video.VideoDetailActivity
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.SearchInputView
 import com.numero.itube.viewmodel.SearchVideoViewModel
@@ -84,7 +84,7 @@ class SearchActivity : AppCompatActivity() {
         })
         groupieAdapter.setOnItemClickListener { item, _ ->
             if (item is SearchVideoItem) {
-                startActivity(PlayerActivity.createIntent(this, item.video))
+                startActivity(VideoDetailActivity.createIntent(this, item.video))
             }
         }
         videoRecyclerView.apply {
