@@ -4,6 +4,7 @@ data class VideoDetail(
         val videoId: VideoId,
         val title: String,
         val description: String,
+        val thumbnailUrl: ThumbnailUrl,
         val relativeVideoList: List<Video>,
         val channelDetail: ChannelDetail
 )

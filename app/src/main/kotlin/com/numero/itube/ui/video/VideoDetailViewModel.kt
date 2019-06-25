@@ -17,8 +17,12 @@ class VideoDetailViewModel @Inject constructor(
         videoRepository.fetchVideoDetail(it.value.videoId, it.value.channelId)
     }
     private val _videoDetailLiveData: MediatorLiveData<VideoDetail> = MediatorLiveData()
-
     val videoDetailLiveData: LiveData<VideoDetail> = _videoDetailLiveData
+
+    private val addPlaylistActionLiveData: MutableLiveData<Action<AddPlaylistAction>> = MutableLiveData()
+    val addedPlaylistLiveData: LiveData<Playlist> = addPlaylistActionLiveData.switchMap {
+        playlistRepository.addVideoToPlaylist(it.value.playlist, it.value.videoDetail)
+    }
 
     init {
         _videoDetailLiveData.addSource(stateLiveData) {
@@ -32,13 +36,18 @@ class VideoDetailViewModel @Inject constructor(
         actionLiveData.value = Action(VideoDetailRequest(videoId, channelId))
     }
 
-    fun executeAddPlaylist(playlist: Playlist, videoId: VideoId) {
-        // TODO
-
+    fun executeAddPlaylist(targetPlaylist: Playlist) {
+        val videoDetail = videoDetailLiveData.value ?: return
+        addPlaylistActionLiveData.value = Action(AddPlaylistAction(targetPlaylist, videoDetail))
     }
 
     data class VideoDetailRequest(
             val videoId: VideoId,
             val channelId: ChannelId
+    )
+
+    data class AddPlaylistAction(
+            val playlist: Playlist,
+            val videoDetail: VideoDetail
     )
 }

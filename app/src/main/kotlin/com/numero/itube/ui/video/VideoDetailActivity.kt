@@ -128,12 +128,15 @@ class VideoDetailActivity : AppCompatActivity(),
     }
 
     override fun onSelectedPlaylist(playlist: Playlist, videoId: VideoId) {
-
+        viewModel.executeAddPlaylist(playlist)
     }
 
     private fun setupObserve() {
         viewModel.videoDetailLiveData.observe(this) {
             Log.d("Log", it.toString())
+        }
+        viewModel.addedPlaylistLiveData.observe(this) {
+            // TODO show success added playlist
         }
     }
 
