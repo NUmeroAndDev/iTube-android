@@ -15,7 +15,11 @@ class PlaylistDataSourceImpl(
             .playlistDao()
 
     override fun registerVideo(videoEntity: VideoEntity, playlistEntity: PlaylistEntity) {
-        playlistDao.insertVideoLinkingPlaylist(VideoLinkingPlaylistEntity(videoEntity.id, playlistEntity.id))
+        val link = VideoLinkingPlaylistEntity(
+                videoId = videoEntity.id,
+                playlistId = playlistEntity.id
+        )
+        playlistDao.insertVideoLinkingPlaylist(link)
     }
 
     override fun unregisterVideo(videoEntity: VideoEntity, playlistEntity: PlaylistEntity) {
