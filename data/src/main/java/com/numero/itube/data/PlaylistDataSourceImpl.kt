@@ -15,6 +15,10 @@ class PlaylistDataSourceImpl(
             .build()
             .playlistDao()
 
+    override fun readAllPlaylist(): List<PlaylistEntity> {
+        return playlistDao.findAllPlaylist()
+    }
+
     override fun readAllPlaylistVideo(): List<PlaylistVideo> {
         return playlistDao.findAllVideo()
     }

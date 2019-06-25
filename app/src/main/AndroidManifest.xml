@@ -25,9 +25,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.SearchActivity" />
+        <activity android:name=".ui.search.SearchActivity" />
 
         <activity android:name=".activity.PlayerActivity" />
+
+        <activity android:name=".ui.playlist.PlaylistListActivity" />
 
         <activity android:name=".activity.ChannelDetailActivity" />
 

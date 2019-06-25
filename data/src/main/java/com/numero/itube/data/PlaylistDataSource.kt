@@ -6,6 +6,8 @@ import com.numero.itube.data.entity.VideoEntity
 
 interface PlaylistDataSource {
 
+    fun readAllPlaylist(): List<PlaylistEntity>
+
     fun readAllPlaylistVideo(): List<PlaylistVideo>
 
     fun findPlaylistVideo(playlistEntity: PlaylistEntity): List<PlaylistVideo>
