@@ -2,15 +2,14 @@ package com.numero.itube.ui.video
 
 import androidx.lifecycle.*
 import com.numero.itube.api.response.Result
-import com.numero.itube.model.Action
-import com.numero.itube.model.ChannelId
-import com.numero.itube.model.VideoDetail
-import com.numero.itube.model.VideoId
+import com.numero.itube.model.*
+import com.numero.itube.repository.PlaylistRepository
 import com.numero.itube.repository.VideoRepository
 import javax.inject.Inject
 
 class VideoDetailViewModel @Inject constructor(
-        private val videoRepository: VideoRepository
+        private val videoRepository: VideoRepository,
+        private val playlistRepository: PlaylistRepository
 ) : ViewModel() {
 
     private val actionLiveData: MutableLiveData<Action<VideoDetailRequest>> = MutableLiveData()
@@ -31,6 +30,11 @@ class VideoDetailViewModel @Inject constructor(
 
     fun executeLoadVideoDetail(videoId: VideoId, channelId: ChannelId) {
         actionLiveData.value = Action(VideoDetailRequest(videoId, channelId))
+    }
+
+    fun executeAddPlaylist(playlist: Playlist, videoId: VideoId) {
+        // TODO
+
     }
 
     data class VideoDetailRequest(

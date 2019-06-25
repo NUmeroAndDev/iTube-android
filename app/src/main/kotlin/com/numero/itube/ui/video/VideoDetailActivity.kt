@@ -22,14 +22,17 @@ import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.model.ChannelId
+import com.numero.itube.model.Playlist
 import com.numero.itube.model.Video
 import com.numero.itube.model.VideoId
 import com.numero.itube.repository.ConfigRepository
+import kotlinx.android.synthetic.main.activity_video_detail.*
 import javax.inject.Inject
 
 class VideoDetailActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
-        YouTubePlayer.PlayerStateChangeListener {
+        YouTubePlayer.PlayerStateChangeListener,
+        SelectPlaylistBottomSheetFragment.SelectPlaylistListener {
 
     private val videoId: VideoId by lazy {
         val id = intent.getStringExtra(BUNDLE_VIDEO_ID)
@@ -124,6 +127,10 @@ class VideoDetailActivity : AppCompatActivity(),
     override fun onError(p0: YouTubePlayer.ErrorReason?) {
     }
 
+    override fun onSelectedPlaylist(playlist: Playlist, videoId: VideoId) {
+
+    }
+
     private fun setupObserve() {
         viewModel.videoDetailLiveData.observe(this) {
             Log.d("Log", it.toString())
@@ -132,6 +139,9 @@ class VideoDetailActivity : AppCompatActivity(),
 
     private fun initViews() {
         // TODO
+        addPlaylist.setOnClickListener {
+            SelectPlaylistBottomSheetFragment.newInstance(videoId).show(supportFragmentManager)
+        }
     }
 
     private fun showVideo(video: Video.Search) {
