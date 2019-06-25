@@ -2,6 +2,7 @@ package com.numero.itube.di
 
 import android.content.Context
 import com.numero.itube.api.YoutubeApi
+import com.numero.itube.data.PlaylistDataSource
 import com.numero.itube.data.YoutubeDataSource
 import com.numero.itube.repository.*
 import com.numero.itube.repository.db.FavoriteVideoDao
@@ -34,6 +35,12 @@ class RepositoryModule {
     @Singleton
     fun provideFavoriteVideoRepository(favoriteVideoDao: FavoriteVideoDao): FavoriteVideoRepository {
         return FavoriteVideoRepository(favoriteVideoDao)
+    }
+
+    @Provides
+    @Singleton
+    fun providePlaylistRepository(playlistDataSource: PlaylistDataSource): PlaylistRepository {
+        return PlaylistRepositoryImpl(playlistDataSource)
     }
 
     @Provides
