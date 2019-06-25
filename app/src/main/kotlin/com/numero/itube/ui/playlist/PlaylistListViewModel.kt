@@ -10,7 +10,7 @@ import com.numero.itube.model.PlaylistList
 import com.numero.itube.repository.PlaylistRepository
 import javax.inject.Inject
 
-class PlaylistViewModel @Inject constructor(
+class PlaylistListViewModel @Inject constructor(
         private val playlistRepository: PlaylistRepository
 ) : ViewModel() {
 

@@ -27,7 +27,7 @@ class PlaylistListActivity : AppCompatActivity() {
     private val groupieAdapter = GroupAdapter<ViewHolder>()
 
     private val viewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory).get(PlaylistViewModel::class.java)
+        ViewModelProviders.of(this, viewModelFactory).get(PlaylistListViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
