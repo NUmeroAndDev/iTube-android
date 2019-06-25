@@ -10,7 +10,6 @@ class PlaylistItem(
         val playlist: Playlist
 ) : Item() {
 
-    // TODO implement item design
     override fun getLayout(): Int = R.layout.item_playlist
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
