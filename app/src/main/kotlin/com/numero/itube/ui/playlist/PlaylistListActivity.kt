@@ -3,6 +3,8 @@ package com.numero.itube.ui.playlist
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -33,7 +35,7 @@ class PlaylistListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component?.inject(this)
-        setContentView(R.layout.activity_search)
+        setContentView(R.layout.activity_playlist)
         setSupportActionBar(toolbar)
 
         supportActionBar?.apply {
@@ -52,6 +54,25 @@ class PlaylistListActivity : AppCompatActivity() {
         viewModel.executeLoadPlaylist()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_playlist, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            R.id.action_create_playlist -> {
+                viewModel.executeCreatePlaylist()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun setupViews() {
         playlistRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@PlaylistListActivity)
@@ -64,6 +85,9 @@ class PlaylistListActivity : AppCompatActivity() {
         viewModel.playlistListLiveData.observe(this) {
             groupieAdapter.clear()
             groupieAdapter.add(it.toSection())
+        }
+        viewModel.createPlaylistListLiveData.observe(this) {
+            viewModel.executeLoadPlaylist()
         }
     }
 
