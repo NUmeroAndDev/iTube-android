@@ -40,9 +40,9 @@ interface PlaylistDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertVideoLinkingPlaylist(videoLinkingPlaylist: VideoLinkingPlaylistEntity)
 
-    @Query("DELETE FROM VideoLinkingPlaylist WHERE videoId = :videoId")
-    fun deleteLinkingPlaylistWhereVideoId(videoId: String)
+    @Query("DELETE FROM VideoLinkingPlaylist WHERE videoId = :videoId AND playlistId = :playlistId ")
+    fun deleteLinkingPlaylist(videoId: String, playlistId: Long)
 
     @Query("DELETE FROM VideoLinkingPlaylist WHERE playlistId = :playlistId")
-    fun deleteLinkingPlaylistWherePlaylistId(playlistId: Long)
+    fun deleteLinkingPlaylistAll(playlistId: Long)
 }
