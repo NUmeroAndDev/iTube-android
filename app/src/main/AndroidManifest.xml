@@ -29,6 +29,8 @@
 
         <activity android:name=".activity.PlayerActivity" />
 
+        <activity android:name=".ui.playlist.PlaylistListActivity" />
+
         <activity android:name=".activity.ChannelDetailActivity" />
 
         <activity
