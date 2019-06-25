@@ -11,10 +11,11 @@ interface PlaylistRepository {
 
     fun readPlaylistDetail(playlistId: PlaylistId): LiveData<PlaylistDetail>
 
+    fun readPlaylistDetailList(): LiveData<PlaylistDetailList>
+
     fun updatePlaylist(playlist: Playlist): LiveData<Playlist>
 
     fun deletePlaylist(playlist: Playlist): LiveData<Playlist>
 
     fun addVideoToPlaylist(playlist: Playlist, videoDetail: VideoDetail): LiveData<Playlist>
-
 }

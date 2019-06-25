@@ -34,6 +34,21 @@ class PlaylistRepositoryImpl(
         emit(playlist)
     }
 
+    override fun readPlaylistDetailList(): LiveData<PlaylistDetailList> = liveData(Dispatchers.IO) {
+        val videoList = playlistDataSource.readAllPlaylistVideo()
+        val playlist = videoList.groupBy { it.playlistId }
+                .map {
+                    val id = it.key
+                    val list = it.value
+                    PlaylistDetail(
+                            PlaylistId(id),
+                            videoList.first().playlistTitle,
+                            list.toVideo()
+                    )
+                }
+        emit(PlaylistDetailList(playlist))
+    }
+
     override fun updatePlaylist(playlist: Playlist): LiveData<Playlist> = liveData(Dispatchers.IO) {
         playlistDataSource.updatePlaylist(playlist.toEntity())
         emit(playlist)
