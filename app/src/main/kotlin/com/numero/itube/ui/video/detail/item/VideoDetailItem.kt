@@ -6,18 +6,15 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.item_video_detail_header.*
 
-class VideoDetailHeaderItem(
+class VideoDetailItem(
         private val videoDetail: VideoDetail
 ) : Item() {
 
     override fun getLayout(): Int = R.layout.item_video_detail_header
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.videoDetailView.apply {
-            setTitle(videoDetail.title)
-            setDescription(videoDetail.description)
-            setChannelImageUrl(videoDetail.channelDetail.thumbnailUrl.value)
-            setChannelName(videoDetail.channelDetail.title)
+        viewHolder.apply {
+            titleTextView.text = videoDetail.title
         }
     }
 

@@ -15,8 +15,9 @@ import com.numero.itube.extension.component
 import com.numero.itube.model.ChannelId
 import com.numero.itube.model.VideoDetail
 import com.numero.itube.model.VideoId
+import com.numero.itube.ui.video.detail.item.ChannelItem
 import com.numero.itube.ui.video.detail.item.PlaylistVideoItem
-import com.numero.itube.ui.video.detail.item.VideoDetailHeaderItem
+import com.numero.itube.ui.video.detail.item.VideoDetailItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -74,7 +75,8 @@ class DetailInSearchFragment : Fragment() {
 
     private fun VideoDetail.toSection(): Section {
         return Section().apply {
-            setHeader(VideoDetailHeaderItem(this@toSection))
+            add(VideoDetailItem(this@toSection))
+            add(ChannelItem(channelDetail))
             addAll(relativeVideoList.map { PlaylistVideoItem(it) })
         }
     }
