@@ -14,6 +14,7 @@ import com.numero.itube.model.PlaylistDetailList
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.playlist.PlaylistListActivity
 import com.numero.itube.ui.search.SearchActivity
+import com.numero.itube.ui.top.item.PlaylistHeaderItem
 import com.numero.itube.ui.top.item.PlaylistVideoItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -85,6 +86,7 @@ class TopActivity : AppCompatActivity() {
     private fun PlaylistDetailList.toSectionList(): List<Section> {
         return value.map { playlist ->
             Section().apply {
+                setHeader(PlaylistHeaderItem(playlist))
                 addAll(playlist.videoList.map { PlaylistVideoItem(it) })
             }
         }
