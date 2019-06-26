@@ -1,5 +1,6 @@
 package com.numero.itube.ui.video.detail.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.numero.itube.extension.component
 import com.numero.itube.model.ChannelId
 import com.numero.itube.model.VideoDetail
 import com.numero.itube.model.VideoId
+import com.numero.itube.ui.video.detail.DetailCallback
 import com.numero.itube.ui.video.detail.item.ChannelItem
 import com.numero.itube.ui.video.detail.item.PlaylistVideoItem
 import com.numero.itube.ui.video.detail.item.VideoDetailItem
@@ -41,6 +43,15 @@ class DetailInSearchFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel by lazy {
         ViewModelProviders.of(this, viewModelFactory).get(DetailInSearchViewModel::class.java)
+    }
+
+    private var callback: DetailCallback? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is DetailCallback) {
+            callback = context
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,7 +86,9 @@ class DetailInSearchFragment : Fragment() {
 
     private fun VideoDetail.toSection(): Section {
         return Section().apply {
-            add(VideoDetailItem(this@toSection))
+            add(VideoDetailItem(this@toSection, false) {
+                callback?.showSelectPlaylist()
+            })
             add(ChannelItem(channelDetail))
             addAll(relativeVideoList.map { PlaylistVideoItem(it) })
         }

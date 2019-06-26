@@ -26,12 +26,12 @@ import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
 import com.numero.itube.ui.video.detail.playlist.DetailInPlaylistFragment
 import com.numero.itube.ui.video.detail.search.DetailInSearchFragment
-import kotlinx.android.synthetic.main.activity_video_detail.*
 import javax.inject.Inject
 
 class VideoDetailActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
         YouTubePlayer.PlayerStateChangeListener,
+        DetailCallback,
         SelectPlaylistBottomSheetFragment.SelectPlaylistListener {
 
     private val videoId: VideoId by lazy {
@@ -135,6 +135,14 @@ class VideoDetailActivity : AppCompatActivity(),
         //viewModel.executeAddPlaylist(playlist)
     }
 
+    override fun showSelectPlaylist() {
+        SelectPlaylistBottomSheetFragment.newInstance(videoId).show(supportFragmentManager)
+    }
+
+    override fun showVideo(video: Video) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     private fun setupObserve() {
         viewModel.addedPlaylistLiveData.observe(this) {
             // TODO show success added playlist
@@ -142,10 +150,6 @@ class VideoDetailActivity : AppCompatActivity(),
     }
 
     private fun initViews() {
-        // TODO
-        addPlaylist.setOnClickListener {
-            SelectPlaylistBottomSheetFragment.newInstance(videoId).show(supportFragmentManager)
-        }
         val playlistId = playlistId
         val fragment = if (playlistId != null) {
             DetailInPlaylistFragment.newInstance(videoId, channelId, playlistId)
