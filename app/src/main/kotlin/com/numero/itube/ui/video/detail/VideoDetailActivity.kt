@@ -20,7 +20,6 @@ import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.extension.replace
-import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.model.*
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
@@ -140,7 +139,10 @@ class VideoDetailActivity : AppCompatActivity(),
     }
 
     override fun showVideo(video: Video) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val videoId = video.id
+        val channelId = video.channel.id
+        player?.loadVideo(videoId.value)
+        showDetail(videoId, channelId)
     }
 
     private fun setupObserve() {
@@ -150,6 +152,10 @@ class VideoDetailActivity : AppCompatActivity(),
     }
 
     private fun initViews() {
+        showDetail(videoId, channelId)
+    }
+
+    private fun showDetail(videoId: VideoId, channelId: ChannelId) {
         val playlistId = playlistId
         val fragment = if (playlistId != null) {
             DetailInPlaylistFragment.newInstance(videoId, channelId, playlistId)
@@ -159,18 +165,9 @@ class VideoDetailActivity : AppCompatActivity(),
         replace(R.id.detailContainer, fragment)
     }
 
-    private fun showVideo(video: Video.Search) {
-        startActivity(createIntent(this, video))
-        overridePendingTransition(0, 0)
-    }
-
     private fun showChannelDetailScreen(channelName: String, channelId: String, thumbnailUrl: String, transitionView: Pair<View, String>) {
         val bundle = ActivityOptions.makeSceneTransitionAnimation(this, transitionView).toBundle()
         startActivity(ChannelDetailActivity.createIntent(this, channelName, channelId, thumbnailUrl), bundle)
-    }
-
-    private fun showFavoriteList() {
-        FavoriteListBottomSheetFragment.newInstance(videoId.value).show(supportFragmentManager)
     }
 
     companion object {

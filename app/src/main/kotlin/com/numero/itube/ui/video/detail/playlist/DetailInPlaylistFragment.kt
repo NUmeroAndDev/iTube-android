@@ -73,6 +73,11 @@ class DetailInPlaylistFragment : Fragment() {
     }
 
     private fun setupViews() {
+        groupieAdapter.setOnItemClickListener { item, view ->
+            if (item is PlaylistVideoItem) {
+                callback?.showVideo(item.video)
+            }
+        }
         detailRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = groupieAdapter
