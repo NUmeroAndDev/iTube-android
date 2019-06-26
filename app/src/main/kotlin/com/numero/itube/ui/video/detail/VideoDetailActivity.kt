@@ -20,18 +20,17 @@ import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.extension.replace
-import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.model.*
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
 import com.numero.itube.ui.video.detail.playlist.DetailInPlaylistFragment
 import com.numero.itube.ui.video.detail.search.DetailInSearchFragment
-import kotlinx.android.synthetic.main.activity_video_detail.*
 import javax.inject.Inject
 
 class VideoDetailActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
         YouTubePlayer.PlayerStateChangeListener,
+        DetailCallback,
         SelectPlaylistBottomSheetFragment.SelectPlaylistListener {
 
     private val videoId: VideoId by lazy {
@@ -135,6 +134,17 @@ class VideoDetailActivity : AppCompatActivity(),
         //viewModel.executeAddPlaylist(playlist)
     }
 
+    override fun showSelectPlaylist() {
+        SelectPlaylistBottomSheetFragment.newInstance(videoId).show(supportFragmentManager)
+    }
+
+    override fun showVideo(video: Video) {
+        val videoId = video.id
+        val channelId = video.channel.id
+        player?.loadVideo(videoId.value)
+        showDetail(videoId, channelId)
+    }
+
     private fun setupObserve() {
         viewModel.addedPlaylistLiveData.observe(this) {
             // TODO show success added playlist
@@ -142,10 +152,10 @@ class VideoDetailActivity : AppCompatActivity(),
     }
 
     private fun initViews() {
-        // TODO
-        addPlaylist.setOnClickListener {
-            SelectPlaylistBottomSheetFragment.newInstance(videoId).show(supportFragmentManager)
-        }
+        showDetail(videoId, channelId)
+    }
+
+    private fun showDetail(videoId: VideoId, channelId: ChannelId) {
         val playlistId = playlistId
         val fragment = if (playlistId != null) {
             DetailInPlaylistFragment.newInstance(videoId, channelId, playlistId)
@@ -155,18 +165,9 @@ class VideoDetailActivity : AppCompatActivity(),
         replace(R.id.detailContainer, fragment)
     }
 
-    private fun showVideo(video: Video.Search) {
-        startActivity(createIntent(this, video))
-        overridePendingTransition(0, 0)
-    }
-
     private fun showChannelDetailScreen(channelName: String, channelId: String, thumbnailUrl: String, transitionView: Pair<View, String>) {
         val bundle = ActivityOptions.makeSceneTransitionAnimation(this, transitionView).toBundle()
         startActivity(ChannelDetailActivity.createIntent(this, channelName, channelId, thumbnailUrl), bundle)
-    }
-
-    private fun showFavoriteList() {
-        FavoriteListBottomSheetFragment.newInstance(videoId.value).show(supportFragmentManager)
     }
 
     companion object {

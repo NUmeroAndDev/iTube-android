@@ -1,5 +1,6 @@
 package com.numero.itube.ui.video.detail.playlist
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.model.*
+import com.numero.itube.ui.video.detail.DetailCallback
 import com.numero.itube.ui.video.detail.item.ChannelItem
 import com.numero.itube.ui.video.detail.item.PlaylistVideoItem
 import com.numero.itube.ui.video.detail.item.VideoDetailItem
@@ -45,6 +47,15 @@ class DetailInPlaylistFragment : Fragment() {
         ViewModelProviders.of(this, viewModelFactory).get(DetailInPlaylistViewModel::class.java)
     }
 
+    private var callback: DetailCallback? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is DetailCallback) {
+            callback = context
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component?.inject(this)
@@ -62,6 +73,11 @@ class DetailInPlaylistFragment : Fragment() {
     }
 
     private fun setupViews() {
+        groupieAdapter.setOnItemClickListener { item, view ->
+            if (item is PlaylistVideoItem) {
+                callback?.showVideo(item.video)
+            }
+        }
         detailRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = groupieAdapter
@@ -77,7 +93,9 @@ class DetailInPlaylistFragment : Fragment() {
 
     private fun Pair<VideoDetail, PlaylistDetail>.toSection(): Section {
         return Section().apply {
-            add(VideoDetailItem(first))
+            add(VideoDetailItem(first, true) {
+                callback?.showSelectPlaylist()
+            })
             add(ChannelItem(first.channelDetail))
             addAll(second.videoList.map { PlaylistVideoItem(it) })
         }
