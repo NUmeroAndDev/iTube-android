@@ -1,6 +1,9 @@
 package com.numero.itube.di
 
-import com.numero.itube.activity.*
+import com.numero.itube.activity.ChannelDetailActivity
+import com.numero.itube.activity.LicensesActivity
+import com.numero.itube.activity.PlayerActivity
+import com.numero.itube.activity.SettingsActivity
 import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.fragment.SettingsFragment
 import com.numero.itube.ui.playlist.PlaylistListActivity
@@ -22,7 +25,6 @@ import javax.inject.Singleton
     ViewModelFactoryModule::class
 ])
 interface ApplicationComponent {
-    fun inject(topActivity: TopActivity)
     fun inject(searchActivity: SearchActivity)
     fun inject(playerActivity: PlayerActivity)
     fun inject(videoDetailActivity: VideoDetailActivity)
