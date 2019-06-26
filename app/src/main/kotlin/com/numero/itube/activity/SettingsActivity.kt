@@ -57,7 +57,7 @@ class SettingsActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         if (isChangedTheme) {
-            startActivity(TopActivity.createClearTopIntent(this))
+            //startActivity(TopActivity.createClearTopIntent(this))
         } else {
             super.onBackPressed()
         }
