@@ -13,8 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.model.*
+import com.numero.itube.ui.video.detail.item.ChannelItem
 import com.numero.itube.ui.video.detail.item.PlaylistVideoItem
-import com.numero.itube.ui.video.detail.item.VideoDetailHeaderItem
+import com.numero.itube.ui.video.detail.item.VideoDetailItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -76,7 +77,8 @@ class DetailInPlaylistFragment : Fragment() {
 
     private fun Pair<VideoDetail, PlaylistDetail>.toSection(): Section {
         return Section().apply {
-            setHeader(VideoDetailHeaderItem(first))
+            add(VideoDetailItem(first))
+            add(ChannelItem(first.channelDetail))
             addAll(second.videoList.map { PlaylistVideoItem(it) })
         }
     }
