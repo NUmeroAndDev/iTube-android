@@ -31,7 +31,7 @@
 
         <activity android:name=".ui.playlist.PlaylistListActivity" />
 
-        <activity android:name=".ui.video.VideoDetailActivity" />
+        <activity android:name=".ui.video.detail.VideoDetailActivity" />
 
         <activity android:name=".activity.ChannelDetailActivity" />
 

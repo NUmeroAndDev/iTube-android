@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isInvisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
@@ -17,7 +16,7 @@ import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.model.SearchVideoList
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.search.item.SearchVideoItem
-import com.numero.itube.ui.video.VideoDetailActivity
+import com.numero.itube.ui.video.detail.VideoDetailActivity
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.SearchInputView
 import com.numero.itube.viewmodel.SearchVideoViewModel

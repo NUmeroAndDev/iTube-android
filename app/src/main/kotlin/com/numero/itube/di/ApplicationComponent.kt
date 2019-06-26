@@ -6,7 +6,7 @@ import com.numero.itube.fragment.SettingsFragment
 import com.numero.itube.ui.playlist.PlaylistListActivity
 import com.numero.itube.ui.search.SearchActivity
 import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
-import com.numero.itube.ui.video.VideoDetailActivity
+import com.numero.itube.ui.video.detail.VideoDetailActivity
 import dagger.Component
 import javax.inject.Singleton
 

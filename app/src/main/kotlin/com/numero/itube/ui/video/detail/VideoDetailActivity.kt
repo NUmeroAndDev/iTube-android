@@ -1,4 +1,4 @@
-package com.numero.itube.ui.video
+package com.numero.itube.ui.video.detail
 
 import android.app.ActivityOptions
 import android.content.Context
@@ -11,7 +11,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.observe
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
@@ -23,6 +22,7 @@ import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.model.*
 import com.numero.itube.repository.ConfigRepository
+import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
 import kotlinx.android.synthetic.main.activity_video_detail.*
 import javax.inject.Inject
 
@@ -151,7 +151,7 @@ class VideoDetailActivity : AppCompatActivity(),
     }
 
     private fun showVideo(video: Video.Search) {
-        startActivity(VideoDetailActivity.createIntent(this, video))
+        startActivity(createIntent(this, video))
         overridePendingTransition(0, 0)
     }
 
