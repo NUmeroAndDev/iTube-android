@@ -4,13 +4,13 @@ import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.Pair
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
 import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
@@ -19,6 +19,7 @@ import com.numero.itube.activity.ChannelDetailActivity
 import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
+import com.numero.itube.extension.replace
 import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.model.*
 import com.numero.itube.repository.ConfigRepository
@@ -80,8 +81,6 @@ class VideoDetailActivity : AppCompatActivity(),
 //            replace(R.id.playerContainer, this, false)
         }
         youTubePlayerFragment.initialize(configRepository.apiKey, this)
-
-        viewModel.executeLoadVideoDetail(videoId, channelId)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -131,13 +130,10 @@ class VideoDetailActivity : AppCompatActivity(),
     }
 
     override fun onSelectedPlaylist(playlist: Playlist, videoId: VideoId) {
-        viewModel.executeAddPlaylist(playlist)
+        //viewModel.executeAddPlaylist(playlist)
     }
 
     private fun setupObserve() {
-        viewModel.videoDetailLiveData.observe(this) {
-            Log.d("Log", it.toString())
-        }
         viewModel.addedPlaylistLiveData.observe(this) {
             // TODO show success added playlist
         }
@@ -147,6 +143,10 @@ class VideoDetailActivity : AppCompatActivity(),
         // TODO
         addPlaylist.setOnClickListener {
             SelectPlaylistBottomSheetFragment.newInstance(videoId).show(supportFragmentManager)
+        }
+        val playlistId = playlistId
+        if (playlistId != null) {
+            replace(R.id.detailContainer, DetailInPlaylistFragment.newInstance(videoId, channelId, playlistId))
         }
     }
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.numero.itube.ui.playlist.PlaylistListViewModel
 import com.numero.itube.ui.top.TopViewModel
 import com.numero.itube.ui.video.SelectPlaylistViewModel
+import com.numero.itube.ui.video.detail.DetailInPlaylistViewModel
 import com.numero.itube.ui.video.detail.VideoDetailViewModel
 import com.numero.itube.viewmodel.ChannelVideoListViewModel
 import com.numero.itube.viewmodel.PlayerViewModel
@@ -39,6 +40,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(VideoDetailViewModel::class)
     abstract fun bindVideoDetailViewModel(viewModel: VideoDetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DetailInPlaylistViewModel::class)
+    abstract fun bindDetailInPlaylistViewModel(viewModel: DetailInPlaylistViewModel): ViewModel
 
     @Binds
     @IntoMap
