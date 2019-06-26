@@ -1,4 +1,4 @@
-package com.numero.itube.ui.video.detail
+package com.numero.itube.ui.video.detail.playlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
