@@ -8,6 +8,7 @@ import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.fragment.SettingsFragment
 import com.numero.itube.ui.playlist.PlaylistListActivity
 import com.numero.itube.ui.search.SearchActivity
+import com.numero.itube.ui.top.TopActivity
 import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
 import com.numero.itube.ui.video.detail.DetailInPlaylistFragment
 import com.numero.itube.ui.video.detail.VideoDetailActivity
@@ -32,7 +33,7 @@ interface ApplicationComponent {
     fun inject(settingsActivity: SettingsActivity)
     fun inject(licensesActivity: LicensesActivity)
     fun inject(playlistListActivity: PlaylistListActivity)
-    fun inject(topActivity: com.numero.itube.ui.top.TopActivity)
+    fun inject(topActivity: TopActivity)
 
     fun inject(detailInPlaylistFragment: DetailInPlaylistFragment)
 
