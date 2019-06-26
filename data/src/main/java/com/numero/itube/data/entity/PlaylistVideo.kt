@@ -1,7 +1,5 @@
 package com.numero.itube.data.entity
 
-import androidx.room.ColumnInfo
-
 data class PlaylistVideo(
         val id: String,
         val title: String,

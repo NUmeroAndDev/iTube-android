@@ -21,4 +21,8 @@ data class PlaylistDetail(
         val videoList: List<Video.InPlaylist>
 )
 
+data class PlaylistDetailList(
+        val value: List<PlaylistDetail>
+)
+
 inline class PlaylistId(val value: Long)
