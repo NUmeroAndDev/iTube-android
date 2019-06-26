@@ -42,7 +42,7 @@ class PlaylistRepositoryImpl(
                     val list = it.value
                     PlaylistDetail(
                             PlaylistId(id),
-                            videoList.first().playlistTitle,
+                            list.first().playlistTitle,
                             list.toVideo()
                     )
                 }
