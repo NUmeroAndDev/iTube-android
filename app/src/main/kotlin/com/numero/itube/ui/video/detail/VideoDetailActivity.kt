@@ -25,6 +25,7 @@ import com.numero.itube.model.*
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
 import com.numero.itube.ui.video.detail.playlist.DetailInPlaylistFragment
+import com.numero.itube.ui.video.detail.search.DetailInSearchFragment
 import kotlinx.android.synthetic.main.activity_video_detail.*
 import javax.inject.Inject
 
@@ -146,9 +147,12 @@ class VideoDetailActivity : AppCompatActivity(),
             SelectPlaylistBottomSheetFragment.newInstance(videoId).show(supportFragmentManager)
         }
         val playlistId = playlistId
-        if (playlistId != null) {
-            replace(R.id.detailContainer, DetailInPlaylistFragment.newInstance(videoId, channelId, playlistId))
+        val fragment = if (playlistId != null) {
+            DetailInPlaylistFragment.newInstance(videoId, channelId, playlistId)
+        } else {
+            DetailInSearchFragment.newInstance(videoId, channelId)
         }
+        replace(R.id.detailContainer, fragment)
     }
 
     private fun showVideo(video: Video.Search) {

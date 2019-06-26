@@ -10,8 +10,9 @@ import com.numero.itube.ui.playlist.PlaylistListActivity
 import com.numero.itube.ui.search.SearchActivity
 import com.numero.itube.ui.top.TopActivity
 import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
-import com.numero.itube.ui.video.detail.playlist.DetailInPlaylistFragment
 import com.numero.itube.ui.video.detail.VideoDetailActivity
+import com.numero.itube.ui.video.detail.playlist.DetailInPlaylistFragment
+import com.numero.itube.ui.video.detail.search.DetailInSearchFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -36,6 +37,7 @@ interface ApplicationComponent {
     fun inject(topActivity: TopActivity)
 
     fun inject(detailInPlaylistFragment: DetailInPlaylistFragment)
+    fun inject(detailInSearchFragment: DetailInSearchFragment)
 
     fun inject(favoriteListBottomSheetFragment: FavoriteListBottomSheetFragment)
     fun inject(settingsFragment: SettingsFragment)

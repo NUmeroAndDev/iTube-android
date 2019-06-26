@@ -10,7 +10,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.view_holder_video.*
 
 class PlaylistVideoItem(
-        val video: Video.InPlaylist
+        val video: Video
 ) : Item() {
 
     override fun getLayout(): Int = R.layout.view_holder_video
