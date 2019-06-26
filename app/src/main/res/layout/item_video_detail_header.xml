@@ -49,6 +49,7 @@
         android:background="?attr/colorStroke"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addPlaylistButton" />
+        app:layout_constraintTop_toBottomOf="@+id/addPlaylistButton"
+        app:layout_goneMarginTop="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
