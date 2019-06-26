@@ -1,10 +1,9 @@
-package com.numero.itube.ui.video
+package com.numero.itube.ui.video.detail
 
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.Pair
 import android.view.MenuItem
 import android.view.View
@@ -20,12 +19,11 @@ import com.numero.itube.activity.ChannelDetailActivity
 import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
+import com.numero.itube.extension.replace
 import com.numero.itube.fragment.FavoriteListBottomSheetFragment
-import com.numero.itube.model.ChannelId
-import com.numero.itube.model.Playlist
-import com.numero.itube.model.Video
-import com.numero.itube.model.VideoId
+import com.numero.itube.model.*
 import com.numero.itube.repository.ConfigRepository
+import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
 import kotlinx.android.synthetic.main.activity_video_detail.*
 import javax.inject.Inject
 
@@ -42,8 +40,14 @@ class VideoDetailActivity : AppCompatActivity(),
         val id = intent.getStringExtra(BUNDLE_CHANNEL_ID)
         ChannelId(id)
     }
-    private var player: YouTubePlayer? = null
+    private val playlistId: PlaylistId? by lazy {
+        val notExistId = -1L
+        val id = intent.getLongExtra(BUNDLE_PLAYLIST_ID, notExistId)
+        if (notExistId == id) return@lazy null
+        PlaylistId(id)
+    }
 
+    private var player: YouTubePlayer? = null
 
     @Inject
     lateinit var configRepository: ConfigRepository
@@ -77,8 +81,6 @@ class VideoDetailActivity : AppCompatActivity(),
 //            replace(R.id.playerContainer, this, false)
         }
         youTubePlayerFragment.initialize(configRepository.apiKey, this)
-
-        viewModel.executeLoadVideoDetail(videoId, channelId)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -128,13 +130,10 @@ class VideoDetailActivity : AppCompatActivity(),
     }
 
     override fun onSelectedPlaylist(playlist: Playlist, videoId: VideoId) {
-        viewModel.executeAddPlaylist(playlist)
+        //viewModel.executeAddPlaylist(playlist)
     }
 
     private fun setupObserve() {
-        viewModel.videoDetailLiveData.observe(this) {
-            Log.d("Log", it.toString())
-        }
         viewModel.addedPlaylistLiveData.observe(this) {
             // TODO show success added playlist
         }
@@ -145,10 +144,14 @@ class VideoDetailActivity : AppCompatActivity(),
         addPlaylist.setOnClickListener {
             SelectPlaylistBottomSheetFragment.newInstance(videoId).show(supportFragmentManager)
         }
+        val playlistId = playlistId
+        if (playlistId != null) {
+            replace(R.id.detailContainer, DetailInPlaylistFragment.newInstance(videoId, channelId, playlistId))
+        }
     }
 
     private fun showVideo(video: Video.Search) {
-        startActivity(VideoDetailActivity.createIntent(this, video))
+        startActivity(createIntent(this, video))
         overridePendingTransition(0, 0)
     }
 
@@ -165,10 +168,18 @@ class VideoDetailActivity : AppCompatActivity(),
 
         private const val BUNDLE_VIDEO_ID = "BUNDLE_VIDEO_ID"
         private const val BUNDLE_CHANNEL_ID = "BUNDLE_CHANNEL_ID"
+        private const val BUNDLE_PLAYLIST_ID = "BUNDLE_PLAYLIST_ID"
 
         fun createIntent(context: Context, video: Video.Search): Intent = Intent(context, VideoDetailActivity::class.java).apply {
             putExtra(BUNDLE_VIDEO_ID, video.id.value)
             putExtra(BUNDLE_CHANNEL_ID, video.channel.id.value)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+
+        fun createIntent(context: Context, video: Video.InPlaylist): Intent = Intent(context, VideoDetailActivity::class.java).apply {
+            putExtra(BUNDLE_VIDEO_ID, video.id.value)
+            putExtra(BUNDLE_CHANNEL_ID, video.channel.id.value)
+            putExtra(BUNDLE_PLAYLIST_ID, video.playlistId.value)
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
     }

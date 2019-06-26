@@ -17,7 +17,7 @@ import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.model.SearchVideoList
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.search.item.SearchVideoItem
-import com.numero.itube.ui.video.VideoDetailActivity
+import com.numero.itube.ui.video.detail.VideoDetailActivity
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.SearchInputView
 import com.numero.itube.viewmodel.SearchVideoViewModel

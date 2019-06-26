@@ -16,6 +16,7 @@ import com.numero.itube.ui.playlist.PlaylistListActivity
 import com.numero.itube.ui.search.SearchActivity
 import com.numero.itube.ui.top.item.PlaylistHeaderItem
 import com.numero.itube.ui.top.item.PlaylistVideoItem
+import com.numero.itube.ui.video.detail.VideoDetailActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -50,7 +51,7 @@ class TopActivity : AppCompatActivity() {
 
         groupieAdapter.setOnItemClickListener { item, _ ->
             if (item is PlaylistVideoItem) {
-                //startActivity(VideoDetailActivity.createIntent(this, item.video))
+                startActivity(VideoDetailActivity.createIntent(this, item.video))
             }
         }
         videoRecyclerView.apply {
