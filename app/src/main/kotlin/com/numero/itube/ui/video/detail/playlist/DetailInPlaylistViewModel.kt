@@ -1,4 +1,4 @@
-package com.numero.itube.ui.video.detail
+package com.numero.itube.ui.video.detail.playlist
 
 import androidx.lifecycle.*
 import com.numero.itube.api.response.Result

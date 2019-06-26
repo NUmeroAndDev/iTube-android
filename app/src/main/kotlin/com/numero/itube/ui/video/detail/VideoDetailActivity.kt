@@ -24,6 +24,7 @@ import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.model.*
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
+import com.numero.itube.ui.video.detail.playlist.DetailInPlaylistFragment
 import kotlinx.android.synthetic.main.activity_video_detail.*
 import javax.inject.Inject
 
