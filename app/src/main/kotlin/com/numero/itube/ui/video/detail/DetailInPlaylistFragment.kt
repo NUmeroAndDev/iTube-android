@@ -12,10 +12,8 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
-import com.numero.itube.model.ChannelId
-import com.numero.itube.model.PlaylistId
-import com.numero.itube.model.VideoDetail
-import com.numero.itube.model.VideoId
+import com.numero.itube.model.*
+import com.numero.itube.ui.video.detail.item.PlaylistVideoItem
 import com.numero.itube.ui.video.detail.item.VideoDetailHeaderItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -59,7 +57,7 @@ class DetailInPlaylistFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
-        viewModel.executeLoadVideoDetail(videoId, channelId)
+        viewModel.executeLoadVideoDetail(videoId, channelId, playlistId)
     }
 
     private fun setupViews() {
@@ -76,9 +74,10 @@ class DetailInPlaylistFragment : Fragment() {
         }
     }
 
-    private fun VideoDetail.toSection(): Section {
+    private fun Pair<VideoDetail, PlaylistDetail>.toSection(): Section {
         return Section().apply {
-            setHeader(VideoDetailHeaderItem(this@toSection))
+            setHeader(VideoDetailHeaderItem(first))
+            addAll(second.videoList.map { PlaylistVideoItem(it) })
         }
     }
 
