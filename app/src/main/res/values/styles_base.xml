@@ -3,7 +3,7 @@
     <attr name="colorStroke" format="reference" />
 
     <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
