@@ -4,13 +4,13 @@ buildscript {
         kotlinVersion = '1.3.31'
         coroutinesAndroidVersion = '1.0.1'
 
-        appCompatVersion = '1.1.0-alpha01'
-        recyclerVersion = '1.0.0'
-        preferenceVersion = '1.1.0-alpha02'
+        appCompatVersion = '1.1.0-beta01'
+        recyclerVersion = '1.1.0-alpha06'
+        preferenceVersion = '1.1.0-beta01'
         constraintVersion = '2.0.0-alpha3'
-        ktxVersion = '1.1.0-alpha03'
+        ktxVersion = '1.2.0-alpha02'
 
-        materialVersion = '1.1.0-alpha02'
+        materialVersion = '1.1.0-alpha07'
 
         lifecycleVersion = '2.2.0-alpha01'
         roomVersion = '2.1.0-alpha03'

@@ -14,6 +14,6 @@ class PlayerSettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        findPreference<SwitchPreference>("key_is_play_loop").tintIcon(R.attr.colorOnBackground)
+        findPreference<SwitchPreference>("key_is_play_loop")?.tintIcon(R.attr.colorOnBackground)
     }
 }
