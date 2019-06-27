@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/LightTheme.LightWindow"
+        android:theme="@style/AppTheme.EdgeToEdge"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity

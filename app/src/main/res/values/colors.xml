@@ -1,45 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#FFFFFF</color>
-    <color name="primaryVariant">#FFFFFF</color>
-    <color name="secondary">#ED3323</color>
+    <color name="primary">#ED3323</color>
+    <color name="primaryVariant">#cd1c1e</color>
+    <color name="secondary">#1D8DEE</color>
     <color name="background">#FFFFFF</color>
     <color name="surface">#FFFFFF</color>
     <color name="error">#B00020</color>
 
-    <color name="onPrimary">#DE000000</color>
+    <color name="onPrimary">#FFFFFF</color>
     <color name="onSecondary">#FFFFFF</color>
-    <color name="onBackground">#DE000000</color>
-    <color name="onSurface">#DE000000</color>
+    <color name="onBackground">#000000</color>
+    <color name="onSurface">#000000</color>
     <color name="onError">#FFFFFF</color>
 
     <color name="stroke">#1C000000</color>
 
-    <color name="highEmphasisText">#DE000000</color>
-    <color name="mediumEmphasisText">#99000000</color>
-    <color name="disabledText">#5F000000</color>
-
     <color name="playing_background">#8A000000</color>
 
-    <!--DarkTheme-->
-    <color name="primaryDark">#1B2737</color>
-    <color name="primaryVariantDark">#1B2737</color>
-    <color name="secondaryDark">#1D8DEE</color>
-    <color name="backgroundDark">#1B2737</color>
-    <color name="surfaceDark">#151E29</color>
-    <color name="errorDark">#B00020</color>
-
-    <color name="onPrimaryDark">#FFFFFF</color>
-    <color name="onSecondaryDark">#99FFFFFF</color>
-    <color name="onBackgroundDark">#DEFFFFFF</color>
-    <color name="onSurfaceDark">#DEFFFFFF</color>
-    <color name="onErrorDark">#FFFFFF</color>
-
-    <color name="colorControlHighLightDark">#3DFFFFFF</color>
-
-    <color name="highEmphasisTextDark">#DEFFFFFF</color>
-    <color name="mediumEmphasisTextDark">#99FFFFFF</color>
-    <color name="disabledTextDark">#5FFFFFFF</color>
-
-    <color name="strokeDark">#151E29</color>
 </resources>

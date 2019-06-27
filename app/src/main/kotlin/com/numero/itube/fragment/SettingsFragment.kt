@@ -32,13 +32,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val licensesScreen = findPreference<PreferenceScreen>("licenses")
-        licensesScreen.setOnPreferenceClickListener {
+        licensesScreen?.setOnPreferenceClickListener {
             listener?.showLicenses()
             false
         }
-        findPreference<PreferenceScreen>("version").summary = BuildConfig.VERSION_NAME
+        findPreference<PreferenceScreen>("version")?.summary = BuildConfig.VERSION_NAME
 
-        findPreference<SwitchPreference>("key_is_use_dark_theme").setOnPreferenceChangeListener { _, newValue ->
+        findPreference<SwitchPreference>("key_is_use_dark_theme")?.setOnPreferenceChangeListener { _, newValue ->
             if (newValue is Boolean) {
                 listener?.onChangedTheme()
             }

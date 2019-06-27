@@ -12,8 +12,6 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
-import com.numero.itube.extension.getAttrColor
-import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.model.SearchVideoList
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.search.item.SearchVideoItem
@@ -49,9 +47,6 @@ class SearchActivity : AppCompatActivity() {
 
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            val colorOnPrimary = getAttrColor(R.attr.colorOnPrimary)
-            val drawable = getTintedDrawable(R.drawable.ic_arrow_back, colorOnPrimary) ?: return
-            setHomeAsUpIndicator(drawable)
         }
 
         initViews()
