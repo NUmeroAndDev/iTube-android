@@ -8,7 +8,6 @@ import com.numero.itube.ui.video.detail.playlist.DetailInPlaylistViewModel
 import com.numero.itube.ui.video.detail.VideoDetailViewModel
 import com.numero.itube.ui.video.detail.search.DetailInSearchViewModel
 import com.numero.itube.viewmodel.ChannelVideoListViewModel
-import com.numero.itube.viewmodel.PlayerViewModel
 import com.numero.itube.viewmodel.SearchVideoViewModel
 import dagger.Binds
 import dagger.Module
@@ -26,11 +25,6 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ChannelVideoListViewModel::class)
     abstract fun bindChannelVideoListViewModel(viewModel: ChannelVideoListViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(PlayerViewModel::class)
-    abstract fun bindPlayerViewModel(viewModel: PlayerViewModel): ViewModel
 
     @Binds
     @IntoMap
