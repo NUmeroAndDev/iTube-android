@@ -2,7 +2,6 @@
 <resources>
 
     <style name="AppTheme.LightWindow">
-        <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
     </style>

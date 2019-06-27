@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId "com.numero.itube"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode rootProject.appVersionCode
         versionName rootProject.appVersionName
