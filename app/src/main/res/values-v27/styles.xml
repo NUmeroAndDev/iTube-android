@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="LightTheme.LightWindow">
+    <style name="AppTheme.LightWindow">
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar">true</item>
-        <item name="android:navigationBarColor">?attr/colorSurface</item>
-    </style>
-
-    <style name="DarkTheme.DarkWindow">
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar">false</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
     </style>
 
@@ -26,7 +20,7 @@
     </style>
 
     <style name="BottomSheetDialogTheme.Rounded.Dark">
-        <item name="android:colorBackground">@color/backgroundDark</item>
-        <item name="android:navigationBarColor">@color/surfaceDark</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:navigationBarColor">@color/surface</item>
     </style>
 </resources>

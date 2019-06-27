@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="colorBackground" format="reference" />
-
     <attr name="colorStroke" format="reference" />
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-        <item name="dialogCornerRadius">16dp</item>
-
-        <item name="colorPrimaryDark">?attr/colorPrimaryVariant</item>
+    <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#ED3323</color>
+    <color name="primary">#ed9491</color>
     <color name="primaryVariant">#cd1c1e</color>
     <color name="secondary">#1D8DEE</color>
-    <color name="background">#FFFFFF</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="error">#B00020</color>
+    <color name="background">#121212</color>
+    <color name="surface">#121212</color>
+    <color name="error">#CF6679</color>
 
-    <color name="onPrimary">#FFFFFF</color>
+    <color name="onPrimary">#000000</color>
     <color name="onSecondary">#FFFFFF</color>
-    <color name="onBackground">#000000</color>
-    <color name="onSurface">#000000</color>
-    <color name="onError">#FFFFFF</color>
+    <color name="onBackground">#FFFFFF</color>
+    <color name="onSurface">#FFFFFF</color>
+    <color name="onError">#000000</color>
 
     <color name="stroke">#1C000000</color>
 
@@ -20,5 +20,4 @@
     <color name="disabledText">#5F000000</color>
 
     <color name="playing_background">#8A000000</color>
-
 </resources>
