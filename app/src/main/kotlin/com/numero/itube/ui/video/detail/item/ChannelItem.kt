@@ -8,7 +8,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.item_channel.*
 
 class ChannelItem(
-        private val channelDetail: ChannelDetail
+        val channelDetail: ChannelDetail
 ) : Item() {
 
     override fun getLayout(): Int = R.layout.item_channel
