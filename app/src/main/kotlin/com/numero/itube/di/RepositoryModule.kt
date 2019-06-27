@@ -1,7 +1,6 @@
 package com.numero.itube.di
 
 import android.content.Context
-import com.numero.itube.api.YoutubeApi
 import com.numero.itube.data.PlaylistDataSource
 import com.numero.itube.data.YoutubeDataSource
 import com.numero.itube.repository.*
@@ -12,12 +11,6 @@ import javax.inject.Singleton
 
 @Module
 class RepositoryModule {
-
-    @Provides
-    @Singleton
-    fun provideYoutubeRepository(youtubeApi: YoutubeApi): YoutubeRepository {
-        return YoutubeRepository(youtubeApi)
-    }
 
     @Provides
     @Singleton
