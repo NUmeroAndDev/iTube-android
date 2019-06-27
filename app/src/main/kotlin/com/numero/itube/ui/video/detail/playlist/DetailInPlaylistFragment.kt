@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.model.*
+import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
 import com.numero.itube.ui.video.detail.DetailCallback
 import com.numero.itube.ui.video.detail.item.ChannelItem
 import com.numero.itube.ui.video.detail.item.PlaylistVideoItem
@@ -24,7 +25,8 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_detail.*
 import javax.inject.Inject
 
-class DetailInPlaylistFragment : Fragment() {
+class DetailInPlaylistFragment : Fragment(),
+        SelectPlaylistBottomSheetFragment.SelectPlaylistListener {
 
     private val videoId: VideoId by lazy {
         val id = arguments?.getString(ARG_VIDEO_ID)
@@ -72,6 +74,11 @@ class DetailInPlaylistFragment : Fragment() {
         viewModel.executeLoadVideoDetail(videoId, channelId, playlistId)
     }
 
+    override fun onSelectedPlaylist(playlist: Playlist, videoId: VideoId) {
+        val videoDetail = viewModel.videoDetailLiveData.value?.first ?: return
+        callback?.addPlaylist(playlist, videoDetail)
+    }
+
     private fun setupViews() {
         groupieAdapter.setOnItemClickListener { item, view ->
             if (item is PlaylistVideoItem) {
@@ -91,10 +98,14 @@ class DetailInPlaylistFragment : Fragment() {
         }
     }
 
+    private fun showSelectPlaylist() {
+        SelectPlaylistBottomSheetFragment.newInstance(this, videoId).show(requireFragmentManager())
+    }
+
     private fun Pair<VideoDetail, PlaylistDetail>.toSection(): Section {
         return Section().apply {
             add(VideoDetailItem(first, true) {
-                callback?.showSelectPlaylist()
+                showSelectPlaylist()
             })
             add(ChannelItem(first.channelDetail))
             addAll(second.videoList.map { PlaylistVideoItem(it) })

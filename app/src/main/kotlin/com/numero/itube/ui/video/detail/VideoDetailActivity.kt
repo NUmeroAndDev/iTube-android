@@ -8,6 +8,7 @@ import android.util.Pair
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
@@ -22,7 +23,6 @@ import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.extension.replace
 import com.numero.itube.model.*
 import com.numero.itube.repository.ConfigRepository
-import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
 import com.numero.itube.ui.video.detail.playlist.DetailInPlaylistFragment
 import com.numero.itube.ui.video.detail.search.DetailInSearchFragment
 import javax.inject.Inject
@@ -30,8 +30,7 @@ import javax.inject.Inject
 class VideoDetailActivity : AppCompatActivity(),
         YouTubePlayer.OnInitializedListener,
         YouTubePlayer.PlayerStateChangeListener,
-        DetailCallback,
-        SelectPlaylistBottomSheetFragment.SelectPlaylistListener {
+        DetailCallback {
 
     private val videoId: VideoId by lazy {
         val id = intent.getStringExtra(BUNDLE_VIDEO_ID)
@@ -130,12 +129,8 @@ class VideoDetailActivity : AppCompatActivity(),
     override fun onError(p0: YouTubePlayer.ErrorReason?) {
     }
 
-    override fun onSelectedPlaylist(playlist: Playlist, videoId: VideoId) {
-        //viewModel.executeAddPlaylist(playlist)
-    }
-
-    override fun showSelectPlaylist() {
-        SelectPlaylistBottomSheetFragment.newInstance(videoId).show(supportFragmentManager)
+    override fun addPlaylist(playlist: Playlist, videoDetail: VideoDetail) {
+        viewModel.executeAddPlaylist(playlist, videoDetail)
     }
 
     override fun showVideo(video: Video) {
@@ -157,7 +152,7 @@ class VideoDetailActivity : AppCompatActivity(),
 
     private fun showDetail(videoId: VideoId, channelId: ChannelId) {
         val playlistId = playlistId
-        val fragment = if (playlistId != null) {
+        val fragment: Fragment = if (playlistId != null) {
             DetailInPlaylistFragment.newInstance(videoId, channelId, playlistId)
         } else {
             DetailInSearchFragment.newInstance(videoId, channelId)

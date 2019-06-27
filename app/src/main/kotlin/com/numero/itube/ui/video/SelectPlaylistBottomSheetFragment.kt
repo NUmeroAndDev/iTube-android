@@ -1,12 +1,12 @@
 package com.numero.itube.ui.video
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -41,14 +41,6 @@ class SelectPlaylistBottomSheetFragment : BottomSheetDialogFragment() {
 
     private lateinit var emptyMessageTextView: TextView
     private val groupieAdapter = GroupAdapter<ViewHolder>()
-    private var listener: SelectPlaylistListener? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is SelectPlaylistListener) {
-            listener = context
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +70,10 @@ class SelectPlaylistBottomSheetFragment : BottomSheetDialogFragment() {
     private fun setupFavoriteVideoList(view: View) {
         groupieAdapter.setOnItemClickListener { item, _ ->
             if (item is PlaylistItem) {
-                listener?.onSelectedPlaylist(item.playlist, videoId)
+                val fragment = targetFragment
+                if (fragment is SelectPlaylistListener) {
+                    fragment.onSelectedPlaylist(item.playlist, videoId)
+                }
                 dismiss()
             }
         }
@@ -111,8 +106,10 @@ class SelectPlaylistBottomSheetFragment : BottomSheetDialogFragment() {
         private const val TAG = "SelectPlaylistBottomSheetFragment"
 
         private const val ARG_VIDEO_ID = "ARG_VIDEO_ID"
+        private const val FRAGMENT_REQUEST_CODE = 1
 
-        fun newInstance(videoId: VideoId): SelectPlaylistBottomSheetFragment = SelectPlaylistBottomSheetFragment().apply {
+        fun newInstance(fragment: Fragment, videoId: VideoId): SelectPlaylistBottomSheetFragment = SelectPlaylistBottomSheetFragment().apply {
+            setTargetFragment(fragment, FRAGMENT_REQUEST_CODE)
             arguments = bundleOf(ARG_VIDEO_ID to videoId.value)
         }
     }
