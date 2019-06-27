@@ -140,6 +140,10 @@ class VideoDetailActivity : AppCompatActivity(),
         showDetail(videoId, channelId)
     }
 
+    override fun showChannelDetail(channelDetail: ChannelDetail) {
+        startActivity(ChannelDetailActivity.createIntent(this, channelDetail.title, channelDetail.id.value, channelDetail.thumbnailUrl.value))
+    }
+
     private fun setupObserve() {
         viewModel.addedPlaylistLiveData.observe(this) {
             // TODO show success added playlist
