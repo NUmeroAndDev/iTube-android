@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme.LightWindow">
+    <style name="AppTheme.EdgeToEdge">
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:navigationBarColor">?attr/colorSurface</item>
     </style>

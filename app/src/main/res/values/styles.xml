@@ -19,7 +19,7 @@
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogTheme.Rounded</item>
     </style>
 
-    <style name="AppTheme.LightWindow" />
+    <style name="AppTheme.EdgeToEdge" />
 
     <style name="BottomSheetStyle.Rounded" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="shapeAppearanceOverlay">@style/LargeShapeAppearance</item>

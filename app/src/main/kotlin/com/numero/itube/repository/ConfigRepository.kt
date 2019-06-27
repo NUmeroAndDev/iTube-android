@@ -21,9 +21,9 @@ class ConfigRepository(context: Context) : IConfigRepository {
     override val theme: Int
         get() = if (isUseDarkTheme) {
             // FIXME
-            R.style.AppTheme_LightWindow
+            R.style.AppTheme_EdgeToEdge
         } else {
-            R.style.AppTheme_LightWindow
+            R.style.AppTheme_EdgeToEdge
         }
 
     companion object {
