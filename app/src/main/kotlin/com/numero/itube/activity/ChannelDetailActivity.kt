@@ -17,6 +17,7 @@ import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable
 import com.numero.itube.model.ChannelId
 import com.numero.itube.repository.ConfigRepository
+import com.numero.itube.ui.video.detail.VideoDetailActivity
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.adapter.VideoListAdapter
 import com.numero.itube.viewmodel.ChannelVideoListViewModel
@@ -83,7 +84,7 @@ class ChannelDetailActivity : AppCompatActivity() {
         GlideApp.with(this).load(thumbnailUrl).circleCrop().into(channelImageView)
 
         videoListAdapter.setOnItemClickListener {
-            startActivity(PlayerActivity.createIntent(this, it))
+            startActivity(VideoDetailActivity.createIntent(this, it))
         }
         videoRecyclerView.apply {
             val manager = LinearLayoutManager(context)
