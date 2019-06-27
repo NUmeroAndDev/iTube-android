@@ -15,9 +15,5 @@
 
     <color name="stroke">#1C000000</color>
 
-    <color name="highEmphasisText">#DE000000</color>
-    <color name="mediumEmphasisText">#99000000</color>
-    <color name="disabledText">#5F000000</color>
-
     <color name="playing_background">#8A000000</color>
 </resources>
