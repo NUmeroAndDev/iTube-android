@@ -33,8 +33,8 @@ class PlaylistListViewModel @Inject constructor(
         playlistRepository.createPlaylist(Playlist.createPlaylist(it.value.title))
     }
 
-    fun executeCreatePlaylist() {
-        createLiveData.value = Action(CreatePlaylistAction("Hoge"))
+    fun executeCreatePlaylist(title: String) {
+        createLiveData.value = Action(CreatePlaylistAction(title))
     }
 
     private data class CreatePlaylistAction(
