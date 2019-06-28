@@ -66,7 +66,8 @@ class PlaylistListActivity : AppCompatActivity() {
                 true
             }
             R.id.action_create_playlist -> {
-                viewModel.executeCreatePlaylist()
+                InputPlaylistTitleDialogFragment.newInstance().show(supportFragmentManager)
+                //viewModel.executeCreatePlaylist()
                 true
             }
             else -> super.onOptionsItemSelected(item)
