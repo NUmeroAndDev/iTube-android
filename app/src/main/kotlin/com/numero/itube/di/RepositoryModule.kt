@@ -4,7 +4,6 @@ import android.content.Context
 import com.numero.itube.data.PlaylistDataSource
 import com.numero.itube.data.YoutubeDataSource
 import com.numero.itube.repository.*
-import com.numero.itube.repository.db.FavoriteVideoDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -22,12 +21,6 @@ class RepositoryModule {
     @Singleton
     fun provideChannelRepository(youtubeDataSource: YoutubeDataSource): ChannelRepository {
         return ChannelRepositoryImpl(youtubeDataSource)
-    }
-
-    @Provides
-    @Singleton
-    fun provideFavoriteVideoRepository(favoriteVideoDao: FavoriteVideoDao): FavoriteVideoRepository {
-        return FavoriteVideoRepository(favoriteVideoDao)
     }
 
     @Provides
