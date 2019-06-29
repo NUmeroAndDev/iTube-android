@@ -22,7 +22,9 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_playlist.*
 import javax.inject.Inject
 
-class PlaylistListActivity : AppCompatActivity() {
+class PlaylistListActivity : AppCompatActivity(),
+        InputPlaylistTitleDialogFragment.InputPlaylistTitleCallback {
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -66,11 +68,15 @@ class PlaylistListActivity : AppCompatActivity() {
                 true
             }
             R.id.action_create_playlist -> {
-                viewModel.executeCreatePlaylist()
+                InputPlaylistTitleDialogFragment.newInstance().show(supportFragmentManager)
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun createPlaylist(title: String) {
+        viewModel.executeCreatePlaylist(title)
     }
 
     private fun setupViews() {
