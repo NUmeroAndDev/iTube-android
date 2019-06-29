@@ -3,7 +3,6 @@ package com.numero.itube.di
 import com.numero.itube.activity.ChannelDetailActivity
 import com.numero.itube.activity.LicensesActivity
 import com.numero.itube.activity.SettingsActivity
-import com.numero.itube.fragment.FavoriteListBottomSheetFragment
 import com.numero.itube.fragment.SettingsFragment
 import com.numero.itube.ui.playlist.PlaylistListActivity
 import com.numero.itube.ui.search.SearchActivity
@@ -19,7 +18,6 @@ import javax.inject.Singleton
 @Component(modules = [
     ApplicationModule::class,
     ApiClientModule::class,
-    DBModule::class,
     DataSourceModule::class,
     RepositoryModule::class,
     ViewModelModule::class,
@@ -37,7 +35,6 @@ interface ApplicationComponent {
     fun inject(detailInPlaylistFragment: DetailInPlaylistFragment)
     fun inject(detailInSearchFragment: DetailInSearchFragment)
 
-    fun inject(favoriteListBottomSheetFragment: FavoriteListBottomSheetFragment)
     fun inject(settingsFragment: SettingsFragment)
     fun inject(selectPlaylistBottomSheetFragment: SelectPlaylistBottomSheetFragment)
 }
