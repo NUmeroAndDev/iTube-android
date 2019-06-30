@@ -3,11 +3,15 @@ package com.numero.itube.ui.top
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.TransitionManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.model.PlaylistDetailList
@@ -41,8 +45,6 @@ class TopActivity : AppCompatActivity() {
         component?.inject(this)
         setTheme(configRepository.theme)
         setContentView(R.layout.activity_top)
-        setSupportActionBar(toolbar)
-
 
         viewModel.playlistDetailListLiveData.observe(this) {
             groupieAdapter.clear()
@@ -59,7 +61,7 @@ class TopActivity : AppCompatActivity() {
             setHasFixedSize(true)
             adapter = groupieAdapter
         }
-        addButton.setOnClickListener {
+        searchCardView.setOnClickListener {
             startActivity(SearchActivity.createIntent(this@TopActivity))
         }
     }
