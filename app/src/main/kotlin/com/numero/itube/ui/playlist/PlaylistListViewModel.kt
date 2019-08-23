@@ -24,10 +24,6 @@ class PlaylistListViewModel @Inject constructor(
         actionLiveData.value = Action(EmptyAction)
     }
 
-
-    /**
-     * FIXME 確認用
-     */
     private val createLiveData: MutableLiveData<Action<CreatePlaylistAction>> = MutableLiveData()
     val createPlaylistListLiveData: LiveData<Playlist> = createLiveData.switchMap {
         playlistRepository.createPlaylist(Playlist.createPlaylist(it.value.title))
@@ -37,7 +33,5 @@ class PlaylistListViewModel @Inject constructor(
         createLiveData.value = Action(CreatePlaylistAction(title))
     }
 
-    private data class CreatePlaylistAction(
-            val title: String
-    )
+    private data class CreatePlaylistAction(val title: String)
 }
