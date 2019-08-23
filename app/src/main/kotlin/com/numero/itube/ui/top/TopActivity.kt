@@ -3,19 +3,16 @@ package com.numero.itube.ui.top
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.TransitionManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
 import com.numero.itube.model.PlaylistDetailList
 import com.numero.itube.repository.ConfigRepository
+import com.numero.itube.ui.playlist.InputPlaylistTitleDialogFragment
 import com.numero.itube.ui.playlist.PlaylistListActivity
 import com.numero.itube.ui.search.SearchActivity
 import com.numero.itube.ui.top.item.PlaylistHeaderItem
@@ -27,7 +24,8 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_top.*
 import javax.inject.Inject
 
-class TopActivity : AppCompatActivity() {
+class TopActivity : AppCompatActivity(),
+        InputPlaylistTitleDialogFragment.InputPlaylistTitleCallback {
 
     @Inject
     lateinit var configRepository: ConfigRepository
@@ -50,6 +48,10 @@ class TopActivity : AppCompatActivity() {
             groupieAdapter.clear()
             groupieAdapter.addAll(it.toSectionList())
         }
+        viewModel.createPlaylistListLiveData.observe(this) {
+            // TODO show success message
+            viewModel.executeLoadAllPlaylist()
+        }
 
         groupieAdapter.setOnItemClickListener { item, _ ->
             if (item is PlaylistVideoItem) {
@@ -63,6 +65,9 @@ class TopActivity : AppCompatActivity() {
         }
         searchCardView.setOnClickListener {
             startActivity(SearchActivity.createIntent(this@TopActivity))
+        }
+        addPlayListFloatingActionButton.setOnClickListener {
+            showPlaylistTitleInputDialog()
         }
     }
 
@@ -84,6 +89,14 @@ class TopActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         viewModel.executeLoadAllPlaylist()
+    }
+
+    override fun createPlaylist(title: String) {
+        viewModel.executeCreatePlaylist(title)
+    }
+
+    private fun showPlaylistTitleInputDialog() {
+        InputPlaylistTitleDialogFragment.newInstance().show(supportFragmentManager)
     }
 
     private fun PlaylistDetailList.toSectionList(): List<Section> {
