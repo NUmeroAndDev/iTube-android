@@ -2,10 +2,7 @@ package com.numero.itube.data
 
 import android.content.Context
 import androidx.room.Room
-import com.numero.itube.data.entity.PlaylistEntity
-import com.numero.itube.data.entity.PlaylistVideo
-import com.numero.itube.data.entity.VideoEntity
-import com.numero.itube.data.entity.VideoLinkingPlaylistEntity
+import com.numero.itube.data.entity.*
 
 class PlaylistDataSourceImpl(
         context: Context
@@ -21,6 +18,10 @@ class PlaylistDataSourceImpl(
 
     override fun readAllPlaylistVideo(): List<PlaylistVideo> {
         return playlistDao.findAllVideo()
+    }
+
+    override fun readAllPlaylistPreview(): List<PlaylistPreview> {
+        return playlistDao.findAllPlaylistPreview()
     }
 
     override fun findPlaylistVideo(playlistEntity: PlaylistEntity): List<PlaylistVideo> {
