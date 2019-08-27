@@ -13,6 +13,8 @@ interface PlaylistRepository {
 
     fun readPlaylistDetailList(): LiveData<PlaylistDetailList>
 
+    fun readPlaylistSummaryList(): LiveData<PlaylistSummaryList>
+
     fun updatePlaylist(playlist: Playlist): LiveData<Playlist>
 
     fun deletePlaylist(playlist: Playlist): LiveData<Playlist>

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.numero.itube.data.PlaylistDataSource
 import com.numero.itube.data.entity.PlaylistEntity
+import com.numero.itube.data.entity.PlaylistSummaryEntity
 import com.numero.itube.data.entity.PlaylistVideo
 import com.numero.itube.data.entity.VideoEntity
 import com.numero.itube.model.*
@@ -47,6 +48,10 @@ class PlaylistRepositoryImpl(
                     )
                 }
         emit(PlaylistDetailList(playlist))
+    }
+
+    override fun readPlaylistSummaryList(): LiveData<PlaylistSummaryList> = liveData(Dispatchers.IO) {
+        emit(playlistDataSource.readAllPlaylistSummary().toPlaylistSummaryList())
     }
 
     override fun updatePlaylist(playlist: Playlist): LiveData<Playlist> = liveData(Dispatchers.IO) {
@@ -99,6 +104,22 @@ class PlaylistRepositoryImpl(
                 channelDetail.id.value,
                 channelDetail.title,
                 thumbnailUrl.value
+        )
+    }
+
+    private fun List<PlaylistSummaryEntity>.toPlaylistSummaryList(): PlaylistSummaryList {
+        return PlaylistSummaryList(
+                map {
+                    val thumbnailUrl = it.firstVideoThumbnail?.run {
+                        ThumbnailUrl(this)
+                    }
+                    PlaylistSummary(
+                            id = PlaylistId(it.playlistId),
+                            title = it.playlistTitle,
+                            totalVideoCount = it.videoCount,
+                            thumbnailUrl = thumbnailUrl
+                    )
+                }
         )
     }
 }

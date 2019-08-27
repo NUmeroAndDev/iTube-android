@@ -15,6 +15,17 @@ data class PlaylistList(
         val value: List<Playlist>
 )
 
+data class PlaylistSummaryList(
+        val value: List<PlaylistSummary>
+)
+
+data class PlaylistSummary(
+        val id: PlaylistId,
+        val title: String,
+        val totalVideoCount: Int,
+        val thumbnailUrl: ThumbnailUrl?
+)
+
 data class PlaylistDetail(
         val id: PlaylistId,
         val title: String,

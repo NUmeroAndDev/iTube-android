@@ -20,8 +20,8 @@ class PlaylistDataSourceImpl(
         return playlistDao.findAllVideo()
     }
 
-    override fun readAllPlaylistPreview(): List<PlaylistPreview> {
-        return playlistDao.findAllPlaylistPreview()
+    override fun readAllPlaylistSummary(): List<PlaylistSummaryEntity> {
+        return playlistDao.findAllPlaylistSummary()
     }
 
     override fun findPlaylistVideo(playlistEntity: PlaylistEntity): List<PlaylistVideo> {
