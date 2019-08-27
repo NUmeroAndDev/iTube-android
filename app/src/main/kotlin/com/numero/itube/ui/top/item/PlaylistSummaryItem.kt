@@ -7,17 +7,18 @@ import com.numero.itube.R
 import com.numero.itube.model.PlaylistSummary
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.view_holder_video.*
+import kotlinx.android.synthetic.main.item_playlist_summary.*
 
 class PlaylistSummaryItem(
         val playlistSummary: PlaylistSummary
 ) : Item() {
 
-    override fun getLayout(): Int = R.layout.view_holder_video
+    override fun getLayout(): Int = R.layout.item_playlist_summary
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         val context = viewHolder.root.context
         viewHolder.titleTextView.text = playlistSummary.title
+        viewHolder.videoCountTextView.text = "${playlistSummary.totalVideoCount}件の動画"
 
         val thumbnailUrl = playlistSummary.thumbnailUrl
         if (thumbnailUrl == null) {
