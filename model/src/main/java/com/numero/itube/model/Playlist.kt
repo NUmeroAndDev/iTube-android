@@ -23,7 +23,7 @@ data class PlaylistSummary(
         val id: PlaylistId,
         val title: String,
         val totalVideoCount: Int,
-        val thumbnailUrl: ThumbnailUrl?
+        val video: Video.InPlaylist?
 )
 
 data class PlaylistDetail(

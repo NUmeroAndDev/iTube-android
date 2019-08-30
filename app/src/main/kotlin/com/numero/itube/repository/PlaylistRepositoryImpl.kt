@@ -110,14 +110,23 @@ class PlaylistRepositoryImpl(
     private fun List<PlaylistSummaryEntity>.toPlaylistSummaryList(): PlaylistSummaryList {
         return PlaylistSummaryList(
                 map {
-                    val thumbnailUrl = it.firstVideoThumbnail?.run {
-                        ThumbnailUrl(this)
+                    val video = it.videoEntity?.run {
+                        Video.InPlaylist(
+                                VideoId(id),
+                                ThumbnailUrl(thumbnailUrl),
+                                title,
+                                Channel(
+                                        ChannelId(channelId),
+                                        channelTitle
+                                ),
+                                PlaylistId(it.playlistId)
+                        )
                     }
                     PlaylistSummary(
                             id = PlaylistId(it.playlistId),
                             title = it.playlistTitle,
                             totalVideoCount = it.videoCount,
-                            thumbnailUrl = thumbnailUrl
+                            video = video
                     )
                 }
         )

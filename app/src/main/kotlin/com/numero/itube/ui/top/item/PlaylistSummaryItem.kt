@@ -20,7 +20,7 @@ class PlaylistSummaryItem(
         viewHolder.titleTextView.text = playlistSummary.title
         viewHolder.videoCountTextView.text = "${playlistSummary.totalVideoCount}件の動画"
 
-        val thumbnailUrl = playlistSummary.thumbnailUrl
+        val thumbnailUrl = playlistSummary.video?.thumbnailUrl
         if (thumbnailUrl == null) {
             viewHolder.thumbnailImageView.setImageDrawable(null)
         } else {

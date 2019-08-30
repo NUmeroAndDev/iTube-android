@@ -34,7 +34,7 @@ interface PlaylistDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updatePlaylist(playlist: PlaylistEntity)
 
-    @Query("SELECT Playlist.id AS playlistId, Playlist.title AS playlistTitle, COUNT(VideoLinkingPlaylist.playlistId) AS videoCount, Video.thumbnailUrl AS firstVideoThumbnail FROM Playlist LEFT JOIN VideoLinkingPlaylist ON VideoLinkingPlaylist.playlistId = Playlist.id LEFT JOIN Video ON VideoLinkingPlaylist.videoId = Video.id GROUP BY Playlist.id")
+    @Query("SELECT Video.*, Playlist.id AS playlistId, Playlist.title AS playlistTitle, COUNT(VideoLinkingPlaylist.playlistId) AS videoCount, Video.thumbnailUrl AS firstVideoThumbnail FROM Playlist LEFT JOIN VideoLinkingPlaylist ON VideoLinkingPlaylist.playlistId = Playlist.id LEFT JOIN Video ON VideoLinkingPlaylist.videoId = Video.id GROUP BY Playlist.id")
     fun findAllPlaylistSummary(): List<PlaylistSummaryEntity>
 
 
