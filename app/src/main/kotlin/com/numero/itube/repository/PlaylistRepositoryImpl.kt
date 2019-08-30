@@ -110,7 +110,7 @@ class PlaylistRepositoryImpl(
     private fun List<PlaylistSummaryEntity>.toPlaylistSummaryList(): PlaylistSummaryList {
         return PlaylistSummaryList(
                 map {
-                    val video = it.videoEntity?.run {
+                    val video = it.firstVideoEntity?.run {
                         Video.InPlaylist(
                                 VideoId(id),
                                 ThumbnailUrl(thumbnailUrl),

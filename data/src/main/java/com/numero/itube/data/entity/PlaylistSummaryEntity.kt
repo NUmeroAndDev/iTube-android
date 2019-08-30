@@ -8,5 +8,5 @@ data class PlaylistSummaryEntity(
         val playlistId: Long,
         val playlistTitle: String,
         val videoCount: Int,
-        @Embedded val videoEntity: VideoEntity?
+        @Embedded val firstVideoEntity: VideoEntity?
 )
