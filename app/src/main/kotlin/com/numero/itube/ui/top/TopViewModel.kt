@@ -7,7 +7,7 @@ import androidx.lifecycle.switchMap
 import com.numero.itube.model.Action
 import com.numero.itube.model.EmptyAction
 import com.numero.itube.model.Playlist
-import com.numero.itube.model.PlaylistDetailList
+import com.numero.itube.model.PlaylistSummaryList
 import com.numero.itube.repository.PlaylistRepository
 import javax.inject.Inject
 
@@ -16,8 +16,8 @@ class TopViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val actionLiveData: MutableLiveData<Action<EmptyAction>> = MutableLiveData()
-    val playlistDetailListLiveData: LiveData<PlaylistDetailList> = actionLiveData.switchMap {
-        playlistRepository.readPlaylistDetailList()
+    val playlistSummaryListLiveData: LiveData<PlaylistSummaryList> = actionLiveData.switchMap {
+        playlistRepository.readPlaylistSummaryList()
     }
 
     fun executeLoadAllPlaylist() {

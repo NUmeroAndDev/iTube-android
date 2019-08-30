@@ -10,13 +10,12 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
 import com.numero.itube.extension.component
-import com.numero.itube.model.PlaylistDetailList
+import com.numero.itube.model.PlaylistSummaryList
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.playlist.InputPlaylistTitleDialogFragment
 import com.numero.itube.ui.playlist.PlaylistListActivity
 import com.numero.itube.ui.search.SearchActivity
-import com.numero.itube.ui.top.item.PlaylistHeaderItem
-import com.numero.itube.ui.top.item.PlaylistVideoItem
+import com.numero.itube.ui.top.item.PlaylistSummaryItem
 import com.numero.itube.ui.video.detail.VideoDetailActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -44,9 +43,9 @@ class TopActivity : AppCompatActivity(),
         setTheme(configRepository.theme)
         setContentView(R.layout.activity_top)
 
-        viewModel.playlistDetailListLiveData.observe(this) {
+        viewModel.playlistSummaryListLiveData.observe(this) {
             groupieAdapter.clear()
-            groupieAdapter.addAll(it.toSectionList())
+            groupieAdapter.add(it.toSection())
         }
         viewModel.createPlaylistListLiveData.observe(this) {
             // TODO show success message
@@ -54,8 +53,9 @@ class TopActivity : AppCompatActivity(),
         }
 
         groupieAdapter.setOnItemClickListener { item, _ ->
-            if (item is PlaylistVideoItem) {
-                startActivity(VideoDetailActivity.createIntent(this, item.video))
+            if (item is PlaylistSummaryItem) {
+                val video = item.playlistSummary.video ?: return@setOnItemClickListener
+                startActivity(VideoDetailActivity.createIntent(this, video))
             }
         }
         videoRecyclerView.apply {
@@ -99,12 +99,9 @@ class TopActivity : AppCompatActivity(),
         InputPlaylistTitleDialogFragment.newInstance().show(supportFragmentManager)
     }
 
-    private fun PlaylistDetailList.toSectionList(): List<Section> {
-        return value.map { playlist ->
-            Section().apply {
-                setHeader(PlaylistHeaderItem(playlist))
-                addAll(playlist.videoList.map { PlaylistVideoItem(it) })
-            }
+    private fun PlaylistSummaryList.toSection(): Section {
+        return Section().apply {
+            addAll(value.map { PlaylistSummaryItem(it) })
         }
     }
 }

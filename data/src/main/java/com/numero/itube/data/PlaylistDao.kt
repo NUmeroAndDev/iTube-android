@@ -1,10 +1,7 @@
 package com.numero.itube.data
 
 import androidx.room.*
-import com.numero.itube.data.entity.PlaylistEntity
-import com.numero.itube.data.entity.PlaylistVideo
-import com.numero.itube.data.entity.VideoEntity
-import com.numero.itube.data.entity.VideoLinkingPlaylistEntity
+import com.numero.itube.data.entity.*
 
 @Dao
 interface PlaylistDao {
@@ -36,6 +33,9 @@ interface PlaylistDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updatePlaylist(playlist: PlaylistEntity)
+
+    @Query("SELECT Video.*, Playlist.id AS playlistId, Playlist.title AS playlistTitle, COUNT(VideoLinkingPlaylist.playlistId) AS videoCount, Video.thumbnailUrl AS firstVideoThumbnail FROM Playlist LEFT JOIN VideoLinkingPlaylist ON VideoLinkingPlaylist.playlistId = Playlist.id LEFT JOIN Video ON VideoLinkingPlaylist.videoId = Video.id GROUP BY Playlist.id")
+    fun findAllPlaylistSummary(): List<PlaylistSummaryEntity>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
