@@ -6,13 +6,6 @@ sealed class Video(
         val title: String,
         val channel: Channel
 ) {
-    class Favorite(
-            id: VideoId,
-            thumbnailUrl: ThumbnailUrl,
-            title: String,
-            channel: Channel
-    ) : Video(id, thumbnailUrl, title, channel)
-
     class Search(
             id: VideoId,
             thumbnailUrl: ThumbnailUrl,
