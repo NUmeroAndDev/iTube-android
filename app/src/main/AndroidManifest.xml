@@ -27,8 +27,6 @@
 
         <activity android:name=".ui.search.SearchActivity" />
 
-        <activity android:name=".ui.playlist.PlaylistListActivity" />
-
         <activity android:name=".ui.video.detail.VideoDetailActivity" />
 
         <activity android:name=".ui.channel.ChannelDetailActivity" />

@@ -13,7 +13,6 @@ import com.numero.itube.extension.component
 import com.numero.itube.model.PlaylistSummaryList
 import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.playlist.InputPlaylistTitleDialogFragment
-import com.numero.itube.ui.playlist.PlaylistListActivity
 import com.numero.itube.ui.search.SearchActivity
 import com.numero.itube.ui.top.item.PlaylistSummaryItem
 import com.numero.itube.ui.video.detail.VideoDetailActivity
@@ -79,7 +78,6 @@ class TopActivity : AppCompatActivity(),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_settings -> {
-                startActivity(PlaylistListActivity.createIntent(this))
                 true
             }
             else -> super.onOptionsItemSelected(item)
