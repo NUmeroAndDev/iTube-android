@@ -7,8 +7,8 @@ import com.numero.itube.ui.video.SelectPlaylistViewModel
 import com.numero.itube.ui.video.detail.playlist.DetailInPlaylistViewModel
 import com.numero.itube.ui.video.detail.VideoDetailViewModel
 import com.numero.itube.ui.video.detail.search.DetailInSearchViewModel
-import com.numero.itube.viewmodel.ChannelVideoListViewModel
-import com.numero.itube.viewmodel.SearchVideoViewModel
+import com.numero.itube.ui.channel.ChannelVideoListViewModel
+import com.numero.itube.ui.search.SearchVideoViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

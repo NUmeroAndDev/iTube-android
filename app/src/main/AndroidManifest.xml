@@ -31,7 +31,7 @@
 
         <activity android:name=".ui.video.detail.VideoDetailActivity" />
 
-        <activity android:name=".activity.ChannelDetailActivity" />
+        <activity android:name=".ui.channel.ChannelDetailActivity" />
 
         <activity
             android:name=".activity.SettingsActivity"

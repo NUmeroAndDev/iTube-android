@@ -16,7 +16,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult
 import com.google.android.youtube.player.YouTubePlayer
 import com.google.android.youtube.player.YouTubePlayerFragment
 import com.numero.itube.R
-import com.numero.itube.activity.ChannelDetailActivity
+import com.numero.itube.ui.channel.ChannelDetailActivity
 import com.numero.itube.extension.component
 import com.numero.itube.extension.getAttrColor
 import com.numero.itube.extension.getTintedDrawable

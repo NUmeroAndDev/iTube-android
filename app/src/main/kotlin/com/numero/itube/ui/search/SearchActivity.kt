@@ -18,7 +18,6 @@ import com.numero.itube.ui.search.item.SearchVideoItem
 import com.numero.itube.ui.video.detail.VideoDetailActivity
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.SearchInputView
-import com.numero.itube.viewmodel.SearchVideoViewModel
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder

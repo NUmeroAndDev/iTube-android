@@ -1,4 +1,4 @@
-package com.numero.itube.viewmodel
+package com.numero.itube.ui.search
 
 import androidx.lifecycle.*
 import com.numero.itube.api.request.SearchVideoRequest

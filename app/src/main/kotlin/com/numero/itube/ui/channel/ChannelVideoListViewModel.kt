@@ -1,4 +1,4 @@
-package com.numero.itube.viewmodel
+package com.numero.itube.ui.channel
 
 import androidx.lifecycle.*
 import com.numero.itube.api.request.ChannelVideoRequest
@@ -10,6 +10,8 @@ import com.numero.itube.model.ChannelId
 import com.numero.itube.model.ChannelVideoList
 import com.numero.itube.repository.ChannelRepository
 import com.numero.itube.repository.VideoRepository
+import com.numero.itube.viewmodel.IErrorViewModel
+import com.numero.itube.viewmodel.IProgressViewModel
 import javax.inject.Inject
 
 class ChannelVideoListViewModel @Inject constructor(
