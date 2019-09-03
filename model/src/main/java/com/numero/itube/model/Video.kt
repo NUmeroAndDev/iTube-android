@@ -18,7 +18,8 @@ sealed class Video(
             thumbnailUrl: ThumbnailUrl,
             title: String,
             channel: Channel,
-            val playlistId: PlaylistId
+            val playlistId: PlaylistId,
+            val isPlaying: Boolean
     ) : Video(id, thumbnailUrl, title, channel)
 }
 

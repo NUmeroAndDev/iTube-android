@@ -25,29 +25,14 @@ class PlaylistRepositoryImpl(
         emit(PlaylistList(list))
     }
 
-    override fun readPlaylistDetail(playlistId: PlaylistId): LiveData<PlaylistDetail> = liveData(Dispatchers.IO) {
+    override fun readPlaylistDetail(playlistId: PlaylistId, currentVideoId: VideoId): LiveData<PlaylistDetail> = liveData(Dispatchers.IO) {
         val videoList = playlistDataSource.findPlaylistVideo(PlaylistEntity(playlistId.value, ""))
         val playlist = PlaylistDetail(
                 playlistId,
                 videoList.first().playlistTitle,
-                videoList.toVideo()
+                videoList.toVideo(currentVideoId)
         )
         emit(playlist)
-    }
-
-    override fun readPlaylistDetailList(): LiveData<PlaylistDetailList> = liveData(Dispatchers.IO) {
-        val videoList = playlistDataSource.readAllPlaylistVideo()
-        val playlist = videoList.groupBy { it.playlistId }
-                .map {
-                    val id = it.key
-                    val list = it.value
-                    PlaylistDetail(
-                            PlaylistId(id),
-                            list.first().playlistTitle,
-                            list.toVideo()
-                    )
-                }
-        emit(PlaylistDetailList(playlist))
     }
 
     override fun readPlaylistSummaryList(): LiveData<PlaylistSummaryList> = liveData(Dispatchers.IO) {
@@ -82,7 +67,7 @@ class PlaylistRepositoryImpl(
         }
     }
 
-    private fun List<PlaylistVideo>.toVideo(): List<Video.InPlaylist> {
+    private fun List<PlaylistVideo>.toVideo(currentVideoId: VideoId): List<Video.InPlaylist> {
         return map {
             Video.InPlaylist(
                     VideoId(it.id),
@@ -92,7 +77,8 @@ class PlaylistRepositoryImpl(
                             ChannelId(it.channelId),
                             it.channelTitle
                     ),
-                    PlaylistId(it.playlistId)
+                    PlaylistId(it.playlistId),
+                    currentVideoId.value == it.id
             )
         }
     }
@@ -119,7 +105,8 @@ class PlaylistRepositoryImpl(
                                         ChannelId(channelId),
                                         channelTitle
                                 ),
-                                PlaylistId(it.playlistId)
+                                PlaylistId(it.playlistId),
+                                isPlaying = false
                         )
                     }
                     PlaylistSummary(

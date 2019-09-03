@@ -17,7 +17,7 @@ class DetailInPlaylistViewModel @Inject constructor(
     private val stateLiveData: LiveData<Pair<Result<VideoDetail>, PlaylistDetail>> = actionLiveData.switchMap {
         zipLiveData(
                 videoRepository.fetchVideoDetail(it.value.videoId, it.value.channelId),
-                playlistRepository.readPlaylistDetail(it.value.playlistId)
+                playlistRepository.readPlaylistDetail(it.value.playlistId, it.value.videoId)
         )
 
     }

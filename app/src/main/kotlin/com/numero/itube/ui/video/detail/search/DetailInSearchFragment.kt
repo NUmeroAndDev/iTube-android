@@ -21,6 +21,7 @@ import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
 import com.numero.itube.ui.video.detail.DetailCallback
 import com.numero.itube.ui.video.detail.item.ChannelItem
 import com.numero.itube.ui.video.detail.item.PlaylistVideoItem
+import com.numero.itube.ui.video.detail.item.RelativeVideoItem
 import com.numero.itube.ui.video.detail.item.VideoDetailItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
@@ -108,7 +109,7 @@ class DetailInSearchFragment : Fragment(),
                 showSelectPlaylist()
             })
             add(ChannelItem(channelDetail))
-            addAll(relativeVideoList.map { PlaylistVideoItem(it) })
+            addAll(relativeVideoList.map { RelativeVideoItem(it) })
         }
     }
 

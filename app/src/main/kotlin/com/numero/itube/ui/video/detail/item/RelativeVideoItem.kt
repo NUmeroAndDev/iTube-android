@@ -1,6 +1,5 @@
 package com.numero.itube.ui.video.detail.item
 
-import androidx.core.view.isVisible
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.numero.itube.GlideApp
@@ -10,8 +9,8 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.view_holder_video.*
 
-class PlaylistVideoItem(
-        val video: Video.InPlaylist
+class RelativeVideoItem(
+        val video: Video.Search
 ) : Item() {
 
     override fun getLayout(): Int = R.layout.view_holder_video
@@ -25,7 +24,6 @@ class PlaylistVideoItem(
                 .load(video.thumbnailUrl.value)
                 .transforms(CenterCrop(), RoundedCorners(cornerRadius))
                 .into(viewHolder.thumbnailImageView)
-        viewHolder.playingViewGroup.isVisible = video.isPlaying
     }
 
 }

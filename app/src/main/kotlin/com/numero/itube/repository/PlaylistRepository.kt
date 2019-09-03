@@ -9,9 +9,7 @@ interface PlaylistRepository {
 
     fun readPlaylistList(): LiveData<PlaylistList>
 
-    fun readPlaylistDetail(playlistId: PlaylistId): LiveData<PlaylistDetail>
-
-    fun readPlaylistDetailList(): LiveData<PlaylistDetailList>
+    fun readPlaylistDetail(playlistId: PlaylistId, currentVideoId: VideoId): LiveData<PlaylistDetail>
 
     fun readPlaylistSummaryList(): LiveData<PlaylistSummaryList>
 

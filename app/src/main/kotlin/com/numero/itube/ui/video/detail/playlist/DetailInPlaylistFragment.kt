@@ -82,7 +82,10 @@ class DetailInPlaylistFragment : Fragment(),
     private fun setupViews() {
         groupieAdapter.setOnItemClickListener { item, view ->
             when (item) {
-                is PlaylistVideoItem -> callback?.showVideo(item.video)
+                is PlaylistVideoItem -> {
+                    if (item.video.isPlaying) return@setOnItemClickListener
+                    callback?.showVideo(item.video)
+                }
                 is ChannelItem -> callback?.showChannelDetail(item.channelDetail)
             }
         }
