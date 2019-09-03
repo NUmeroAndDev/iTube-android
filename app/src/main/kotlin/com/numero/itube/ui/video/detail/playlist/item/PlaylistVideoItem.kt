@@ -1,4 +1,4 @@
-package com.numero.itube.ui.video.detail.item
+package com.numero.itube.ui.video.detail.playlist.item
 
 import androidx.core.view.isVisible
 import com.bumptech.glide.load.resource.bitmap.CenterCrop

@@ -17,8 +17,9 @@ import com.numero.itube.model.*
 import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
 import com.numero.itube.ui.video.detail.DetailCallback
 import com.numero.itube.ui.video.detail.item.ChannelItem
-import com.numero.itube.ui.video.detail.item.PlaylistVideoItem
 import com.numero.itube.ui.video.detail.item.VideoDetailItem
+import com.numero.itube.ui.video.detail.playlist.item.PlaylistHeaderItem
+import com.numero.itube.ui.video.detail.playlist.item.PlaylistVideoItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
@@ -107,12 +108,17 @@ class DetailInPlaylistFragment : Fragment(),
     }
 
     private fun Pair<VideoDetail, PlaylistDetail>.toSection(): Section {
+        val videoDetail = first
+        val playListDetail = second
         return Section().apply {
-            add(VideoDetailItem(first, true) {
+            add(VideoDetailItem(videoDetail, true) {
                 showSelectPlaylist()
             })
-            add(ChannelItem(first.channelDetail))
-            addAll(second.videoList.map { PlaylistVideoItem(it) })
+            add(ChannelItem(videoDetail.channelDetail))
+            add(PlaylistHeaderItem(playListDetail) {
+                // TODO transition edit playlist screen
+            })
+            addAll(playListDetail.videoList.map { PlaylistVideoItem(it) })
         }
     }
 
