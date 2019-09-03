@@ -15,6 +15,7 @@
         android:maxLines="3"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:textColor="?attr/colorOnBackground"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/editPlayListButton"
         app:layout_constraintStart_toStartOf="parent"
