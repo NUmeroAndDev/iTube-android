@@ -20,7 +20,7 @@ import com.numero.itube.model.VideoId
 import com.numero.itube.ui.video.SelectPlaylistBottomSheetFragment
 import com.numero.itube.ui.video.detail.DetailCallback
 import com.numero.itube.ui.video.detail.item.ChannelItem
-import com.numero.itube.ui.video.detail.item.PlaylistVideoItem
+import com.numero.itube.ui.video.detail.playlist.item.PlaylistVideoItem
 import com.numero.itube.ui.video.detail.item.RelativeVideoItem
 import com.numero.itube.ui.video.detail.item.VideoDetailItem
 import com.xwray.groupie.GroupAdapter
