@@ -1,6 +1,6 @@
 package com.numero.itube.di
 
-import com.numero.itube.activity.ChannelDetailActivity
+import com.numero.itube.ui.channel.ChannelDetailActivity
 import com.numero.itube.activity.LicensesActivity
 import com.numero.itube.activity.SettingsActivity
 import com.numero.itube.fragment.SettingsFragment

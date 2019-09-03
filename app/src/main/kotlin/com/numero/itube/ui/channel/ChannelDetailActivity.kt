@@ -1,4 +1,4 @@
-package com.numero.itube.activity
+package com.numero.itube.ui.channel
 
 import android.content.Context
 import android.content.Intent
@@ -18,7 +18,6 @@ import com.numero.itube.repository.ConfigRepository
 import com.numero.itube.ui.video.detail.VideoDetailActivity
 import com.numero.itube.view.EndlessScrollListener
 import com.numero.itube.view.adapter.VideoListAdapter
-import com.numero.itube.viewmodel.ChannelVideoListViewModel
 import kotlinx.android.synthetic.main.activity_channel_detail.*
 import javax.inject.Inject
 
