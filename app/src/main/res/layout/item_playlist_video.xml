@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="@dimen/video_card_corner_radius"
+    app:cardElevation="@dimen/video_card_elevation"
+    app:strokeColor="?attr/colorStroke"
+    app:strokeWidth="@dimen/video_card_stroke_width">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/thumbnailImageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@id/moreButton"
+            app:layout_constraintDimensionRatio="w,16:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/titleTextView"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@mipmap/ic_launcher" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/playingBackground"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:cardBackgroundColor="@color/playing_background"
+            app:cardCornerRadius="@dimen/thumbnail_corner_radius"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/thumbnailImageView"
+            app:layout_constraintEnd_toEndOf="@+id/thumbnailImageView"
+            app:layout_constraintStart_toStartOf="@+id/thumbnailImageView"
+            app:layout_constraintTop_toTopOf="@+id/thumbnailImageView" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/playingImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_play"
+            app:layout_constraintBottom_toBottomOf="@+id/thumbnailImageView"
+            app:layout_constraintEnd_toEndOf="@+id/thumbnailImageView"
+            app:layout_constraintStart_toStartOf="@+id/thumbnailImageView"
+            app:layout_constraintTop_toTopOf="@+id/thumbnailImageView" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/titleTextView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textColor="?attr/colorOnBackground"
+            app:layout_constraintBottom_toBottomOf="@id/thumbnailImageView"
+            app:layout_constraintEnd_toStartOf="@id/thumbnailImageView"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/thumbnailImageView"
+            tools:text="Title" />
+
+        <ImageButton
+            android:id="@+id/moreButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="2dp"
+            android:src="@drawable/ic_more_vert"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/thumbnailImageView" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/playingViewGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="playingBackground,playingImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
