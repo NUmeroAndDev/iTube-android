@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.numero.itube.R
+import com.numero.itube.databinding.ActivityTopBinding
 import com.numero.itube.extension.component
 import com.numero.itube.model.PlaylistSummaryList
 import com.numero.itube.repository.ConfigRepository
@@ -19,7 +20,6 @@ import com.numero.itube.ui.video.detail.VideoDetailActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
-import kotlinx.android.synthetic.main.activity_top.*
 import javax.inject.Inject
 
 class TopActivity : AppCompatActivity(),
@@ -36,11 +36,14 @@ class TopActivity : AppCompatActivity(),
         ViewModelProviders.of(this, viewModelFactory).get(TopViewModel::class.java)
     }
 
+    private lateinit var binding: ActivityTopBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         component?.inject(this)
         setTheme(configRepository.theme)
-        setContentView(R.layout.activity_top)
+        binding = ActivityTopBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         viewModel.playlistSummaryListLiveData.observe(this) {
             groupieAdapter.clear()
@@ -57,15 +60,15 @@ class TopActivity : AppCompatActivity(),
                 startActivity(VideoDetailActivity.createIntent(this, video))
             }
         }
-        videoRecyclerView.apply {
+        binding.videoRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
             adapter = groupieAdapter
         }
-        searchCardView.setOnClickListener {
+        binding.searchCardView.setOnClickListener {
             startActivity(SearchActivity.createIntent(this@TopActivity))
         }
-        addPlayListFloatingActionButton.setOnClickListener {
+        binding.addPlayListFloatingActionButton.setOnClickListener {
             showPlaylistTitleInputDialog()
         }
     }

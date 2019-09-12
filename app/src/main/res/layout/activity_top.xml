@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/videoRecyclerView"
+        android:id="@+id/video_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="-8dp"
@@ -18,7 +18,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/noFavoriteVideoTextView"
+        android:id="@+id/no_favorite_video_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -29,14 +29,14 @@
         tools:visibility="visible" />
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         app:elevation="0dp">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/searchCardView"
+            android:id="@+id/search_card_view"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_marginStart="16dp"
@@ -52,7 +52,7 @@
                 android:layout_height="match_parent">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/searchIconImageView"
+                    android:id="@+id/search_icon_image_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -70,11 +70,11 @@
                     android:textAppearance="?attr/textAppearanceSubtitle2"
                     android:transitionName="searchHintTextView"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/searchIconImageView"
+                    app:layout_constraintStart_toEndOf="@id/search_icon_image_view"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/settingsButton"
+                    android:id="@+id/settings_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
@@ -92,7 +92,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/addPlayListFloatingActionButton"
+        android:id="@+id/add_play_list_floating_action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
